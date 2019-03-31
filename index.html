@@ -40,7 +40,7 @@
         <h3 class="title"><center>Product Search</center></h3>
         <form class="form-horizontal" id="myForm" name="myForm" method="GET" onsubmit="return false;">
           <div class="form-group row">
-            <label for="input_keyword" class="col-md-3 col-form-label">Keyword<span class="star">*<span></label>
+            <label for="input_keyword" class="col-md-3 col-form-label">Keyword<font color="red">*</font></label>
             <div class="col-md-9">
               <input type="text" id="input_keyword" name="keyword" class="form-control" placeholder="Enter Product Name (eg. iPhone 8)" ng-model="myKeyword" ng-style="newKeywordStyle" ng-required="true">
               <p class="error" ng-show="myForm.keyword.$invalid && myForm.keyword.$touched">Please enter a keyword.</p>
@@ -122,8 +122,8 @@
     <div class="form-group">
       <div class="col-md-12">
         <center>
-          <button type="button" id="resultsButton" class="btn btn-outline-primary btn-md" name="results" ng-class="{'changeToActive':clickedResults}" ng-click="cleanAnimation();ifClickedSearch()" autofocus>ResultsQ</button>
-          <button type="button" id="favoritesButton" class="btn btn-outline-primary btn-md" name="favorites" ng-class="{'changeToActive':clickedFavorite}" ng-click="cleanAnimation();ifClickFavorite()">Favorites</button>
+          <button type="button" id="resultsButton" class="btn btn-outline-primary btn-md" name="results" ng-class="{'changeToActive':clickedResults}" ng-click="cleanAnimation();ifClickedSearch()" autofocus>Results</button>
+          <button type="button" id="favoritesButton" class="btn btn-outline-primary btn-md" name="favorites" ng-class="{'changeToActive':clickedFavorite}" ng-click="cleanAnimation();ifClickFavorite()">Wish List</button>
         </center>
       </div>
     </div>

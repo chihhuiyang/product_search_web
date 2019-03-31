@@ -16,8 +16,21 @@ input[type="text"]:disabled
   border-style: solid !important;
   border-color: #c1c1c1 !important;
   border-width: thin !important;
-  border-radius: 10px !important;
+  border-radius: 5px !important;
   background-color: #222121 !important;
+}
+
+.table {
+  max-width: 1000px;
+  /* border-top: 1px #dbdde0 solid !important; */
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+  /* background-color: #f2f2f2; */
+}
+
+table.hoverTable tr:hover td {
+  background-color: #d6d1d1;
 }
 
 
@@ -123,17 +136,12 @@ i.material-icons {
 
 .detailsPage
 {
-  max-width: 1400px !important;
+  max-width: 1000px !important;
 }
 
 .resultsTable
 {
-  max-width: 1400px;
-}
-
-.table
-{
-  border-top: 1px #dbdde0 solid !important;
+  max-width: 1000px;
 }
 
 .btn-page
@@ -186,10 +194,7 @@ a
   font-weight: bold;
 }
 
-.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th
-{
-  background-color: #f2f2f2;
-}
+
 
 .img_row
 {
@@ -234,7 +239,7 @@ a
 
 .noRecords
 {
-  max-width: 1400px;
+  max-width: 1000px;
   background-color: #fff2c1;
   text-align: left;
   padding-top: 8px;
@@ -302,7 +307,7 @@ a
 
 .failedSearch
 {
-  max-width: 1400px;
+  max-width: 1000px;
   background-color: #f2b8bc;
   text-align: left;
   padding-top: 8px;
@@ -317,13 +322,10 @@ a
 
 .row
 {
-  max-width: 1400px !important;
+  max-width: 1000px !important;
 }
 
-table.hoverTable tr:hover td
-{
-  background-color: #dbdbdb;
-}
+
 
 .fade-in-out
 {
