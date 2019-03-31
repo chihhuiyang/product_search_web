@@ -45,6 +45,15 @@ i.material-icons {
   color: rgba(238, 199, 25, 0.884); 
 }
 
+td.name_link {
+  color:rgb(38, 123, 235);
+}
+
+td.name_link:hover {
+  color:rgb(38, 123, 235);
+  text-decoration: underline;
+}
+
 .title
 {
   font-size: 22px;

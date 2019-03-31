@@ -19,23 +19,17 @@
                     <th>Title</th>
                     <th>Zip</th>
                     <th>Wish List</th>
-                    <th>Details</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.ifHighlight}">
                     <td><b>{{$index + 1}}</b></td>
                     <td><img src='{{x.icon}}' height='40px' width='40px'/></td>
-                    <td>{{x.name}}</td>
+                    <td class="name_link" ng-click="requestDetails($index);">{{x.name}}</td>
                     <td>{{x.vicinity}}</td>
                     <td>
                       <button type="button" class="btn btn-default btn-sm" ng-click="saveToLocalStorage($index)">
                         <i ng-class="x.wishIconClass">{{x.shopping_cart}}</i>
-                      </button>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-default btn-sm" ng-click="requestDetails($index);">
-                          <i class="material-icons md-18">search</i>
                       </button>
                     </td>
                   </tr>
