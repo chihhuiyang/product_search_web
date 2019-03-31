@@ -87,13 +87,14 @@ i.material-icons {
 
 .btn-outline-primary, .btn-outline-primary:hover {
     background-color: white;
-    color: #1a6bed;
+    color: black;
+    border: 0;
 }
 
 .btn-outline-primary.changeToActive
 {
-  background-color: #1a6bed;
-  color: black;
+  background-color: black;
+  color: white;
   border: 0;
 }
 
