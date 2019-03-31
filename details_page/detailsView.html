@@ -11,14 +11,14 @@
         <br></br>
 
         <div class="twitterArea" align="right">
-          <button type="button" class="btn btn-default btn-sm" style="width:30px; height:30px" ng-click="addToFavorite()">
-            <i ng-class="detailWishIconClass">{{shopping_cart}}</i>
-          </button>
           <span>
             <button class="btn btn-default" id="twitterButton" style="padding:0px" ng-click="openTweetWindow()">
-              <img ng-src="http://csci571.com/hw/hw8/Images/facebook.png" style="width:30px; height:30px"/>
+              <img ng-src="http://csci571.com/hw/hw8/Images/facebook.png" style="width:40px; height:40px"/>
             </button>
           </span>
+          <button type="button" class="btn btn-default btn-sm" style="width:40px; height:40px; background-color: ghostwhite" ng-click="addToFavorite()">
+              <i ng-class="detailWishIconClass">{{shopping_cart}}</i>
+            </button>
         </div>
 
         <div>
@@ -103,22 +103,21 @@
             <div class="img_row" ng-if="ifHasPhoto">
               <div class="img_column">
                 <a ng-if="placePhotos[0] !== undefined" ng-href="{{placePhotos[0]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[0]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[4] !== undefined" ng-href="{{placePhotos[4]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[4]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[8] !== undefined" ng-href="{{placePhotos[8]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[8]}}" style="width:100%"/></a>
-              </div>
-              <div class="img_column">
-                <a ng-if="placePhotos[1] !== undefined" ng-href="{{placePhotos[1]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[1]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[5] !== undefined" ng-href="{{placePhotos[5]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[5]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[3] !== undefined" ng-href="{{placePhotos[3]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[3]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[6] !== undefined" ng-href="{{placePhotos[6]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[6]}}" style="width:100%"/></a>
                 <a ng-if="placePhotos[9] !== undefined" ng-href="{{placePhotos[9]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[9]}}" style="width:100%"/></a>
               </div>
               <div class="img_column">
-                <a ng-if="placePhotos[2] !== undefined" ng-href="{{placePhotos[2]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[2]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[6] !== undefined" ng-href="{{placePhotos[6]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[6]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[1] !== undefined" ng-href="{{placePhotos[1]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[1]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[4] !== undefined" ng-href="{{placePhotos[4]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[4]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[7] !== undefined" ng-href="{{placePhotos[7]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[7]}}" style="width:100%"/></a>                
               </div>
               <div class="img_column">
-                <a ng-if="placePhotos[3] !== undefined" ng-href="{{placePhotos[3]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[3]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[7] !== undefined" ng-href="{{placePhotos[7]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[7]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[2] !== undefined" ng-href="{{placePhotos[2]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[2]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[5] !== undefined" ng-href="{{placePhotos[5]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[5]}}" style="width:100%"/></a>
+                <a ng-if="placePhotos[8] !== undefined" ng-href="{{placePhotos[8]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[8]}}" style="width:100%"/></a>                
               </div>
+
             </div>
             <div ng-if="!ifHasPhoto">
               <br /><br /><br />

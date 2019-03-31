@@ -537,15 +537,12 @@
       {
         var placeUrl = $scope.placeDetails.url;
       }
-      var left = (screen.width/2)-(500/2);
-      var top = (screen.height/2)-(500/2);
-      var tweetText = "Check out " + $scope.placeDetails.name;
-      tweetText += " located at " + $scope.placeDetails.formatted_address + ". ";
-      tweetText += "Website: " + placeUrl;
-      tweetText += "&hashtags=" + "TravelAndEntertainmentSearch";
-      var tweetUrl = "https://twitter.com/intent/tweet?text=" + tweetText;
-      //tweetUrl = tweetUrl.replace(" ", "+");
-      $scope.tweetWindow = window.open(tweetUrl, "Share a link on Twitter", "width=500, height=500, top="+top+", left="+left);
+      
+      var fb_text = "Buy " + $scope.placeDetails.name;
+      fb_text += " at " + $scope.placeDetails.formatted_address; 
+      fb_text += " from LINK below.";
+      var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + placeUrl + "&quote=" + fb_text;
+      $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
     };
 
     $scope.goBack = function()
