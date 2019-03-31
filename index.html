@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CSCI571 Homework8</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-resource.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyC9HBExGTftsTmeBjHXLucUi5NH2QXCQkY"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+  <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.min.js"></script>
+  <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="searchModule.js"></script>
+  <script src="results_page/resultsModule.js"></script>
+  <script src="details_page/detailsModule.js"></script>
+  <script src="favorites_page/favoritesModule.js"></script>
+  <script src="favorites_page/favoriteDetailsModule.js"></script>
+</head>
+
+<body ng-app="travelSearchMvc" ng-controller="searchController">
+  <div class="input-box">
+    <div class="container" id="mainContainer">
+      <div class="col-md-8 offset-md-2">
+        <h3 class="title"><center>Product Search</center></h3>
+        <form class="form-horizontal" id="myForm" name="myForm" method="GET" onsubmit="return false;">
+          <div class="form-group row">
+            <label for="input_keyword" class="col-md-3 col-form-label">Keyword<span class="star">*<span></label>
+            <div class="col-md-9">
+              <input type="text" id="input_keyword" name="keyword" class="form-control" placeholder="Enter Product Name (eg. iPhone 8)" ng-model="myKeyword" ng-style="newKeywordStyle" ng-required="true">
+              <p class="error" ng-show="myForm.keyword.$invalid && myForm.keyword.$touched">Please enter a keyword.</p>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="input_category" class="col-md-3 col-form-label">Category</label>
+            <div class="col-md-6">
+              <select id="input_category" name="category" class="form-control" ng-model="myCategory" required="required">
+                <option value="default">Default</option>
+                <option value="art">Art</option>
+                <option value="baby">Baby</option>
+                <option value="books">Books</option>
+                <option value="clothing">Clothing, Shoes & Accessories</option>
+                <option value="computers">Computers/Tablets & Networking</option>
+                <option value="health">Health & Beauty</option>
+                <option value="music">Music</option>
+                <option value="video">Video Games & Consoles</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="input_distance" class="col-md-3 col-form-label">Condition</label>
+            <div class="col-md-6">
+              <input type="checkbox" id="input_new" name="input_new"  ng-model="myCondition1" ng-value="1" ng-click="validateForm()">
+              <label>New &nbsp;</label>
+              <input type="checkbox" id="input_used" name="input_used"  ng-model="myCondition2" ng-value="2" ng-click="validateForm()">
+              <label>Used &nbsp;</label> 
+              <input type="checkbox" id="input_unspecified" name="input_unspecified"  ng-model="myCondition3" ng-value="3" ng-click="validateForm()">
+              <label>Unspecified &nbsp;</label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="input_distance" class="col-md-3 col-form-label">Shipping Options</label>
+            <div class="col-md-6">
+              <input type="checkbox" id="input_pickup" name="input_pickup"  ng-model="myShipping1" ng-value="1" ng-click="validateForm()">
+              <label>Local Pickup &nbsp;</label>
+              <input type="checkbox" id="input_ship" name="input_ship"  ng-model="myShipping2" ng-value="2" ng-click="validateForm()">
+              <label>Free Shipping &nbsp;</label> 
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="input_distance" class="col-md-3 col-form-label">Distance (Miles)</label>
+            <div class="col-md-6">
+              <input type="text" id="input_distance" name="distance"  class="form-control" ng-model="myDistance" placeholder="10" pattern="[0-9]+">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="input_location" class="col-md-3 col-form-label">From<font color="red">*</font></label>
+            <div class="col-md-9" ng-init="myLocation=1" style="padding-right: 30px;">  
+                <input type="radio" id="location_option1" name="location" ng-model="myLocation" ng-value="1" ng-click="validateForm()">
+                Current Location<br>
+                <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateForm()">
+                Other. Please specify zip code:<br>
+                <input type="text" id="input_location" name="inputLocation" class="form-control" ng-model="myInputLocation" ng-required="true" ng-click="validateForm(); autoComplete()" placeholder="Enter a location" disabled>
+                <p class="error" id="locationError" ng-show="myForm.inputLocation.$invalid && myForm.inputLocation.$touched">Please enter a location.</p>             
+            </div>           
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12">
+              <button type="submit" id="searchButton" class="btn btn-primary" name="search" ng-disabled="checkDisableCondition()" ng-click="cleanAnimation();getInputs('/results_page')">
+                <i class="material-icons md-18">search</i>Search</button>
+              <button type="button" id="clearButton" class="btn btn-info" name="clear" ng-click="cleanAnimation();clearInputs()"> 
+                <i class="material-icons md-18">clear_all</i>Clear</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="form-group">
+      <div class="col-md-12">
+        <center>
+          <button type="button" id="resultsButton" class="btn btn-outline-primary btn-md" name="results" ng-class="{'changeToActive':clickedResults}" ng-click="cleanAnimation();ifClickedSearch()" autofocus>ResultsQ</button>
+          <button type="button" id="favoritesButton" class="btn btn-outline-primary btn-md" name="favorites" ng-class="{'changeToActive':clickedFavorite}" ng-click="cleanAnimation();ifClickFavorite()">Favorites</button>
+        </center>
+      </div>
+    </div>
+    <br><br>
+    <div class="progress" ng-show="showProgressBar">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:50%; height:12px; background-color:#1a6bed">
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="!ifSearchSuccess" align="center">
+    <br /><br /><br />
+    <p class="failedSearch"><font color="#82020b"> Failed to get search results.</font></p>
+    <br /><br /><br />
+  </div>
+
+  <div ng-view ng-class="{'slide': ifSlide, 'moveToRight': moveToRight}" ng-if="ifSearchSuccess"></div>
+
+</body>
+</html>
