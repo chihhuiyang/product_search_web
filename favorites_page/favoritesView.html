@@ -11,7 +11,7 @@
             </button>
           </div>
           <div class="table-responsive" ng-if="ifHasFavoriteItems">
-            <table class="table hoverTable">
+            <table class="table table-dark table-dark table-striped hoverTable">
               <thead>
                 <tr>
                   <th>#</th>
@@ -30,7 +30,8 @@
                   <td>{{x.vicinity}}</td>
                   <td>
                     <button type="button" class="btn btn-default btn-sm" ng-click="removeLocalStorage($index)">
-                      <i class="material-icons md-18">remove_shopping_cart</i>
+                      <i ng-class="x.wishIconClass">{{x.shopping_cart}}</i>
+                      <!-- <i class="material-icons md-18">remove_shopping_cart</i> -->
                     </button>
                   </td>
                   <td>

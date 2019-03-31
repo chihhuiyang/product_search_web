@@ -42,7 +42,7 @@
     {
       return x[5] - y[5];
     })
-    //console.log($scope.sortedStorage);
+    console.log($scope.sortedStorage);
 
     $scope.showPrevious = true;
     $scope.showNext = true;
@@ -68,7 +68,7 @@
     {
       if ($rootScope.favoriteRows[i]['place_id'] === $rootScope.savedKey)
       {
-        //console.log($rootScope.favoriteRows[i]);
+        console.log($rootScope.favoriteRows[i]);
         $rootScope.favoriteRows[i]['ifHighlight'] = true;
       }
     }
