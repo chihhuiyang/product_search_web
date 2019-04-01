@@ -30,10 +30,50 @@ serverApp.use(bodyParser.json());
 serverApp.use(bodyParser.urlencoded({ extended: false }));
 
 serverApp.get("/", function(req, res){
+  EBY_APP_ID = "ChihHuiY-search-PRD-716e2f5cf-2d4bc969";
+
   API_KEY = "AIzaSyC9HBExGTftsTmeBjHXLucUi5NH2QXCQkY";
   var clientInput = url.parse(req.url, true).query;
   console.log(clientInput);
-  /*Google API request*/
+
+  // ebay API request
+  myDistance = clientInput.distance;
+
+
+  if (typeof clientInput.location == 'undefined') { // current location
+    var clientData = {
+      "OPERATION-NAME": "findItemsAdvanced",
+      "SERVICE-VERSION": "1.0.0",
+      "SECURITY-APPNAME": EBY_APP_ID,
+      "RESPONSE-DATA-FORMAT": "JSON",
+      "REST-PAYLOAD": "",
+      "paginationInput.entriesPerPage": 50,
+      keywords: clientInput.keyword,
+      buyerPostalCode: 90007,
+      "itemFilter(0).name": "MaxDistance",
+      "itemFilter(0).value": myDistance,
+
+      "outputSelector(0)": "SellerInfo",
+      "outputSelector(1)": "StoreInfo"
+    }
+    var clientContent = queryString.stringify(clientData);
+    var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
+    console.log(ebay_search_api_url);
+    //send request to ebay search api
+    request.get(ebay_search_api_url, function(apiError, apiResponse, apiBody)
+    {
+      var ebay_search_api_result = JSON.parse(apiBody);
+      console.log(ebay_search_api_result);
+      res.send(ebay_search_api_result);
+    });
+
+  } else {  // zip code location
+      // TODO
+  }
+
+
+/*
+  // Google API request
   if (typeof clientInput.ifYelp === 'undefined')
   {
     if (typeof clientInput.nextPageToken === 'undefined')
@@ -57,7 +97,7 @@ serverApp.get("/", function(req, res){
         request.get(googlePlacesApiUrl, function(apiError, apiResponse, apiBody)
         {
           var googlePlacesApiResults = JSON.parse(apiBody);
-          //console.log(googlePlacesApiResults);
+          console.log(googlePlacesApiResults);
           res.send(googlePlacesApiResults);
         });
       }
@@ -87,7 +127,7 @@ serverApp.get("/", function(req, res){
           }
           var clientContent = queryString.stringify(clientData);
           var googlePlacesApiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + clientContent;
-          //console.log(googlePlacesApiUrl);
+          console.log(googlePlacesApiUrl);
 
           //send request to google places api
           request.get(googlePlacesApiUrl, function(apiError, apiResponse, apiBody){
@@ -108,19 +148,19 @@ serverApp.get("/", function(req, res){
       }
       var clientContent = queryString.stringify(clientData);
       var googlePlacesApiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + clientContent;
-      //console.log(googlePlacesApiUrl);
+      console.log(googlePlacesApiUrl);
 
       //send request to google places api
       request.get(googlePlacesApiUrl, function(apiError, apiResponse, apiBody)
       {
         var googlePlacesApiResults = JSON.parse(apiBody);
-        //console.log(googlePlacesApiResults);
+        console.log(googlePlacesApiResults);
         res.send(googlePlacesApiResults);
       });
     }
   }
 
-  /*Yelp API request*/
+  // Yelp API request
   else
   {
     // client.search(
@@ -160,6 +200,9 @@ serverApp.get("/", function(req, res){
         console.log(error);
       });
   }
+*/
+
+
 });
 
 serverApp.listen(8081);

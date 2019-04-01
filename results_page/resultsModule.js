@@ -99,6 +99,48 @@
       $rootScope.jsonData[0] = $scope.$parent.jsonObj;
       $rootScope.currentPage = 1;
 
+      // ebay search api
+      if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'] == null) { // null item
+        // No Records have been found
+        $scope.ifHasTable = false;
+      } else {  // valid item
+        var count_items = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length;
+        if (count_items == 0) {
+          // No Records have been found
+          $scope.ifHasTable = false;
+        } else {
+          $scope.ifHasTable = true;
+          // next, previous show all the time
+          $scope.showNext = true;
+          $scope.showPrevious = true;
+
+          console.log($rootScope.jsonData);
+
+          var nameIdArr = new Array(20);
+          var placeIdArr = new Array(20);
+          $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+          for (var i = 0; i < $scope.rowData.length; i++) {
+            if ($scope.rowData[i]['ifSaved'] !== true) {
+              $scope.rowData[i]['wishIconClass'] = "material-icons md-18";
+              $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
+            }
+          }
+          for (var k = 0; k < $scope.myStorage.length; k++) {
+            storageKey = $scope.myStorage.key(k);
+            for (var i = 0; i < $scope.rowData.length; i++) {
+              if ($scope.rowData[i]['place_id'] === storageKey) {
+                $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
+                $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
+              }
+            }
+          }
+          console.log($scope.rowData);
+          $scope.rowData1 = $scope.rowData;
+        }
+      }
+
+/*
+      // google api
       if ($rootScope.jsonData[0].status === "ZERO_RESULTS")
       {
         $scope.ifHasTable = false;
@@ -140,6 +182,8 @@
         console.log($scope.rowData);
         $scope.rowData1 = $scope.rowData;
       }
+*/
+
     }
 
     $scope.getNextPageData = function()

@@ -99,7 +99,7 @@
     }
 
     $scope.arrangePages();
-    //console.log($rootScope.allFavoriteData);
+    console.log($rootScope.allFavoriteData);
     $scope.numOfFavorite = ($rootScope.totalFavoritePage-1) * 20 + $rootScope.allFavoriteData[$rootScope.totalFavoritePage-1].length;
     if ($rootScope.favoriteCurrentPage === 1)
     {
