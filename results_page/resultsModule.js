@@ -33,9 +33,41 @@
 
     if (typeof resultsDataService.getData() !== 'undefined' && resultsDataService.getData()[1][0] === $scope.$parent.jsonObj)
     {
+      // ebay search api
       $scope.ifHasTable = true;
       $rootScope.currentPage = resultsDataService.getData()[0];
+      console.log($rootScope.currentPage);
       $rootScope.jsonData = resultsDataService.getData()[1];
+      console.log($rootScope.jsonData);
+      for (var i = 0; i < $rootScope.jsonData.length; i++) {
+        console.log(i);
+        for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
+          if (typeof $rootScope.jsonData[i] !== 'undefined') {
+            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = false;
+          }
+        }
+      }
+      for (var i = 0; i < $rootScope.jsonData.length; i++) {
+        for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
+          if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
+            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = true;
+          }
+        }
+      }
+      // if ($rootScope.currentPage === 1) 
+      $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+      $scope.showNext = true;
+      $scope.showPrevious = true;
+      // $scope.rowData1 = $scope.rowData2 = $scope.rowData3
+      
+
+/*
+      // google old api
+      $scope.ifHasTable = true;
+      $rootScope.currentPage = resultsDataService.getData()[0];
+      console.log($rootScope.currentPage);
+      $rootScope.jsonData = resultsDataService.getData()[1];
+      console.log($rootScope.jsonData);
       for (var i = 0; i < $rootScope.jsonData.length; i++)
       {
         for (j = 0; j < $rootScope.jsonData[0]['results'].length; j++)
@@ -92,6 +124,9 @@
         $scope.rowData2 = $rootScope.jsonData[1]['results'];
         $scope.rowData3 = $rootScope.jsonData[2]['results'];
       }
+*/
+
+
     }
     else
     {
@@ -116,8 +151,6 @@
 
           console.log($rootScope.jsonData);
 
-          var nameIdArr = new Array(20);
-          var placeIdArr = new Array(20);
           $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
           for (var i = 0; i < $scope.rowData.length; i++) {
             if ($scope.rowData[i]['ifSaved'] !== true) {
@@ -128,7 +161,7 @@
           for (var k = 0; k < $scope.myStorage.length; k++) {
             storageKey = $scope.myStorage.key(k);
             for (var i = 0; i < $scope.rowData.length; i++) {
-              if ($scope.rowData[i]['place_id'] === storageKey) {
+              if ($scope.rowData[i]['itemId'][0] === storageKey) {
                 $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
                 $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
               }
@@ -237,7 +270,7 @@
                 storageKey = $scope.myStorage.key(k);
                 for (var i = 0; i < $scope.rowData.length; i++)
                 {
-                  if ($scope.rowData[i]['place_id'] === storageKey)
+                  if ($scope.rowData[i]['itemId'][0] === storageKey)
                   {
                     $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
                     $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
@@ -313,7 +346,7 @@
                 storageKey = $scope.myStorage.key(k);
                 for (var i = 0; i < $scope.rowData.length; i++)
                 {
-                  if ($scope.rowData[i]['place_id'] === storageKey)
+                  if ($scope.rowData[i]['itemId'][0] === storageKey)
                   {
                     $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
                     $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
@@ -379,7 +412,37 @@
       $rootScope.ifClickedFavoriteDetails = false;
       $rootScope.showProgressBar = true;
       console.log($rootScope.currentPage);
-      $scope.myPlaceId = $scope.rowData[index]['place_id'];
+      $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
+      console.log($rootScope.myPlaceId);
+
+      // ebay single item api -------------------------------
+      var url_params = "http://localhost:8081/?"
+      // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
+      url_params += "itemId=" + $scope.myPlaceId;
+      console.log(url_params);
+
+      $http({
+        method: 'GET',
+        url: url_params,
+      })
+      .then (function (response)
+      {
+        $scope.jsonObj = response.data;
+        console.log($scope.jsonObj);
+        $rootScope.showProgressBar = false;
+        $rootScope.ifSlide = false;
+
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        $rootScope.showProgressBar = false;
+        $scope.ifSearchSuccess = false;
+      });
+
+
+/*
+      // google old detail api
       var map = new google.maps.Map(document.createElement('div'));
       service = new google.maps.places.PlacesService(map);
 
@@ -444,13 +507,16 @@
         {
           for (j = 0; j < $rootScope.jsonData[0]['results'].length; j++)
           {
-            if ($rootScope.jsonData[i]['results'][j]['place_id'] === $rootScope.savedKey)
+            if ($rootScope.jsonData[i]['results'][j]['itemId'][0] === $rootScope.savedKey)
             {
               $rootScope.jsonData[i]['results'][j]['ifHighlight'] = true;
             }
           }
         }
       });
+*/
+
+
     };
 
     $scope.redirect = function(myPath)
@@ -460,6 +526,110 @@
 
     $scope.saveToLocalStorage = function(index)
     {
+      console.log("local_storage");
+      // ebay search api
+      if ($scope.rowData[index]['wishIconClass'] === "material-icons md-18") {
+        $scope.rowData[index]['wishIconClass'] = "material-icons md-18 yellow";
+        $scope.rowData[index]['shopping_cart'] = "remove_shopping_cart";
+        
+        $scope.rowData[index]['ifSaved'] = true;
+        // if ($rootScope.currentPage === 1)
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = true;
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18 yellow";
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "remove_shopping_cart";
+        
+/*
+        // TODO : itemId
+        $scope.myPlaceId = $scope.rowData[index]['itemId'][0]; 
+        var map = new google.maps.Map(document.createElement('div'));
+        service = new google.maps.places.PlacesService(map);
+
+        var requestDetailsData = function()
+        {
+          var deferred = $q.defer();
+          service.getDetails
+          ({
+            'placeId': $scope.myPlaceId
+          },
+          function(param)
+          {
+            deferred.resolve(param);
+          });
+          return deferred.promise;
+        };
+
+        requestDetailsData()
+        .then(function(response)
+        {
+          $scope.passData = [];
+          $scope.placeDetails = response;
+          //console.log($scope.placeDetails);
+          $scope.passData[0] = $scope.placeDetails;
+
+          $scope.photoObj = $scope.placeDetails.photos;
+          if (typeof $scope.photoObj !== 'undefined')
+          {
+            $scope.photoArr = [];
+            for (var i = 0; i < $scope.photoObj.length; i++)
+            {
+              var max_height = $scope.photoObj[i].height;
+              var max_width = $scope.photoObj[i].width;
+              var photoUrl = $scope.photoObj[i].getUrl({'maxWidth': max_width, 'maxHeight': max_height});
+              $scope.photoArr[i] = photoUrl;
+              $scope.passData[1] = $scope.photoArr;
+            }
+          }
+
+          $scope.passData[2] = $scope.rowData[index];
+          $scope.passData[3] = $scope.myLocationOption;
+
+          if ($scope.myLocationOption === "option1")
+          {
+            $scope.currentLocation_lat = $scope.$parent.currentlat;
+            $scope.currentLocation_lng = $scope.$parent.currentlng;
+            $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
+            $scope.passData[4] = $scope.startGeoLocation;
+          }
+          else
+          {
+            $scope.myInputLocation = $scope.$parent.myInputLocation;
+            $scope.passData[4] = $scope.myInputLocation;
+          }
+
+          var timeStamp = Date.now();
+          $scope.passData[5] = timeStamp;
+          //console.log($scope.passData);
+          if(typeof(Storage) !== "undefined")
+          {
+            var key = $scope.myPlaceId;
+            localStorage.setItem(key, JSON.stringify($scope.passData));
+          }
+          else
+          {
+            console.log("Sorry, your browser does not support web storage...");
+          }
+        });
+*/
+
+
+      } else {
+        $scope.rowData[index]['wishIconClass'] = "material-icons md-18";
+        $scope.rowData[index]['shopping_cart'] = "add_shopping_cart";
+
+        // if ($rootScope.currentPage === 1)
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = false;
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18";
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "add_shopping_cart";
+       
+
+        $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
+        $rootScope.detailWishIconClass = "material-icons md-18";
+        $rootScope.shopping_cart = "add_shopping_cart";
+        localStorage.removeItem($scope.myPlaceId);
+      }
+
+/*
+      // google old api
       if ($scope.rowData[index]['wishIconClass'] === "material-icons md-18")
       {
         $scope.rowData[index]['wishIconClass'] = "material-icons md-18 yellow";
@@ -583,6 +753,9 @@
         $rootScope.shopping_cart = "add_shopping_cart";
         localStorage.removeItem($scope.myPlaceId);
       }
+*/
+
+
     };
 
     $scope.redirectDetailsPage = function()

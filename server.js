@@ -39,36 +39,59 @@ serverApp.get("/", function(req, res){
   // ebay API request
   myDistance = clientInput.distance;
 
+  // ebay search api ----------------------
+  if (typeof clientInput.itemId === 'undefined') {
+    if (typeof clientInput.location === 'undefined') { // current location
+      var clientData = {
+        "OPERATION-NAME": "findItemsAdvanced",
+        "SERVICE-VERSION": "1.0.0",
+        "SECURITY-APPNAME": EBY_APP_ID,
+        "RESPONSE-DATA-FORMAT": "JSON",
+        "REST-PAYLOAD": "",
+        "paginationInput.entriesPerPage": 50,
+        keywords: clientInput.keyword,
+        buyerPostalCode: 90007,
+        "itemFilter(0).name": "MaxDistance",
+        "itemFilter(0).value": myDistance,
 
-  if (typeof clientInput.location == 'undefined') { // current location
+        "outputSelector(0)": "SellerInfo",
+        "outputSelector(1)": "StoreInfo"
+      }
+      var clientContent = queryString.stringify(clientData);
+      var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
+      console.log(ebay_search_api_url);
+      //send request to ebay search api
+      request.get(ebay_search_api_url, function(apiError, apiResponse, apiBody)
+      {
+        var ebay_search_api_result = JSON.parse(apiBody);
+        console.log(ebay_search_api_result);
+        res.send(ebay_search_api_result);
+      });
+
+    } else {  // zip code location
+        // TODO
+    }
+  } else {  // ebay single item api -------------------
     var clientData = {
-      "OPERATION-NAME": "findItemsAdvanced",
-      "SERVICE-VERSION": "1.0.0",
-      "SECURITY-APPNAME": EBY_APP_ID,
-      "RESPONSE-DATA-FORMAT": "JSON",
-      "REST-PAYLOAD": "",
-      "paginationInput.entriesPerPage": 50,
-      keywords: clientInput.keyword,
-      buyerPostalCode: 90007,
-      "itemFilter(0).name": "MaxDistance",
-      "itemFilter(0).value": myDistance,
-
-      "outputSelector(0)": "SellerInfo",
-      "outputSelector(1)": "StoreInfo"
+      callname: "GetSingleItem",
+      responseencoding: "JSON",
+      appid: EBY_APP_ID,
+      siteid: 0,
+      version: 967,
+      ItemID: clientInput.itemId,
+      IncludeSelector: "Description,Details,ItemSpecifics"
     }
     var clientContent = queryString.stringify(clientData);
-    var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
-    console.log(ebay_search_api_url);
-    //send request to ebay search api
-    request.get(ebay_search_api_url, function(apiError, apiResponse, apiBody)
+    var ebay_single_api_url = 'http://open.api.ebay.com/shopping?' + clientContent;
+    console.log(ebay_single_api_url);
+    //send request to ebay single api
+    request.get(ebay_single_api_url, function(apiError, apiResponse, apiBody)
     {
-      var ebay_search_api_result = JSON.parse(apiBody);
-      console.log(ebay_search_api_result);
-      res.send(ebay_search_api_result);
+      var ebay_single_api_result = JSON.parse(apiBody);
+      console.log(ebay_single_api_result);
+      res.send(ebay_single_api_result);
     });
 
-  } else {  // zip code location
-      // TODO
   }
 
 
@@ -163,13 +186,6 @@ serverApp.get("/", function(req, res){
   // Yelp API request
   else
   {
-    // client.search(
-    //   {
-    //     term: clientInput.term,
-    //     latitude: clientInput.lat,
-    //     longitude: clientInput.lng
-    //   })
-
       client.businessMatch('best',
       {
         name: clientInput.name,

@@ -500,12 +500,6 @@
         country: 'US'
       }
       console.log(inputData);
-      // inputData = {
-      //   ifYelp: "yelpData",
-      //   term: placeName,
-      //   lat: $scope.destinationLat,
-      //   lng: $scope.destinationLng
-      // }
 
       $http({
         method: 'GET',
@@ -558,7 +552,7 @@
       {
         var placeUrl = $scope.placeDetails.url;
       }
-      
+
       var fb_text = "Buy " + $scope.placeDetails.name;
       fb_text += " at " + $scope.placeDetails.formatted_address; 
       fb_text += " from LINK below.";
