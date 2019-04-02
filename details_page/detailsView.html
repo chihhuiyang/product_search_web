@@ -26,8 +26,8 @@
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#infoTab">Product</a></li>
             <li class="nav-item" ng-click="ifHasPhotos()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
             <li class="nav-item" ng-click="getMap(); autoComplete()"><a class="nav-link" data-toggle="tab" data-target="#mapTab">Map</a></li>
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
             <li class="nav-item" ng-click="getReviews(); requestYelpApi()"><a class="nav-link" data-toggle="tab" data-target="#reviewsTab">Similar Products</a></li>
             
           </ul>
@@ -183,27 +183,59 @@
             <table class="table table-dark table-striped">
               <tr ng-if="showShippingCost">
                 <th>Shipping Cost</th>
-                <td>View Product Images Here{{ProductImg}}</td>
+                <td>{{shippingCost}}</td>
               </tr>
               <tr ng-if="showShippingLocation">
                 <th>Shipping Locations</th>
-                <td>{{subtitle}}</td>
+                <td>{{shippingLocation}}</td>
               </tr>
               <tr ng-if="showHandlingTime">
                 <th>Handling time</th>
-                <td>{{price}}</td>
+                <td>{{handlingTime}}</td>
               </tr>
               <tr ng-if="showExpeditedShipping">
                 <th>Expedited Shipping</th>
-                <td>{{productLocation}}</td>
+                <td>{{expeditedShipping}}</td>
               </tr>
               <tr ng-if="showOneDayShipping">
                 <th>One Day Shipping</th>
-                <td>{{returnPolicy}}</td>
+                <td>{{oneDayShipping}}</td>
               </tr>
               <tr ng-if="showReturnAccepted">
                   <th>Return Accepted</th>
-                  <td>{{x.Value[0]}}</td>
+                  <td>{{returnAccepted}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- seller tab -->
+          <div id="sellerTab" class="tab-pane fade">
+            <table class="table table-dark table-striped">
+              <tr ng-if="showFeedbackScore">
+                <th>Feedback Score</th>
+                <td>{{feedbackScore}}</td>
+              </tr>
+              <tr ng-if="showPopularity">
+                <th>Popularity</th>
+                <td>{{popularity}}</td>
+              </tr>
+              <tr ng-if="showFeedbackRatingStar">
+                <th>Feedback Rating Star</th>
+                <td>{{feedbackRatingStar}}</td>
+              </tr>
+              <tr ng-if="showTopRated">
+                <th>Top Rated</th>
+                <td>{{topRated}}</td>
+              </tr>
+              <tr ng-if="showStoreName">
+                <th>Store Name</th>
+                <td>{{storeName}}</td>
+              </tr>
+              <tr ng-if="showBuyProductAt">
+                <th>Buy Product At</th>
+                <td><a href="{{buyProductAt_url}}" target="_blank">Store</a></td>
+                <!-- <td><a href="{{buyProductAt_url}}" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Store</a></td> -->
+
               </tr>
             </table>
           </div>

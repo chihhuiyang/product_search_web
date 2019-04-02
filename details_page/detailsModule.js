@@ -35,8 +35,130 @@
     $scope.placeDetails = $rootScope.passData[0];
     $scope.placePhotos = $rootScope.passData[1];
     $scope.passedPage = $rootScope.passData[2];
-    $scope.passedJsonObj = $rootScope.passData[3];
+    $scope.passedJsonObj = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
     $scope.name = $scope.placeDetails.Title;
+
+    
+    var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].itemId[0] == $scope.placeDetails.ItemID) {
+        console.log(items[i].itemId[0]);
+
+        // assign shipping tab
+        if (items[i].shippingInfo[0].hasOwnProperty('shippingServiceCost')) {
+          if (items[i].shippingInfo[0].shippingServiceCost[0].hasOwnProperty('__value__')) {
+            $scope.showShippingCost = true;
+            var shipping_str = items[i].shippingInfo[0].shippingServiceCost[0].__value__;
+            var shipping_float = parseFloat(shipping_str);
+            if (shipping_float == 0.0) {
+              $scope.shippingCost = "Free Shipping";
+            } else {
+              $scope.shippingCost = shipping_str;
+            }
+          } else {
+            $scope.showShippingCost = false;
+          }
+        } else {
+          $scope.showShippingCost = false;
+        }
+
+        if (items[i].shippingInfo[0].hasOwnProperty('shippingLocation')) {
+          $scope.showShippingLocation = true;
+          $scope.shippingLocation = items[i].shippingInfo[0].shippingLocation[0];
+        } else {
+          $scope.showShippingLocation = false;
+        }
+
+        if (items[i].shippingInfo[0].hasOwnProperty('handlingTime')) {
+          $scope.showHandlingTime = true;
+          var time_str = items[i].shippingInfo[0].handlingTime[0];
+          var time_int = parseInt(time_str);
+          if (time_int == 0 || time_int == 1) {
+          $scope.handlingTime = time_str + " Day";
+          } else {
+          $scope.handlingTime = time_str + " Days";
+          }          
+        } else {
+          $scope.showHandlingTime = false;
+        }
+      
+        if (items[i].shippingInfo[0].hasOwnProperty('expeditedShipping')) {
+          $scope.showExpeditedShipping = true;
+          $scope.expeditedShipping = items[i].shippingInfo[0].expeditedShipping[0];
+        } else {
+          $scope.showExpeditedShipping = false;
+        }
+
+        if (items[i].shippingInfo[0].hasOwnProperty('oneDayShippingAvailable')) {
+          $scope.showOneDayShipping = true;
+          $scope.oneDayShipping = items[i].shippingInfo[0].oneDayShippingAvailable[0];
+        } else {
+          $scope.showOneDayShipping = false;
+        }
+
+        if (items[i].hasOwnProperty('returnsAccepted')) {
+          $scope.showReturnAccepted = true;
+          $scope.returnAccepted = items[i].returnsAccepted[0];
+        } else {
+          $scope.showReturnAccepted = false;
+        }
+
+        // assign seller tab
+        if (items[i].sellerInfo[0].hasOwnProperty('feedbackScore')) {
+          $scope.showFeedbackScore = true;
+          $scope.feedbackScore = items[i].sellerInfo[0].feedbackScore[0];
+        } else {
+          $scope.showFeedbackScore = false;
+        }
+
+        if (items[i].sellerInfo[0].hasOwnProperty('positiveFeedbackPercent')) {
+          $scope.showPopularity = true;
+          $scope.popularity = items[i].sellerInfo[0].positiveFeedbackPercent[0];
+        } else {
+          $scope.showPopularity = false;
+        }
+
+        if (items[i].sellerInfo[0].hasOwnProperty('feedbackRatingStar')) {
+          $scope.showFeedbackRatingStar = true;
+          $scope.feedbackRatingStar = items[i].sellerInfo[0].feedbackRatingStar[0];
+        } else {
+          $scope.showFeedbackRatingStar = false;
+        }
+
+        if (items[i].sellerInfo[0].hasOwnProperty('topRatedSeller')) {
+          $scope.showTopRated = true;
+          $scope.topRated = items[i].sellerInfo[0].topRatedSeller[0];
+        } else {
+          $scope.showTopRated = false;
+        }
+
+        if (items[i].hasOwnProperty('storeInfo')) {
+          if (items[i].storeInfo[0].hasOwnProperty('storeName')) {
+            $scope.showStoreName = true;
+            $scope.storeName = items[i].sellerInfo[0].storeName[0];
+          } else {
+            $scope.showStoreName = false;
+          }
+  
+          if (items[i].storeInfo[0].hasOwnProperty('storeURL')) {
+            $scope.showBuyProductAt = true;
+            $scope.buyProductAt_url = items[i].sellerInfo[0].storeURL[0];
+          } else {
+            $scope.showBuyProductAt = false;
+          }
+        } else {
+          $scope.showStoreName = false;
+          $scope.showBuyProductAt = false;
+        }
+        
+      }
+    }
+
+
+    
+
+
+
 /*
     $scope.destinationLat = $scope.placeDetails.geometry.location.lat();
     $scope.destinationLng = $scope.placeDetails.geometry.location.lng();
@@ -64,7 +186,7 @@
       $scope.startLocation = $scope.myInputLocation;
     }
 
-    // Product 
+    // assign Product tab
     if ($scope.placeDetails.hasOwnProperty('PictureURL')) {
       $scope.showProductImg = true;
       $scope.ProductImg = $scope.placeDetails.PictureURL;
@@ -524,13 +646,10 @@
 
     $scope.openTweetWindow = function()
     {
-      if ($scope.placeDetails.hasOwnProperty('website'))
-      {
-        var placeUrl = $scope.placeDetails.website;
-      }
-      else
-      {
-        var placeUrl = $scope.placeDetails.url;
+      if ($scope.placeDetails.hasOwnProperty('ViewItemURLForNaturalSearch')) {
+        var placeUrl = $scope.placeDetails.ViewItemURLForNaturalSearch;
+      } else {
+        var placeUrl = "http://www.google.com/";
       }
 
       var fb_text = "Buy " + $scope.placeDetails.name;
