@@ -22,47 +22,56 @@
         </div>
 
         <div>
-          <ul class="nav nav-tabs right-to-left">
-            <li class="nav-item" ng-click="getReviews(); requestYelpApi()"><a data-toggle="tab" data-target="#reviewsTab">Reviews</a></li>
-            <li class="nav-item" ng-click="getMap(); autoComplete()"><a data-toggle="tab" data-target="#mapTab">Map</a></li>
-            <li class="nav-item" ng-click="ifHasPhotos()"><a data-toggle="tab" data-target="#photosTab">Photos</a></li>
-            <li class="nav-item active"><a data-toggle="tab" data-target="#infoTab">Info</a></li>
+          <ul class="nav nav-tabs justify-content-end">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#infoTab">Product</a></li>
+            <li class="nav-item" ng-click="ifHasPhotos()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
+            <li class="nav-item" ng-click="getMap(); autoComplete()"><a class="nav-link" data-toggle="tab" data-target="#mapTab">Map</a></li>
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
+            <li class="nav-item" ng-click="getReviews(); requestYelpApi()"><a class="nav-link" data-toggle="tab" data-target="#reviewsTab">Similar Products</a></li>
+            
           </ul>
         </div>
 
 
         <div class="tab-content">
           <!-- infos tab -->
-          <div id="infoTab" class="tab-pane fade in active">
-            <br />
-            <table class="table table-striped">
-              <tr ng-if="showAddress">
-                <th>address</th>
-                <td>{{address}}</td>
+          <div id="infoTab" class="tab-pane active">
+            <table class="table table-dark table-striped">
+              <tr ng-if="showProductImg">
+                <th>Product Images</th>
+                <td>View Product Images Here{{ProductImg}}</td>
               </tr>
-              <tr ng-if="showPhoneNumber">
-                <th>Phone Number</th>
-                <td>{{phoneNumber}}</td>
+              <tr ng-if="showSubtitle">
+                <th>Subtitle</th>
+                <td>{{subtitle}}</td>
               </tr>
-              <tr ng-if="showPriceLevel">
-                <th>Price Level</th>
-                <td>{{priceLevel}}</td>
+              <tr ng-if="showPrice">
+                <th>Price</th>
+                <td>${{price}}</td>
               </tr>
-              <tr ng-if="showRating">
-                <th>Rating</th>
-                <td>{{rating}}
-                  <div class="star-ratings-css">
+              <tr ng-if="showLocation">
+                <th>Location</th>
+                <td>{{productLocation}}
+                  <!-- <div class="star-ratings-css">
                       <div class="star-ratings-css-top" ng-style="{'width': ratingWidth + '%'}">
                         <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                       </div>
-                  </div>
+                  </div> -->
                 </td>
               </tr>
-              <tr ng-if="showUrl">
-                <th>GooglePage</th>
-                <td><a ng-href="{{googlePage}}" target="_blank">{{googlePage}}</a></td>
+              <tr ng-if="showReturnPolicy">
+                <th>Return Policy (US)</th>
+                <td>{{returnPolicy}}</td>
+                <!-- <td><a ng-href="{{googlePage}}" target="_blank">{{googlePage}}</a></td> -->
               </tr>
-              <tr ng-if="showWebsite">
+
+              <tr ng-if="showItemSpecifics" ng-repeat="x in itemSpecList">
+                  <th>{{x.Name}}</th>
+                  <td>{{x.Value[0]}}</td>
+              </tr>
+
+              <!-- <tr ng-if="showWebsite">
                 <th>Website</th>
                 <td><a ng-href="{{website}}" target="_blank">{{website}}</a></td>
               </tr>
@@ -71,12 +80,13 @@
                 <td>{{hours}}
                   <a href="" data-toggle="modal" data-target="#myModal">Daily open hours</a>
                 </td>
-              </tr>
+              </tr> -->
             </table>
+
             <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
+            <!-- <div class="modal fade" id="myModal" role="dialog">
               <div class="modal-dialog modal-sm">
-                <!-- Modal content-->
+                
                 <div class="modal-content">
                   <div class="modal-header">
                     <h4 class="modal-title" align="left">Open hours</h4>
@@ -94,12 +104,12 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
+          
 
           <!-- photos tab -->
           <div id="photosTab" class="tab-pane fade">
-            <br />
             <div class="img_row" ng-if="ifHasPhoto">
               <div class="img_column">
                 <a ng-if="placePhotos[0] !== undefined" ng-href="{{placePhotos[0]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[0]}}" style="width:100%"/></a>
@@ -127,7 +137,6 @@
 
           <!-- map tab -->
           <div id="mapTab" class="tab-pane fade">
-            <br />
             <div class="detailsPage">
               <form id="mapForm" name="mapForm" method="GET" onsubmit="return false;">
                 <div class="form-group row" align="left">
@@ -169,9 +178,38 @@
             </div>
           </div>
 
+          <!-- shipping tab -->
+          <div id="shippingTab" class="tab-pane fade">
+            <table class="table table-dark table-striped">
+              <tr ng-if="showShippingCost">
+                <th>Shipping Cost</th>
+                <td>View Product Images Here{{ProductImg}}</td>
+              </tr>
+              <tr ng-if="showShippingLocation">
+                <th>Shipping Locations</th>
+                <td>{{subtitle}}</td>
+              </tr>
+              <tr ng-if="showHandlingTime">
+                <th>Handling time</th>
+                <td>{{price}}</td>
+              </tr>
+              <tr ng-if="showExpeditedShipping">
+                <th>Expedited Shipping</th>
+                <td>{{productLocation}}</td>
+              </tr>
+              <tr ng-if="showOneDayShipping">
+                <th>One Day Shipping</th>
+                <td>{{returnPolicy}}</td>
+              </tr>
+              <tr ng-if="showReturnAccepted">
+                  <th>Return Accepted</th>
+                  <td>{{x.Value[0]}}</td>
+              </tr>
+            </table>
+          </div>
+
           <!-- reviews tab -->
           <div id="reviewsTab" class="tab-pane fade">
-            <br />
             <div class="reviewButtonsArea" align="left">
               <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewTypeButtonName}}<span class="caret"></span></button>

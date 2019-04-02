@@ -66,6 +66,11 @@ td.name_link:hover {
   font-weight: 500;
 }
 
+.nav-item .active {
+  background-color: rgb(41, 39, 39) !important;
+  color: white !important;
+}
+
 .btn-primary, .btn-primary:visited
 {
   color: black !important;

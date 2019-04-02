@@ -25,34 +25,37 @@
   detailsModule.controller('detailsController', ['$scope', '$http', '$rootScope', 'detailsDataService', '$location', function($scope, $http, $rootScope, detailsDataService, $location)
   {
     $rootScope.moveToRight = false;
-    $rootScope.detailWishIconClass = $rootScope.jsonData[$rootScope.currentPage-1].results[$rootScope.currentIndex].wishIconClass;
-    $rootScope.shopping_cart = $rootScope.jsonData[$rootScope.currentPage-1].results[$rootScope.currentIndex].shopping_cart;
+    $rootScope.detailWishIconClass = $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].wishIconClass;
+    $rootScope.shopping_cart = $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].shopping_cart;
     if (typeof $rootScope.passData === 'undefined' || (detailsDataService.getData().length === 4 && detailsDataService.getData() !== $rootScope.passData))
     {
       $rootScope.passData = detailsDataService.getData();
     }
-    //console.log($rootScope.passData);
+    console.log($rootScope.passData);
     $scope.placeDetails = $rootScope.passData[0];
     $scope.placePhotos = $rootScope.passData[1];
     $scope.passedPage = $rootScope.passData[2];
     $scope.passedJsonObj = $rootScope.passData[3];
-    $scope.name = $scope.placeDetails.name;
-
+    $scope.name = $scope.placeDetails.Title;
+/*
     $scope.destinationLat = $scope.placeDetails.geometry.location.lat();
     $scope.destinationLng = $scope.placeDetails.geometry.location.lng();
     $scope.destinationGeoLocation = {lat: $scope.destinationLat, lng: $scope.destinationLng};
-    //console.log($scope.placeDetails);
+*/    
+    console.log($scope.placeDetails);
 
     $scope.myLocationOption = $scope.$parent.locationOption;
-    if ($scope.myLocationOption === "option1")
+    if ($scope.myLocationOption === "option1")  // current location
     {
+      /*
       $scope.currentLocation_lat = $scope.$parent.currentlat;
       $scope.currentLocation_lng = $scope.$parent.currentlng;
       $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
       $scope.currentGeoLocation = $scope.startGeoLocation;
       $scope.startLocation = "Your location";
+      */
     }
-    else
+    else  // TODO : zip code location
     {
       // $scope.inputLocation_lat = $scope.$parent.myLat;
       // $scope.inputLocation_lng = $scope.$parent.myLng;
@@ -61,87 +64,63 @@
       $scope.startLocation = $scope.myInputLocation;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('formatted_address'))
-    {
-      $scope.showAddress = true;
-      $scope.address = $scope.placeDetails.formatted_address;
-    }
-    else
-    {
-      $scope.showAddress = false;
+    // Product 
+    if ($scope.placeDetails.hasOwnProperty('PictureURL')) {
+      $scope.showProductImg = true;
+      $scope.ProductImg = $scope.placeDetails.PictureURL;
+    } else {
+      $scope.showProductImg = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('international_phone_number'))
-    {
-      $scope.showPhoneNumber = true;
-      $scope.phoneNumber = $scope.placeDetails.international_phone_number;
-    }
-    else
-    {
-      $scope.showPhoneNumber = false;
+    if ($scope.placeDetails.hasOwnProperty('Subtitle')) {
+      $scope.showSubtitle = true;
+      $scope.subtitle = $scope.placeDetails.Subtitle;
+    } else {
+      $scope.showSubtitle = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('price_level'))
-    {
-      $scope.showPriceLevel = true;
-      var levelNumber = $scope.placeDetails.price_level;
-      if (levelNumber === 0)
-      {
-        $scope.priceLevel = "";
+    if ($scope.placeDetails.hasOwnProperty('CurrentPrice')) {
+      if ($scope.placeDetails.CurrentPrice.hasOwnProperty('Value')) {
+        $scope.showPrice = true;
+        $scope.price = $scope.placeDetails.CurrentPrice.Value;
+      } else {
+        $scope.showPrice = false;
       }
-      else if (levelNumber === 1)
-      {
-        $scope.priceLevel = "$";
-      }
-      else if (levelNumber === 2)
-      {
-        $scope.priceLevel = "$$";
-      }
-      else if (levelNumber === 3)
-      {
-        $scope.priceLevel = "$$$";
-      }
-      else
-      {
-        $scope.priceLevel = "$$$$";
-      }
-    }
-    else
-    {
-      $scope.showPriceLevel = false;
+    } else {
+      $scope.showPrice = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('rating'))
-    {
-      $scope.showRating = true;
-      $scope.rating = $scope.placeDetails.rating;
-      $scope.ratingWidth = $scope.rating * 10
-    }
-    else
-    {
-      $scope.showRating = false;
+    if ($scope.placeDetails.hasOwnProperty('Location')) {
+      $scope.showLocation = true;
+      $scope.productLocation = $scope.placeDetails.Location;
+      // $scope.ratingWidth = $scope.rating * 10
+    } else {
+      $scope.showLocation = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('url'))
-    {
-      $scope.showUrl = true;
-      $scope.googlePage = $scope.placeDetails.url;
-    }
-    else
-    {
-      $scope.showUrl = false;
-    }
-
-    if ($scope.placeDetails.hasOwnProperty('website'))
-    {
-      $scope.showWebsite = true;
-        $scope.website = $scope.placeDetails.website;
-    }
-    else
-    {
-      $scope.showWebsite = false;
+    if ($scope.placeDetails.hasOwnProperty('ReturnPolicy')) {
+      if ($scope.placeDetails.ReturnPolicy.hasOwnProperty('ReturnsAccepted') && $scope.placeDetails.ReturnPolicy.hasOwnProperty('ReturnsWithin')) {
+        $scope.showReturnPolicy = true;
+        $scope.returnPolicy = $scope.placeDetails.ReturnPolicy.ReturnsAccepted + " Within " + $scope.placeDetails.ReturnPolicy.ReturnsWithin;
+      } else {
+        $scope.showReturnPolicy = false;
+      }
+    } else {
+      $scope.showReturnPolicy = false;
     }
 
+    if ($scope.placeDetails.hasOwnProperty('ItemSpecifics')) {
+      if ($scope.placeDetails.ItemSpecifics.hasOwnProperty('NameValueList')) {
+        $scope.showItemSpecifics = true;
+        $scope.itemSpecList = $scope.placeDetails.ItemSpecifics.NameValueList;
+      } else {
+        $scope.showItemSpecifics = false;
+      }
+    } else {
+      $scope.showItemSpecifics = false;
+    }
+
+/*
     if ($scope.placeDetails.hasOwnProperty('opening_hours'))
     {
       $scope.showHours = true;
@@ -179,6 +158,7 @@
     {
       $scope.showHours = false;
     }
+*/
 
     $scope.ifHasPhotos = function()
     {

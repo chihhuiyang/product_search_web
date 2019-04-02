@@ -427,10 +427,57 @@
       })
       .then (function (response)
       {
-        $scope.jsonObj = response.data;
-        console.log($scope.jsonObj);
+        $scope.passData = [];
+        $scope.placeDetails = response.data.Item;
+        console.log($scope.placeDetails);
+        $scope.passData[0] = $scope.placeDetails;
+
+        /*
+        // TODO: photos
+        $scope.photoObj = $scope.placeDetails.photos;
+        if (typeof $scope.photoObj !== 'undefined')
+        {
+          $scope.photoArr = [];
+          for (var i = 0; i < $scope.photoObj.length; i++)
+          {
+            var max_height = $scope.photoObj[i].height;
+            var max_width = $scope.photoObj[i].width;
+            var photoUrl = $scope.photoObj[i].getUrl({'maxWidth': max_width, 'maxHeight': max_height});
+            $scope.photoArr[i] = photoUrl;
+            $scope.passData[1] = $scope.photoArr;
+          }
+          console.log($scope.photoArr);
+        }
+        */
+
+        $rootScope.curRowData = $scope.rowData[index];
+        $scope.passData[2] = $rootScope.currentPage;
+        $scope.passData[3] = $rootScope.jsonData;
+        console.log($rootScope.curRowData);
+        resultsDataService.setData($scope.passData);
+        $rootScope.currentIndex = index;
+        console.log($scope.passData);
+        $rootScope.ifClickedDetails = false;
         $rootScope.showProgressBar = false;
-        $rootScope.ifSlide = false;
+        $rootScope.savedKey = $scope.placeDetails.ItemID;
+        console.log("before details_page");
+        $location.path('/details_page');
+        console.log("after details_page");
+        for (var i = 0; i < $rootScope.jsonData.length; i++) {
+          for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
+            if (typeof $rootScope.jsonData[i] !== 'undefined') {
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = false;
+            }
+          }
+        }
+        for (var i = 0; i < $rootScope.jsonData.length; i++) {
+          for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
+            if ($rootScope.jsonData[i]['results'][j]['itemId'][0] === $rootScope.savedKey) {
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = true;
+            }
+          }
+        }
+
 
       },
       function(response)
@@ -538,8 +585,84 @@
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18 yellow";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "remove_shopping_cart";
         
+
+
+        // ebay single item api -------------------------------
+        var url_params = "http://localhost:8081/?"
+        // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
+        url_params += "itemId=" + $scope.myPlaceId;
+        console.log(url_params);
+
+        $http({
+          method: 'GET',
+          url: url_params,
+        })
+        .then (function (response) {
+          $scope.jsonObj = response.data;
+          console.log($scope.jsonObj);
+          $rootScope.showProgressBar = false;
+          $rootScope.ifSlide = false;
+
+
+          $scope.passData = [];
+          $scope.placeDetails = response;
+          console.log($scope.placeDetails);
+          $scope.passData[0] = $scope.placeDetails;
+
+
+          /*
+          // TODO: photos
+          $scope.photoObj = $scope.placeDetails.photos;
+          if (typeof $scope.photoObj !== 'undefined') {
+            $scope.photoArr = [];
+            for (var i = 0; i < $scope.photoObj.length; i++) {
+              var max_height = $scope.photoObj[i].height;
+              var max_width = $scope.photoObj[i].width;
+              var photoUrl = $scope.photoObj[i].getUrl({'maxWidth': max_width, 'maxHeight': max_height});
+              $scope.photoArr[i] = photoUrl;
+              $scope.passData[1] = $scope.photoArr;
+            }
+          }
+          */
+          
+          $scope.passData[2] = $scope.rowData[index];
+          $scope.passData[3] = $scope.myLocationOption;
+
+
+          if ($scope.myLocationOption === "option1") {
+            $scope.currentLocation_lat = $scope.$parent.currentlat;
+            $scope.currentLocation_lng = $scope.$parent.currentlng;
+            $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
+            $scope.passData[4] = $scope.startGeoLocation;
+          }
+          else {
+            $scope.myInputLocation = $scope.$parent.myInputLocation;
+            $scope.passData[4] = $scope.myInputLocation;
+          }
+
+          var timeStamp = Date.now();
+          $scope.passData[5] = timeStamp;
+          console.log($scope.passData);
+          if(typeof(Storage) !== "undefined") {
+            var key = $scope.myPlaceId;
+            localStorage.setItem(key, JSON.stringify($scope.passData));
+          } else {
+            console.log("Sorry, your browser does not support web storage...");
+          }
+
+
+        },
+        function(response)
+        {
+          console.error("Request error!");
+          $rootScope.showProgressBar = false;
+          $scope.ifSearchSuccess = false;
+        });
+
+
+
 /*
-        // TODO : itemId
+        // google old api:
         $scope.myPlaceId = $scope.rowData[index]['itemId'][0]; 
         var map = new google.maps.Map(document.createElement('div'));
         service = new google.maps.places.PlacesService(map);
@@ -761,7 +884,7 @@
     $scope.redirectDetailsPage = function()
     {
       $rootScope.ifSlide = true;
-
+      console.log("redirectDetailsPage");
       $location.path('/details_page');
     };
 

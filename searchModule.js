@@ -98,7 +98,7 @@
       $scope.ifSearchSuccess = true;
       $rootScope.ifClickedDetails = true;
       $rootScope.ifClickedFavoriteDetails = true;
-
+      console.log(myPath);
       var inputData;
       if (typeof $scope.myDistance === 'undefined' || $scope.myDistance == "")
       {
