@@ -39,6 +39,8 @@
     $scope.name = $scope.placeDetails.Title;
 
     
+
+    // shipping + seller tab
     var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
     for (var i = 0; i < items.length; i++) {
       if (items[i].itemId[0] == $scope.placeDetails.ItemID) {
@@ -186,7 +188,9 @@
       $scope.startLocation = $scope.myInputLocation;
     }
 
+
     // assign Product tab
+    console.log("assign Product tab");
     if ($scope.placeDetails.hasOwnProperty('PictureURL')) {
       $scope.showProductImg = true;
       $scope.ProductImg = $scope.placeDetails.PictureURL;
@@ -607,7 +611,6 @@
         method: 'GET',
         url: "http://localhost:8081/?",
         // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-        // url: 'http://travelsearchnodejs-env.us-east-2.elasticbeanstalk.com/',
         params: inputData
       })
       .then (function (response)

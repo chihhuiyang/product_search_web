@@ -39,8 +39,10 @@ serverApp.get("/", function(req, res){
   // ebay API request
   myDistance = clientInput.distance;
 
+
+
   // ebay search api ----------------------
-  if (typeof clientInput.itemId === 'undefined') {
+  if (typeof clientInput.keyword !== 'undefined') {
     if (typeof clientInput.location === 'undefined') { // current location
       var clientData = {
         "OPERATION-NAME": "findItemsAdvanced",
@@ -71,14 +73,14 @@ serverApp.get("/", function(req, res){
     } else {  // zip code location
         // TODO
     }
-  } else {  // ebay single item api -------------------
+  } else if (typeof clientInput.itemId_single !== 'undefined') {  // ebay single item api -------------------    
     var clientData = {
       callname: "GetSingleItem",
       responseencoding: "JSON",
       appid: EBY_APP_ID,
       siteid: 0,
       version: 967,
-      ItemID: clientInput.itemId,
+      ItemID: clientInput.itemId_single,
       IncludeSelector: "Description,Details,ItemSpecifics"
     }
     var clientContent = queryString.stringify(clientData);
@@ -91,8 +93,49 @@ serverApp.get("/", function(req, res){
       console.log(ebay_single_api_result);
       res.send(ebay_single_api_result);
     });
-
+  } else if (typeof clientInput.itemId_similar !== 'undefined') { // ebay similar api -------------------
+    var similarData = {
+      "OPERATION-NAME": "getSimilarItems",
+      "SERVICE-NAME": "MerchandisingService",
+      "SERVICE-VERSION": "1.1.0",
+      "CONSUMER-ID": EBY_APP_ID,
+      "RESPONSE-DATA-FORMAT": "JSON",
+      "REST-PAYLOAD": "",
+      itemId: clientInput.itemId_similar,
+      maxResults: 20
+    }
+    var similarContent = queryString.stringify(similarData);
+    var ebay_similar_api_url = 'http://svcs.ebay.com/MerchandisingService?' + similarContent;
+    console.log(ebay_similar_api_url);
+    //send request to ebay similar api
+    request.get(ebay_similar_api_url, function(apiError, apiResponse, apiBody)
+    {
+      var ebay_similar_api_result = JSON.parse(apiBody);
+      console.log(ebay_similar_api_result);
+      res.send(ebay_similar_api_result);
+    });
+  } else if (typeof clientInput.keyword_photo !== 'undefined') {  // google custom search photo api ----------------------    
+    var customSearchData = {
+      q: clientInput.keyword_photo,
+      cx: "005587525834822268829:faorxop51ku",
+      imgSize: "huge",
+      imgType: "news",
+      num: 8,
+      searchType: "image",
+      key: "AIzaSyB4UvDoBlxH6MIOneoSpgai6cT9Z9swChE"
+    }
+    var client_custom_Content = queryString.stringify(customSearchData);
+    var google_custom_search_api = 'https://www.googleapis.com/customsearch/v1?' + client_custom_Content;
+    console.log(google_custom_search_api);
+    //send request to google custom search api
+    request.get(google_custom_search_api, function(apiError, apiResponse, apiBody)
+    {
+      var google_custom_search_api_result = JSON.parse(apiBody);
+      console.log(google_custom_search_api_result);
+      res.send(google_custom_search_api_result);
+    });
   }
+
 
 
 /*

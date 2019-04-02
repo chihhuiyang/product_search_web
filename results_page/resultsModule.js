@@ -29,6 +29,10 @@
     $scope.myLocationOption = $scope.$parent.locationOption;
     $scope.showResultsTable = $scope.$parent.showTable;
     $scope.myStorage = window.localStorage;
+
+    $scope.myKeywordData = $scope.$parent.myKeyword;
+    console.log($scope.myKeywordData);
+
     var storageKey;
 
     if (typeof resultsDataService.getData() !== 'undefined' && resultsDataService.getData()[1][0] === $scope.$parent.jsonObj)
@@ -301,20 +305,21 @@
       $rootScope.showProgressBar = true;
       console.log($rootScope.currentPage);
       $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
-      console.log($rootScope.myPlaceId);
+      console.log($scope.myPlaceId);
 
       // ebay single item api -------------------------------
-      var url_params = "http://localhost:8081/?"
-      // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
-      url_params += "itemId=" + $scope.myPlaceId;
-      console.log(url_params);
-
+      var input_single_Data = {
+        itemId_single: $scope.myPlaceId
+      }
+      console.log(input_single_Data);
       $http({
         method: 'GET',
-        url: url_params,
+        url: "http://localhost:8081/?",
+        params: input_single_Data
       })
       .then (function (response)
       {
+        console.log("single api response");
         $scope.passData = [];
         $scope.placeDetails = response.data.Item;
         console.log($scope.placeDetails);
@@ -377,6 +382,61 @@
         $rootScope.showProgressBar = false;
         $scope.ifSearchSuccess = false;
       });
+
+
+      // similar tab
+      // ebay similar api ------------------------------
+      var inputSimilarData = {
+        similar: "true",
+        itemId_similar: $scope.myPlaceId
+      }
+      console.log(inputSimilarData);
+      $http({
+        method: 'GET',
+        url: "http://localhost:8081/?",
+        // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
+        params: inputSimilarData
+      })
+      .then (function (response) {
+        console.log("similar api response");
+
+
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        $rootScope.showProgressBar = false;
+        $scope.ifHasGoogleReview = false;
+      });
+      
+      
+
+      // photo tab
+      // google custom search api -----------------------------------
+      var inputData = {
+        keyword_photo: $scope.myKeywordData
+      }
+      console.log(inputData);
+      $http({
+        method: 'GET',
+        url: "http://localhost:8081/?",
+        // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
+        params: inputData
+      })
+      .then (function (response) {
+        console.log("photo api response");
+
+
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        $rootScope.showProgressBar = false;
+        $scope.ifHasPhoto = false;
+      });
+
+
+
 
 
     };
