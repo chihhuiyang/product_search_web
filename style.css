@@ -156,8 +156,9 @@ td.name_link:hover {
 
 .resultsTable
 {
-  max-width: 1000px;
+  max-width: 1000px !important;
 }
+
 
 .btn-page
 {

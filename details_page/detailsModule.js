@@ -652,8 +652,8 @@
         var placeUrl = "http://www.google.com/";
       }
 
-      var fb_text = "Buy " + $scope.placeDetails.name;
-      fb_text += " at " + $scope.placeDetails.formatted_address; 
+      var fb_text = "Buy " + $scope.placeDetails.Title;;
+      fb_text += " at $" + $scope.placeDetails.CurrentPrice.Value;
       fb_text += " from LINK below.";
       var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + placeUrl + "&quote=" + fb_text;
       $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
