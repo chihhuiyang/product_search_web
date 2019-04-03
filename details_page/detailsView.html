@@ -220,7 +220,25 @@
 
             <!-- button -->
             <div class="reviewButtonsArea" align="left" style="margin-top:15px">
-              <div class="dropdown">
+
+              <!-- form-option version -->
+              <form class="form-inline">
+                <select class="form-control col-md-2" id="simi_option" name="simi_option">
+                  <option value="simi_defalt" id="simi_defalt">Default</option>
+                  <option value="simi_name" id="simi_name">Product Name</option>
+                  <option value="simi_days" id="simi_days">Days Left</option>
+                  <option value="simi_price" id="simi_price">Price</option>
+                  <option value="simi_cost" id="simi_cost">Shipping Cost</option>
+                </select>
+
+                <select class="form-control col-md-2" id="simi_sort" name="simi_sort" style="margin-left:20px;">
+                  <option value="simi_ascending" id="simi_ascending">Ascending</option>
+                  <option value="simi_descending" id="simi_descending">Descending</option>
+                </select>
+             </form>
+
+              <!-- dropdown version -->
+              <!-- <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewTypeButtonName}}<span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li ng-click=""><a>Default</a></li>
@@ -245,7 +263,8 @@
                   </ul>
                 </span>
 
-              </div>
+              </div> -->
+            
             </div>
             <br>
 
