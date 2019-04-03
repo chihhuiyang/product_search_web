@@ -325,23 +325,10 @@
         console.log($scope.placeDetails);
         $scope.passData[0] = $scope.placeDetails;
 
-        /*
-        // TODO: photos
-        $scope.photoObj = $scope.placeDetails.photos;
-        if (typeof $scope.photoObj !== 'undefined')
-        {
-          $scope.photoArr = [];
-          for (var i = 0; i < $scope.photoObj.length; i++)
-          {
-            var max_height = $scope.photoObj[i].height;
-            var max_width = $scope.photoObj[i].width;
-            var photoUrl = $scope.photoObj[i].getUrl({'maxWidth': max_width, 'maxHeight': max_height});
-            $scope.photoArr[i] = photoUrl;
-            $scope.passData[1] = $scope.photoArr;
-          }
-          console.log($scope.photoArr);
-        }
-        */
+        // pass keyword + itemId
+        $scope.passData[1] = [];
+        $scope.passData[1][0] = $scope.myKeywordData;
+        $scope.passData[1][1] = $scope.myPlaceId;
 
         $rootScope.curRowData = $scope.rowData[index];
         $scope.passData[2] = $rootScope.currentPage;
@@ -356,9 +343,9 @@
         $rootScope.ifClickedDetails = false;
         $rootScope.showProgressBar = false;
         $rootScope.savedKey = $scope.placeDetails.ItemID;
-        console.log("before details_page");
+        console.log("before details_page (single api)");
         $location.path('/details_page');
-        console.log("after details_page");
+        console.log("after details_page (single api)");
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
             if (typeof $rootScope.jsonData[i] !== 'undefined') {
@@ -382,61 +369,6 @@
         $rootScope.showProgressBar = false;
         $scope.ifSearchSuccess = false;
       });
-
-
-      // similar tab
-      // ebay similar api ------------------------------
-      var inputSimilarData = {
-        similar: "true",
-        itemId_similar: $scope.myPlaceId
-      }
-      console.log(inputSimilarData);
-      $http({
-        method: 'GET',
-        url: "http://localhost:8081/?",
-        // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-        params: inputSimilarData
-      })
-      .then (function (response) {
-        console.log("similar api response");
-
-
-      },
-      function(response)
-      {
-        console.error("Request error!");
-        $rootScope.showProgressBar = false;
-        $scope.ifHasGoogleReview = false;
-      });
-      
-      
-
-      // photo tab
-      // google custom search api -----------------------------------
-      var inputData = {
-        keyword_photo: $scope.myKeywordData
-      }
-      console.log(inputData);
-      $http({
-        method: 'GET',
-        url: "http://localhost:8081/?",
-        // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-        params: inputData
-      })
-      .then (function (response) {
-        console.log("photo api response");
-
-
-      },
-      function(response)
-      {
-        console.error("Request error!");
-        $rootScope.showProgressBar = false;
-        $scope.ifHasPhoto = false;
-      });
-
-
-
 
 
     };

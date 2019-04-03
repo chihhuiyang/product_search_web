@@ -159,6 +159,11 @@ td.name_link:hover {
   max-width: 1000px !important;
 }
 
+.similarTable
+{
+  max-width: 1000px !important;
+}
+
 
 .btn-page
 {
@@ -210,7 +215,9 @@ a
   font-weight: bold;
 }
 
-
+img.googlePhoto {
+	border:8px solid #080808;
+}
 
 .img_row
 {
@@ -219,11 +226,11 @@ a
   padding: 0 4px;
 }
 
-/* Create four equal columns that sits next to each other */
+/* Create 3 equal columns that sits next to each other */
 .img_column
 {
-  flex: 25%;
-  max-width: 25%;
+  flex: 33%;
+  max-width: 33%;
   padding: 0 4px;
 }
 
@@ -233,7 +240,7 @@ a
   vertical-align: middle;
 }
 
-/* Responsive layout - makes a two column-layout instead of four columns */
+/* Responsive layout - makes a two column-layout instead of 3 columns */
 @media screen and (max-width: 1000px)
 {
   .img_column
@@ -290,6 +297,43 @@ a
 {
   clear: both;
 }
+
+
+
+.simiBlock{
+  border: 10px solid rgb(255, 255, 255) !important;
+}
+
+a.similar_name {
+  display:inline-block;
+  font-size: 13px;
+	color: rgb(70, 156, 167);
+  height: 2em;
+}
+
+/* p.similar_name:hover {
+	color: rgb(70, 156, 167);
+	text-decoration: underline !important;
+} */
+
+p.similar_price {
+  font-size: 13px;
+	color:rgb(160, 223, 160);
+  line-height: 4px;
+}
+
+p.similar_cost {
+  font-size: 13px;
+	color:rgb(253, 216, 114); 
+  line-height: 4px;
+}
+
+p.similar_days {
+  font-size: 13px;
+	color:white;
+  line-height: 4px;
+}
+
 
 #googleMap
 {

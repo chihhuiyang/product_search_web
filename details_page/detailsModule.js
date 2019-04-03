@@ -33,7 +33,18 @@
     }
     console.log($rootScope.passData);
     $scope.placeDetails = $rootScope.passData[0];
-    $scope.placePhotos = $rootScope.passData[1];
+
+    // keyword + itemId
+    // $scope.placePhotos = $rootScope.passData[1];     // placePhotos => photo_arr
+    $scope.passedKeyword = $rootScope.passData[1][0];
+    $scope.passedItemId = $rootScope.passData[1][1];
+    console.log($scope.passedKeyword);
+    console.log($scope.passedItemId);
+
+    $scope.ifHasPhoto = true;  // initail assign
+    $scope.ifHasSimilar = true;  // initail assign
+
+
     $scope.passedPage = $rootScope.passData[2];
     $scope.passedJsonObj = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
     $scope.name = $scope.placeDetails.Title;
@@ -288,12 +299,9 @@
 
     $scope.ifHasPhotos = function()
     {
-      if (typeof $scope.placePhotos === 'undefined' || $scope.placePhotos === null)
-      {
+      if (typeof $scope.photo_arr === 'undefined' || $scope.photo_arr === null) {
         $scope.ifHasPhoto = false;
-      }
-      else
-      {
+      } else {
         $scope.ifHasPhoto = true;
       }
     };
@@ -430,30 +438,7 @@
       $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
     };
 
-    $scope.getReviews = function()
-    {
-      $scope.reviewTypeButtonName = "Google Reviews";
-      $scope.reviewOrderButtonName = "Default Order";
-      $scope.reviewSelection = true;
-      if (typeof $scope.placeDetails.reviews === 'undefined' || $scope.placeDetails.reviews.length === 0)
-      {
-        $scope.ifHasGoogleReview = false;
-      }
-      else
-      {
-        $scope.ifHasGoogleReview = true;
-        $scope.googleReviews = $scope.placeDetails.reviews;
-        var oriTime = new Date('1970-01-01 00:00:00');
-        for (var i = 0; i < $scope.googleReviews.length; i++)
-        {
-          var timeSecond = $scope.googleReviews[i].time;
-          var newTime = moment(timeSecond*1000).format('YYYY-MM-DD HH:mm:ss')
-          $scope.googleReviews[i]['newTime'] = newTime;
-        }
-        $scope.googleReviewsArr = $scope.googleReviews.slice(0);
-        //console.log($scope.googleReviewsArr);
-      }
-    };
+
 
     $scope.showGoogleReviews = function()
     {
@@ -585,53 +570,89 @@
       }
     };
 
-    $scope.requestYelpApi = function()
+
+    $scope.requestPhotoApi = function() {
+      // photo tab
+      // google custom search api -----------------------------------
+      // if ($scope.ifHasPhoto == false) { // avoid re-call api
+        var inputData = {
+          keyword_photo: $scope.passedKeyword
+        }
+        console.log(inputData);
+        $http({
+          method: 'GET',
+          url: "http://localhost:8081/?",
+          // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
+          params: inputData
+        })
+        .then (function (response) {
+          console.log("photo api response");
+          $scope.photo_items = response.data.items;
+          console.log($scope.photo_items);
+          $scope.ifHasPhoto = false;
+          if (typeof $scope.photo_items !== 'undefined') {
+            $scope.photo_arr = [];
+            for (var i = 0; i < $scope.photo_items.length; i++) {
+              var photo_url = $scope.photo_items[i].link;
+              $scope.photo_arr[i] = photo_url;
+              $scope.ifHasPhoto = true;
+            }
+            console.log($scope.photo_arr);
+          }
+        },
+        function(response)
+        {
+          console.error("Request error!");
+          $rootScope.showProgressBar = false;
+          $scope.ifHasPhoto = false;
+        });
+      // } else {
+      //   console.log("duplicate requestPhotoApi ");
+      // }
+    };
+
+    $scope.requestSimilarApi = function()  // requestYelpApi => requestSimilarApi
     {
-      var placeName = $scope.placeDetails.name;
-      var fullAddress = $scope.placeDetails.formatted_address;
-      var splitAddress = fullAddress.split(", ");
-      var myAddress1 = splitAddress[0];
-      var myAddress2 = splitAddress[1] + ", " + splitAddress[2];
-      var myCity = splitAddress[1];
-      var myState = splitAddress[2].substring(0, splitAddress[2].indexOf(" "));
-
-      inputData =
-      {
-        ifYelp: "yelpData",
-        name: placeName,
-        address1: myAddress1,
-        address2: myAddress2,
-        city: myCity,
-        state: myState,
-        country: 'US'
+      // similar tab
+      // ebay similar api ------------------------------
+      var inputSimilarData = {
+        similar: "true",
+        itemId_similar: $scope.passedItemId
       }
-      console.log(inputData);
-
+      console.log(inputSimilarData);
       $http({
         method: 'GET',
         url: "http://localhost:8081/?",
         // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-        params: inputData
+        params: inputSimilarData
       })
-      .then (function (response)
-      {
-        //console.log(response);
-        $scope.yelpReviews = response.data.reviews;
-        var defaultProfilePhoto = "https://s3-media1.fl.yelpcdn.com/photo/uup2RtyJCfUuMALwNBxITA/o.jpg";
-        for (var i = 0; i < $scope.yelpReviews.length; i++)
-        {
-          if ($scope.yelpReviews[i].user.image_url == null)
-          {
-            $scope.yelpReviews[i].user.image_url = defaultProfilePhoto;
-          }
+      .then (function (response) {
+        console.log("similar api response");
+        console.log(response);
+        $scope.similar_items = response.data.getSimilarItemsResponse.itemRecommendations.item;
+        console.log($scope.similar_items);
+
+
+        // getReviews(); 
+        $scope.reviewTypeButtonName = "Default";
+        $scope.reviewOrderButtonName = "Ascending";
+        $scope.reviewSelection = true;
+        if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
+          $scope.ifHasSimilar = false;
+        } else {
+          $scope.ifHasSimilar = true;
+          $scope.similar_items_arr = $scope.similar_items;
+
         }
-        $scope.yelpReviewsArr = $scope.yelpReviews.slice(0);
-        //console.log($scope.yelpReviewsArr);
+        
       },
       function(response)
       {
         console.error("Request error!");
+        $rootScope.showProgressBar = false;
+        $scope.ifHasSimilar = false;
       });
+
     };
 
     $scope.ifHasYelpReviews = function()
@@ -691,10 +712,10 @@
         var myKey = $scope.placeDetails.place_id;
         $scope.savedData = [];
         $scope.savedData[0] = $scope.placeDetails;
-        $scope.savedData[1] = $scope.placePhotos;
+        $scope.savedData[1] = $scope.photo_arr;
         $scope.savedData[2] = $rootScope.curRowData;
         $scope.savedData[3] = $scope.myLocationOption;
-        //console.log($scope.myLocationOption);
+        console.log($scope.myLocationOption);
         if ($scope.myLocationOption === "option1")
         {
           $scope.savedData[4] = $scope.startGeoLocation;

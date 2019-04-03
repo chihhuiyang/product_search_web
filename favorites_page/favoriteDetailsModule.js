@@ -33,7 +33,7 @@
     $scope.storageKey = $scope.dataPack[0];
     $scope.myLocationOption = $scope.dataPack[1];
     $scope.placeDetails = $scope.dataPack[3];
-    $scope.placePhotos = $scope.dataPack[4];
+    $scope.photo_arr = $scope.dataPack[4];
     $scope.name = $scope.placeDetails.name;
 
     $scope.currentStorage = window.localStorage;
@@ -192,12 +192,9 @@
 
     $scope.ifHasPhotos = function()
     {
-      if (typeof $scope.placePhotos === 'undefined' || $scope.placePhotos === null)
-      {
+      if (typeof $scope.photo_arr === 'undefined' || $scope.photo_arr === null) {
         $scope.ifHasPhoto = false;
-      }
-      else
-      {
+      } else {
         $scope.ifHasPhoto = true;
       }
     };
@@ -569,7 +566,7 @@
         $rootScope.shopping_cart = "remove_shopping_cart";
         $scope.passData = [];
         $scope.passData[0] = $scope.placeDetails;
-        $scope.passData[1] = $scope.placePhotos;
+        $scope.passData[1] = $scope.photo_arr;
         $scope.passData[2] = $rootScope.tempFavoriteRow;
         $scope.passData[3] = $scope.myLocationOption;
         //console.log($scope.myLocationOption);

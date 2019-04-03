@@ -24,11 +24,11 @@
         <div>
           <ul class="nav nav-tabs justify-content-end">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#infoTab">Product</a></li>
-            <li class="nav-item" ng-click="ifHasPhotos()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
+            <li class="nav-item" ng-click="requestPhotoApi()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
             <li class="nav-item" ng-click="getMap(); autoComplete()"><a class="nav-link" data-toggle="tab" data-target="#mapTab">Map</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
-            <li class="nav-item" ng-click="getReviews(); requestYelpApi()"><a class="nav-link" data-toggle="tab" data-target="#reviewsTab">Similar Products</a></li>
+            <li class="nav-item" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#reviewsTab">Similar Products</a></li>
             
           </ul>
         </div>
@@ -82,29 +82,6 @@
                 </td>
               </tr> -->
             </table>
-
-            <!-- Modal -->
-            <!-- <div class="modal fade" id="myModal" role="dialog">
-              <div class="modal-dialog modal-sm">
-                
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title" align="left">Open hours</h4>
-                  </div>
-                  <div class="modal-body">
-                    <table class="table">
-                      <tr ng-repeat="item in weekdayArr track by $index" ng-class="{boldText: $index == 0}">
-                        <td>{{item}}</td>
-                        <td>{{weekdayHoursArr[$index]}}</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
           
 
@@ -112,25 +89,23 @@
           <div id="photosTab" class="tab-pane fade">
             <div class="img_row" ng-if="ifHasPhoto">
               <div class="img_column">
-                <a ng-if="placePhotos[0] !== undefined" ng-href="{{placePhotos[0]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[0]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[3] !== undefined" ng-href="{{placePhotos[3]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[3]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[6] !== undefined" ng-href="{{placePhotos[6]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[6]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[9] !== undefined" ng-href="{{placePhotos[9]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[9]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[0] !== undefined" ng-href="{{photo_arr[0]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[0]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[3] !== undefined" ng-href="{{photo_arr[3]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[3]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[6] !== undefined" ng-href="{{photo_arr[6]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[6]}}" style="width:100%"/></a>
               </div>
               <div class="img_column">
-                <a ng-if="placePhotos[1] !== undefined" ng-href="{{placePhotos[1]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[1]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[4] !== undefined" ng-href="{{placePhotos[4]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[4]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[7] !== undefined" ng-href="{{placePhotos[7]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[7]}}" style="width:100%"/></a>                
+                <a ng-if="photo_arr[1] !== undefined" ng-href="{{photo_arr[1]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[1]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[4] !== undefined" ng-href="{{photo_arr[4]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[4]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[7] !== undefined" ng-href="{{photo_arr[7]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[7]}}" style="width:100%"/></a>                
               </div>
               <div class="img_column">
-                <a ng-if="placePhotos[2] !== undefined" ng-href="{{placePhotos[2]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[2]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[5] !== undefined" ng-href="{{placePhotos[5]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[5]}}" style="width:100%"/></a>
-                <a ng-if="placePhotos[8] !== undefined" ng-href="{{placePhotos[8]}}" target="_blank"><img class="thumbnail" ng-src="{{placePhotos[8]}}" style="width:100%"/></a>                
+                <a ng-if="photo_arr[2] !== undefined" ng-href="{{photo_arr[2]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[2]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[5] !== undefined" ng-href="{{photo_arr[5]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[5]}}" style="width:100%"/></a>
               </div>
 
             </div>
             <div ng-if="!ifHasPhoto">
-              <br /><br /><br />
+              <br>
               <p class="noRecords"><font color="#9b8231">  No records.</font></p>
             </div>
           </div>
@@ -242,29 +217,63 @@
 
           <!-- reviews tab -->
           <div id="reviewsTab" class="tab-pane fade">
-            <div class="reviewButtonsArea" align="left">
+
+            <!-- button -->
+            <div class="reviewButtonsArea" align="left" style="margin-top:15px">
               <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewTypeButtonName}}<span class="caret"></span></button>
                 <ul class="dropdown-menu">
+                  <li ng-click=""><a>Default</a></li>
+                  <li ng-click=""><a>Product Name</a></li>
+                  <li ng-click=""><a>Days Left</a></li>
+                  <li ng-click=""><a>Price</a></li>
+                  <li ng-click=""><a>Shipping Cost</a></li>
                   <li ng-click="showGoogleReviews();"><a>Google Reviews</a></li>
                   <li ng-click="showYelpReviews(); ifHasYelpReviews()"><a>Yelp Reviews</a></li>
                 </ul>
-                <span class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewOrderButtonName}}<span class="caret"></span></button>
-                    <ul class="dropdown-menu" style="margin-top:13px">
-                      <li ng-click="getDefaultOrder()"><a>Default Order</a></li>
-                      <li ng-click="getHighestRatingOrder()"><a>Highest Rating</a></li>
-                      <li ng-click="getLowestRatingOrder()"><a>Lowest Rating</a></li>
-                      <li ng-click="getMostRecentOrder()"><a>Most Recent</a></li>
-                      <li ng-click="getLeastRecentOrder()"><a>Least Recent</a></li>
-                    </ul>
+
+                <span class="dropdown" style="margin-left:15px">
+                  <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewOrderButtonName}}<span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li ng-click=""><a>Ascending</a></li>
+                    <li ng-click=""><a>Descending</a></li>
+                    <li ng-click="getDefaultOrder()"><a>Default Order</a></li>
+                    <li ng-click="getHighestRatingOrder()"><a>Highest Rating</a></li>
+                    <li ng-click="getLowestRatingOrder()"><a>Lowest Rating</a></li>
+                    <li ng-click="getMostRecentOrder()"><a>Most Recent</a></li>
+                    <li ng-click="getLeastRecentOrder()"><a>Least Recent</a></li>
+                  </ul>
                 </span>
+
               </div>
             </div>
-            <br />
+            <br>
+
+            <!-- similar table -->
+            <div class="similarTable table-responsive">
+              <table class="table table-dark similarTable">
+
+                  <tr class="simiBlock" ng-repeat="x in similar_items_arr track by $index">
+                    <td style="width: 100px;"><img src='{{x.imageURL}}' height='100px' width='100px'/></td>
+                    <td>
+	                    <a class="similar_name" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a>
+                    	<p class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</p>
+                      <p class="similar_cost">Shipping Cost: ${{x.shippingCost.__value__}}</p>
+                      <p class="similar_days">Days Left: {{x.timeLeft}}</p>
+                    </td>  
+                  </tr>
+
+              </table>
+            </div>
+            
+            <!-- no similar -->
+            <div ng-if="!ifHasSimilar">
+              <br>
+              <p class="noRecords"><font color="#9b8231">  No records.</font></p>
+            </div>
 
             <!-- Google reviews  -->
-            <div id="googleReviews" class="fade-in-out" ng-show="reviewSelection">
+            <!-- <div id="googleReviews" class="fade-in-out" ng-show="reviewSelection">
               <div class="panel panel-default" ng-repeat="reviewPerson in googleReviewsArr">
                 <div class="panel-body">
                   <div class="media">
@@ -286,28 +295,28 @@
               </div>
 
               <div ng-if="!ifHasGoogleReview">
-                <br /><br /><br />
+                <br>
                 <p class="noRecords"><font color="#9b8231">  No records.</font></p>
               </div>
-            </div>
+            </div> -->
 
-            <!-- Yelp reviews -->
-            <div id="yelpReviews" class="fade-in-out" ng-show="!reviewSelection">
-              <div class="panel panel-default" ng-repeat="reviewPerson in yelpReviewsArr">
+            <!-- yelp reviews -->
+            <!-- <div id="yelpReviews" class="fade-in-out" ng-show="reviewSelection">
+              <div class="panel panel-default" ng-repeat="x in similar_items_arr">
                 <div class="panel-body">
                   <div class="media">
                     <div class="media-left">
-                      <a ng-href="{{reviewPerson.url}}" target="_blank">
-                        <img ng-src="{{reviewPerson.user.image_url}}" class="media-object img-circle" style="width:50px;height:50px"/>
+                      <a ng-href="{{x.url}}" target="_blank">
+                        <img ng-src="{{x.user.image_url}}" class="media-object img-circle" style="width:50px;height:50px"/>
                       </a>
                     </div>
                     <div class="media-body" align="left">
-                      <h4 class="media-heading"><font color="#1a6bed"><a ng-href="{{reviewPerson.url}}" target="_blank">{{reviewPerson.user.name}}</a></font></h4>
+                      <h4 class="media-heading"><font color="#1a6bed"><a ng-href="{{x.url}}" target="_blank">{{x.user.name}}</a></font></h4>
                       <div class="zeroPadding">
-                        <span ng-repeat="r in setArray(reviewPerson.rating) track by $index"><i class="glyphicon glyphicon-star reviewStar"></i></span>
-                        <span class="reviewTimeBox">{{reviewPerson.time_created}}</span>
+                        <span ng-repeat="r in setArray(x.rating) track by $index"><i class="glyphicon glyphicon-star reviewStar"></i></span>
+                        <span class="reviewTimeBox">{{x.time_created}}</span>
                       </div>
-                      <p>{{reviewPerson.text}}</p>
+                      <p>{{x.text}}</p>
                     </div>
                   </div>
                 </div>
@@ -316,7 +325,7 @@
                 <br /><br /><br />
                 <p class="noRecords"><font color="#9b8231">  No records.</font></p>
               </div>
-            </div>
+            </div> -->
           </div>
 
         </div>
