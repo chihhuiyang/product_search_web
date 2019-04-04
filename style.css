@@ -1,3 +1,8 @@
+.md-virtual-repeat-container.md-autocomplete-suggestions-container.my-cool-class {
+  height: inherit;
+  max-height: 600px !important;
+}
+
 input[type="text"]:disabled
 {
   background-color:#eaeaf2;

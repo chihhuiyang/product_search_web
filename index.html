@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
@@ -19,19 +19,59 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyC9HBExGTftsTmeBjHXLucUi5NH2QXCQkY"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
   <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.min.js"></script>
   <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="autocomplete.js"></script>
   <script src="searchModule.js"></script>
   <script src="results_page/resultsModule.js"></script>
   <script src="details_page/detailsModule.js"></script>
   <script src="favorites_page/favoritesModule.js"></script>
   <script src="favorites_page/favoriteDetailsModule.js"></script>
+
+
+<!-- 
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/angular-auto-complete@1.7.3/angular-auto-complete.js"></script>
+   -->
 </head>
+
+
+<!-- <body ng-app="mdAutoCompleteDemo">
+    <div ng-controller="DemoCtrl as ctrl" layout="column" ng-cloak>
+      <md-content class="md-padding">
+        <form ng-submit="$event.preventDefault()" name="searchForm">
+          <p>The following example demonstrates floating labels being used as a normal form element.</p>
+          <div layout-gt-sm="row">
+            <md-autocomplete flex required
+                md-input-name="autocompleteField"
+                md-input-minlength="2"
+                md-input-maxlength="18"
+                md-menu-container-class="my-cool-class"
+                md-no-cache="ctrl.noCache"
+                md-selected-item="ctrl.selectedItem"
+                md-search-text="ctrl.searchText"
+                md-items="item in ctrl.querySearch(ctrl.searchText)"
+                md-item-text="item.display"
+                md-floating-label="Pick a state that starts with a"
+                placeholder="What is your favorite US state?">
+              <md-item-template>
+                <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+              </md-item-template>
+            </md-autocomplete>
+          </div>
+        </form>
+      </md-content>
+    </div>
+  </body> -->
+
+
+
 
 <body ng-app="travelSearchMvc" ng-controller="searchController">
   <div class="input-box">
@@ -67,11 +107,11 @@
           <div class="form-group row">
             <label for="input_distance" class="col-md-3 col-form-label">Condition</label>
             <div class="col-md-6">
-              <input type="checkbox" id="input_new" name="input_new"  ng-model="myCondition1" ng-value="1" ng-click="validateForm()">
+              <input type="checkbox" id="input_new" name="input_new"  ng-model="myCondition1">
               <label>New &nbsp;</label>
-              <input type="checkbox" id="input_used" name="input_used"  ng-model="myCondition2" ng-value="2" ng-click="validateForm()">
+              <input type="checkbox" id="input_used" name="input_used"  ng-model="myCondition2">
               <label>Used &nbsp;</label> 
-              <input type="checkbox" id="input_unspecified" name="input_unspecified"  ng-model="myCondition3" ng-value="3" ng-click="validateForm()">
+              <input type="checkbox" id="input_unspecified" name="input_unspecified"  ng-model="myCondition3">
               <label>Unspecified &nbsp;</label>
             </div>
           </div>
@@ -79,9 +119,9 @@
           <div class="form-group row">
             <label for="input_distance" class="col-md-3 col-form-label">Shipping Options</label>
             <div class="col-md-6">
-              <input type="checkbox" id="input_pickup" name="input_pickup"  ng-model="myShipping1" ng-value="1" ng-click="validateForm()">
+              <input type="checkbox" id="input_pickup" name="input_pickup"  ng-model="myShipping1">
               <label>Local Pickup &nbsp;</label>
-              <input type="checkbox" id="input_ship" name="input_ship"  ng-model="myShipping2" ng-value="2" ng-click="validateForm()">
+              <input type="checkbox" id="input_ship" name="input_ship"  ng-model="myShipping2">
               <label>Free Shipping &nbsp;</label> 
             </div>
           </div>
@@ -101,6 +141,9 @@
                 <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateForm()">
                 Other. Please specify zip code:<br>
                 <input type="text" id="input_location" name="inputLocation" class="form-control" ng-model="myInputLocation" ng-required="true" ng-click="validateForm(); autoComplete()" placeholder="Enter a location" disabled>
+
+                <!-- Autocomplete -->
+
                 <p class="error" id="locationError" ng-show="myForm.inputLocation.$invalid && myForm.inputLocation.$touched">Please enter a location.</p>             
             </div>           
           </div>

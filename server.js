@@ -52,15 +52,63 @@ serverApp.get("/", function(req, res){
         "REST-PAYLOAD": "",
         "paginationInput.entriesPerPage": 50,
         keywords: clientInput.keyword,
-        buyerPostalCode: 90007,
+        buyerPostalCode: clientInput.zipcode,
         "itemFilter(0).name": "MaxDistance",
         "itemFilter(0).value": myDistance,
-
-        "outputSelector(0)": "SellerInfo",
-        "outputSelector(1)": "StoreInfo"
+        "itemFilter(1).name": "HideDuplicateItems",
+        "itemFilter(1).value": "true",
       }
       var clientContent = queryString.stringify(clientData);
       var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
+
+      if (clientInput.category != "default") {
+        ebay_search_api_url += "&categoryId=" + clientInput.category;
+      }
+      var i = 2;
+      if (clientInput.free_shipping == "true") {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=" + "FreeShippingOnly";
+        ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
+        i++;
+      }
+      if (clientInput.local_pickup == "true") {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
+        ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
+        i++;
+      }
+      if (clientInput.local_pickup == "true") {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
+        ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
+        i++;
+      }
+      var j = 0;
+      if (clientInput.new_condition == "true") {
+        j++;
+      }
+      if (clientInput.used == "true") {
+        j++;
+      }
+      if (clientInput.unspecified == "true") {
+        j++;
+      }
+      if (j > 0) {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=Condition";
+        var k = 0;
+        if (clientInput.new_condition == "true") {
+          ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=New";
+          k++;
+        }
+        if (clientInput.used == "true") {
+          ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Used";
+          k++;
+        }
+        if (clientInput.unspecified == "true") {
+          ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Unspecified";
+          k++;
+        }
+      }
+      ebay_search_api_url += "&outputSelector(0)=SellerInfo";
+      ebay_search_api_url += "&outputSelector(1)=StoreInfo";
+
       console.log(ebay_search_api_url);
       //send request to ebay search api
       request.get(ebay_search_api_url, function(apiError, apiResponse, apiBody)
@@ -71,7 +119,81 @@ serverApp.get("/", function(req, res){
       });
 
     } else {  // zip code location
-        // TODO
+        
+      var clientData = {
+        "OPERATION-NAME": "findItemsAdvanced",
+        "SERVICE-VERSION": "1.0.0",
+        "SECURITY-APPNAME": EBY_APP_ID,
+        "RESPONSE-DATA-FORMAT": "JSON",
+        "REST-PAYLOAD": "",
+        "paginationInput.entriesPerPage": 50,
+        keywords: clientInput.keyword,
+        buyerPostalCode: clientInput.location,
+        "itemFilter(0).name": "MaxDistance",
+        "itemFilter(0).value": myDistance,
+        "itemFilter(1).name": "HideDuplicateItems",
+        "itemFilter(1).value": "true",        
+      }
+      var clientContent = queryString.stringify(clientData);
+      var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
+
+      if (clientInput.category != "default") {
+        ebay_search_api_url += "&categoryId=" + clientInput.category;
+      }
+      var i = 2;
+      if (clientInput.free_shipping == "true") {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=" + "FreeShippingOnly";
+        ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
+        i++;
+      }
+      if (clientInput.local_pickup == "true") {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
+        ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
+        i++;
+      }
+      if (clientInput.local_pickup == "true") {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
+        ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
+        i++;
+      }
+      var j = 0;
+      if (clientInput.new_condition == "true") {
+        j++;
+      }
+      if (clientInput.used == "true") {
+        j++;
+      }
+      if (clientInput.unspecified == "true") {
+        j++;
+      }
+      if (j > 0) {
+        ebay_search_api_url += "&itemFilter(" + i + ").name=Condition";
+        var k = 0;
+        if (clientInput.new_condition == "true") {
+          ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=New";
+          k++;
+        }
+        if (clientInput.used == "true") {
+          ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Used";
+          k++;
+        }
+        if (clientInput.unspecified == "true") {
+          ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Unspecified";
+          k++;
+        }
+      }
+      ebay_search_api_url += "&outputSelector(0)=SellerInfo";
+      ebay_search_api_url += "&outputSelector(1)=StoreInfo";
+
+      console.log(ebay_search_api_url);
+      //send request to ebay search api
+      request.get(ebay_search_api_url, function(apiError, apiResponse, apiBody)
+      {
+        var ebay_search_api_result = JSON.parse(apiBody);
+        console.log(ebay_search_api_result);
+        res.send(ebay_search_api_result);
+      });
+
     }
   } else if (typeof clientInput.itemId_single !== 'undefined') {  // ebay single item api -------------------    
     var clientData = {
@@ -137,129 +259,25 @@ serverApp.get("/", function(req, res){
   }
 
 
-
-/*
-  // Google API request
-  if (typeof clientInput.ifYelp === 'undefined')
-  {
-    if (typeof clientInput.nextPageToken === 'undefined')
-    {
-      myDistance = clientInput.distance / 0.00062137;
-      //if "current location" is selected
-      if (typeof clientInput.location === 'undefined')
-      {
-        var clientData = {
-          location: clientInput.latitude + "," + clientInput.longitude,
-          radius: myDistance,
-          type: clientInput.category,
-          keyword: clientInput.keyword,
-          key: API_KEY
-        }
-        var clientContent = queryString.stringify(clientData);
-        var googlePlacesApiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + clientContent;
-        console.log(googlePlacesApiUrl);
-
-        //send request to google places api
-        request.get(googlePlacesApiUrl, function(apiError, apiResponse, apiBody)
-        {
-          var googlePlacesApiResults = JSON.parse(apiBody);
-          console.log(googlePlacesApiResults);
-          res.send(googlePlacesApiResults);
-        });
-      }
-
-      //if "other location" is selected
-      else
-      {
-        var addressData = {
-          address: clientInput.location,
-          key: API_KEY
-        }
-        console.log(addressData);
-        var addressContent = queryString.stringify(addressData);
-        addressContent = addressContent.replace(' ', '+');
-        var googleGeoCodingApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?' + addressContent;
-        request.get(googleGeoCodingApiUrl, function(addressApiError, addressApiResponse, addressApiBody)
-        {
-          var googleGeoCodingApiResults = JSON.parse(addressApiBody);
-          var latitude = googleGeoCodingApiResults['results'][0]['geometry']['location']['lat'];
-          var longitude = googleGeoCodingApiResults['results'][0]['geometry']['location']['lng'];
-          var clientData = {
-            location: latitude + "," + longitude,
-            radius: myDistance,
-            type: clientInput.category,
-            keyword: clientInput.keyword,
-            key: API_KEY
-          }
-          var clientContent = queryString.stringify(clientData);
-          var googlePlacesApiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + clientContent;
-          console.log(googlePlacesApiUrl);
-
-          //send request to google places api
-          request.get(googlePlacesApiUrl, function(apiError, apiResponse, apiBody){
-            var googlePlacesApiResults = JSON.parse(apiBody);
-            googlePlacesApiResults['myLat'] = latitude;
-            googlePlacesApiResults['myLng'] = longitude;
-            res.send(googlePlacesApiResults);
-          });
-        });
-      }
+  // autocomplete api -------------------------------
+  if (typeof clientInput.postalcode_startsWith !== 'undefined') {
+    var clientData = {
+      postalcode_startsWith: clientInput.postalcode_startsWith,
+      country: "US",
+      maxRows: 5,
+      username: "chihhuiy"
     }
-
-    else
+    var clientContent = queryString.stringify(clientData);
+    var autocomplete_api_url = 'http://api.geonames.org/postalCodeSearchJSON?' + clientContent;
+    console.log(autocomplete_api_url);
+    //send request to autocomplete api
+    request.get(autocomplete_api_url, function(apiError, apiResponse, apiBody)
     {
-      var clientData = {
-        pagetoken: clientInput.nextPageToken,
-        key: API_KEY
-      }
-      var clientContent = queryString.stringify(clientData);
-      var googlePlacesApiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + clientContent;
-      console.log(googlePlacesApiUrl);
-
-      //send request to google places api
-      request.get(googlePlacesApiUrl, function(apiError, apiResponse, apiBody)
-      {
-        var googlePlacesApiResults = JSON.parse(apiBody);
-        console.log(googlePlacesApiResults);
-        res.send(googlePlacesApiResults);
-      });
-    }
+      var autocomplete_api_result = JSON.parse(apiBody);
+      console.log(autocomplete_api_result);
+      res.send(autocomplete_api_result);
+    });
   }
-
-  // Yelp API request
-  else
-  {
-      client.businessMatch('best',
-      {
-        name: clientInput.name,
-        address1: clientInput.address1,
-        address2: clientInput.address2,
-        city: clientInput.city,
-        state: clientInput.state,
-        country: 'US'
-      })
-      .then(response =>
-      {
-        console.log(response);
-        var yelpId = response.jsonBody.businesses[0].id;
-        //console.log(yelpId);
-        client.reviews(yelpId).
-        then(response =>
-        {
-          //console.log(response.jsonBody);
-          res.send(response.jsonBody);
-        })
-        .catch(e =>
-        {
-          console.log(e);
-        });
-      })
-      .catch(error =>
-      {
-        console.log(error);
-      });
-  }
-*/
 
 
 });

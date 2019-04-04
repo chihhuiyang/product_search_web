@@ -72,7 +72,7 @@
       $rootScope.currentPage = 1;
 
       // ebay search api
-      if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'] == null) { // null item
+      if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'] == null) { // null searchResult
         // No Records have been found
         $scope.ifHasTable = false;
       } else {  // valid item

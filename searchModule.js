@@ -114,13 +114,40 @@
         })
         .then (function (response)
         {
-          $scope.currentlat = response.data.lat;
-          $scope.currentlng = response.data.lon;
+          $scope.currentZipcode = response.data.zip;
 
           var url_params = "http://localhost:8081/?"
           // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
           url_params += "category=" + $scope.myCategory + "&distance=" + $scope.myDistance +
-          "&keyword=" + $scope.myKeyword + "&latitude=" + $scope.currentlat + "&longitude=" + $scope.currentlng;
+          "&keyword=" + $scope.myKeyword + "&zipcode=" + $scope.currentZipcode;
+
+          // 5 checkbox
+          if (document.getElementById('input_new').checked) {
+            url_params += "&new_condition=" + "true";
+          } else {
+            url_params += "&new_condition=" + "false";
+          }
+          if (document.getElementById('input_used').checked) {
+            url_params += "&used=" + "true";
+          } else {
+            url_params += "&used=" + "false";
+          }
+          if (document.getElementById('input_unspecified').checked) {
+            url_params += "&unspecified=" + "true";
+          } else {
+            url_params += "&unspecified=" + "false";
+          }
+          if (document.getElementById('input_pickup').checked) {
+            url_params += "&local_pickup=" + "true";
+          } else {
+            url_params += "&local_pickup=" + "false";
+          }
+          if (document.getElementById('input_ship').checked) {
+            url_params += "&free_shipping=" + "true";
+          } else {
+            url_params += "&free_shipping=" + "false";
+          }     
+
           console.log(url_params);
 
           $http({
@@ -150,15 +177,44 @@
       else if ($scope.myLocation === 2)
       {
         $scope.locationOption = "option2";
-        //console.log($scope.autocompleteObj);
-        if (typeof $scope.autocompleteObj.getPlace() !== 'undefined')
+        
+        if (typeof $scope.autocompleteObj !== 'undefined')
         {
-          $scope.myInputLocation = $scope.autocompleteObj.getPlace().formatted_address;
+          console.log($scope.autocompleteObj);
+          // $scope.myInputLocation = $scope.autocompleteObj.getPlace().formatted_address;
         }
         var url_params = "http://localhost:8081/?"
         // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
         url_params += "category=" + $scope.myCategory + "&distance=" + $scope.myDistance +
         "&keyword=" + $scope.myKeyword + "&location=" + $scope.myInputLocation;
+
+        // 5 checkbox
+        if (document.getElementById('input_new').checked) {
+          url_params += "&new_condition=" + "true";
+        } else {
+          url_params += "&new_condition=" + "false";
+        }
+        if (document.getElementById('input_used').checked) {
+          url_params += "&used=" + "true";
+        } else {
+          url_params += "&used=" + "false";
+        }
+        if (document.getElementById('input_unspecified').checked) {
+          url_params += "&unspecified=" + "true";
+        } else {
+          url_params += "&unspecified=" + "false";
+        }
+        if (document.getElementById('input_pickup').checked) {
+          url_params += "&local_pickup=" + "true";
+        } else {
+          url_params += "&local_pickup=" + "false";
+        }
+        if (document.getElementById('input_ship').checked) {
+          url_params += "&free_shipping=" + "true";
+        } else {
+          url_params += "&free_shipping=" + "false";
+        }             
+
         console.log(url_params);
 
         $http({
@@ -167,10 +223,9 @@
         })
         .then (function (response)
         {
+          console.log("input location search response");
           $scope.jsonObj = response.data;
           //console.log($scope.jsonObj);
-          $scope.myLat = $scope.jsonObj.myLat;
-          $scope.myLng = $scope.jsonObj.myLng;
           $rootScope.showProgressBar = false;
           $scope.ifSearchSuccess = true;
           $rootScope.slideAnimation = true;
@@ -180,6 +235,8 @@
         function(response)
         {
           console.error("Request error!");
+          $rootScope.showProgressBar = false;
+          $scope.ifSearchSuccess = false;
         });
       }
     };
@@ -224,8 +281,36 @@
     $scope.autoComplete = function()
     {
       var input = document.getElementById('input_location');
-      var options = {types: ['address']};
-      $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
+      // var options = {types: ['address']};
+      // $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
+
+
+      // autocomplete api -------------------------------
+      var input_Data = {
+        postalcode_startsWith: input
+      }
+      console.log(input_Data);
+      $http({
+        method: 'GET',
+        url: "http://localhost:8081/?",
+        params: input_Data
+      })
+      .then (function (response)
+      {
+        console.log("autocomplete api response");
+        $scope.autocompleteObj = response.data.postalCodes[0];  // 5 zipcodes
+        console.log($scope.autocompleteObj);
+
+
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        // $rootScope.showProgressBar = false;
+        // $scope.ifSearchSuccess = false;
+      });
+
+
     };
 
     $scope.cleanAnimation = function()
