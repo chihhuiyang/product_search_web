@@ -132,7 +132,6 @@
               method: 'GET',
               url: "http://localhost:8081/?",
               // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-              // url: 'http://travelsearchnodejs-env.us-east-2.elasticbeanstalk.com/',
               params: dataToPass
             })
             .then (function (response)
@@ -148,7 +147,7 @@
               }
               console.log("jsonData[1]: ")
               console.log($rootScope.jsonData[1]);
-              $scope.rowData = $rootScope.jsonData[1]['results'];
+              $scope.rowData = $rootScope.jsonData[1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
               for (var i = 0; i < $scope.rowData.length; i++)
               {
                 if ($scope.rowData[i]['ifSaved'] !== true)
@@ -216,7 +215,6 @@
               method: 'GET',
               url: "http://localhost:8081/?",
               // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-              // url: 'http://travelsearchnodejs-env.us-east-2.elasticbeanstalk.com/',
               params: dataToPass
             })
             .then (function (response)
@@ -224,7 +222,7 @@
               $rootScope.jsonData[2] = response.data;
               console.log("jsonData[2]: ")
               console.log($rootScope.jsonData[2]);
-              $scope.rowData = $rootScope.jsonData[2]['results'];
+              $scope.rowData = $rootScope.jsonData[2]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
               for (var i = 0; i < $scope.rowData.length; i++)
               {
                 if ($scope.rowData[i]['ifSaved'] !== true)
@@ -355,7 +353,7 @@
         }
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
-            if ($rootScope.jsonData[i]['results'][j]['itemId'][0] === $rootScope.savedKey) {
+            if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
               $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = true;
             }
           }
@@ -395,16 +393,18 @@
 
 
         // ebay single item api -------------------------------
-        var url_params = "http://localhost:8081/?"
-        // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
-        url_params += "itemId=" + $scope.myPlaceId;
-        console.log(url_params);
-
+        $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
+        var input_single_Data = {
+          itemId_single: $scope.myPlaceId
+        }
+        console.log(input_single_Data);
         $http({
           method: 'GET',
-          url: url_params,
+          url: "http://localhost:8081/?",
+          params: input_single_Data
         })
         .then (function (response) {
+          console.log("single api response");
           $scope.jsonObj = response.data;
           console.log($scope.jsonObj);
           $rootScope.showProgressBar = false;
@@ -412,35 +412,26 @@
 
 
           $scope.passData = [];
-          $scope.placeDetails = response;
+          $scope.placeDetails = response.data.Item;
           console.log($scope.placeDetails);
           $scope.passData[0] = $scope.placeDetails;
 
+          // pass keyword + itemId
+          $scope.myKeywordData = $scope.$parent.myKeyword;
+          $scope.passData[1] = [];
+          $scope.passData[1][0] = $scope.myKeywordData;
+          $scope.passData[1][1] = $scope.myPlaceId;
 
-          /*
-          // TODO: photos
-          $scope.photoObj = $scope.placeDetails.photos;
-          if (typeof $scope.photoObj !== 'undefined') {
-            $scope.photoArr = [];
-            for (var i = 0; i < $scope.photoObj.length; i++) {
-              var max_height = $scope.photoObj[i].height;
-              var max_width = $scope.photoObj[i].width;
-              var photoUrl = $scope.photoObj[i].getUrl({'maxWidth': max_width, 'maxHeight': max_height});
-              $scope.photoArr[i] = photoUrl;
-              $scope.passData[1] = $scope.photoArr;
-            }
-          }
-          */
           
-          $scope.passData[2] = $scope.rowData[index];
+          $scope.passData[2] = $scope.rowData[index]; // ebay search api for this itemId
           $scope.passData[3] = $scope.myLocationOption;
 
 
           if ($scope.myLocationOption === "option1") {
-            $scope.currentLocation_lat = $scope.$parent.currentlat;
-            $scope.currentLocation_lng = $scope.$parent.currentlng;
-            $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
-            $scope.passData[4] = $scope.startGeoLocation;
+            // $scope.currentLocation_lat = $scope.$parent.currentlat;
+            // $scope.currentLocation_lng = $scope.$parent.currentlng;
+            // $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
+            $scope.passData[4] = "90007";
           }
           else {
             $scope.myInputLocation = $scope.$parent.myInputLocation;
@@ -461,7 +452,7 @@
         },
         function(response)
         {
-          console.error("Request error!");
+          console.error("saveToLocalStorage: single api Request error!");
           $rootScope.showProgressBar = false;
           $scope.ifSearchSuccess = false;
         });

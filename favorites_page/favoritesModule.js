@@ -24,6 +24,8 @@
 
   favoritesModule.controller('favoritesController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q)
   {
+    console.log($rootScope);
+    console.log($scope);
     //localStorage.clear();
     $rootScope.moveToRight = true;
     $scope.myStorage = window.localStorage;
@@ -66,7 +68,7 @@
     }
     for (var i = 0; i < $rootScope.favoriteRows.length; i++)
     {
-      if ($rootScope.favoriteRows[i]['place_id'] === $rootScope.savedKey)
+      if ($rootScope.favoriteRows[i]['itemId'][0] === $rootScope.savedKey)
       {
         console.log($rootScope.favoriteRows[i]);
         $rootScope.favoriteRows[i]['ifHighlight'] = true;
@@ -170,7 +172,7 @@
     $scope.removeLocalStorage = function(index)
     {
       var deleteIndex = ($rootScope.favoriteCurrentPage-1)*20 + index;
-      var deleteKey = $rootScope.favoriteRows[deleteIndex].place_id;
+      var deleteKey = $rootScope.favoriteRows[deleteIndex]['itemId'][0];
       $rootScope.favoriteRows.splice(deleteIndex, 1);
       $scope.arrangePages();
       $scope.favoriteRowData = $rootScope.allFavoriteData[$rootScope.favoriteCurrentPage-1];
@@ -193,27 +195,31 @@
       {
         for (var i = 0; i < $rootScope.jsonData.length; i++)
         {
-          for (var j = 0; j < $rootScope.jsonData[i]['results'].length; j++)
+          for (var j = 0; j < $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++)
           {
-            if ($rootScope.jsonData[i]['results'][j]['place_id'] === $scope.sortedStorage[deleteIndex][6])
+            if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $scope.sortedStorage[deleteIndex][6])
             {
-              $rootScope.jsonData[i]['results'][j]['ifSaved'] = false;
-              $rootScope.jsonData[i]['results'][j]['wishIconClass'] = "material-icons md-18";
-              $rootScope.jsonData[i]['results'][j]['shopping_cart'] = "add_shopping_cart";
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifSaved'] = false;
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['wishIconClass'] = "material-icons md-18";
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['shopping_cart'] = "add_shopping_cart";
             }
           }
         }
       }
-      if ($rootScope.favoriteRows.length <= 40 && $rootScope.favoriteRows.length > 20 && $rootScope.favoriteCurrentPage !== 1)
-      {
-        $scope.showPrevious = true;
-        $scope.showNext = false;
-      }
-      if ($rootScope.favoriteRows.length <= 20)
-      {
-        $scope.showPrevious = false;
-        $scope.showNext = false;
-      }
+
+
+      $scope.showPrevious = false;
+      $scope.showNext = false;
+      // if ($rootScope.favoriteRows.length <= 40 && $rootScope.favoriteRows.length > 20 && $rootScope.favoriteCurrentPage !== 1)
+      // {
+      //   $scope.showPrevious = true;
+      //   $scope.showNext = false;
+      // }
+      // if ($rootScope.favoriteRows.length <= 20)
+      // {
+      //   $scope.showPrevious = false;
+      //   $scope.showNext = false;
+      // }
       $rootScope.detailWishIconClass = "material-icons md-18";
       $rootScope.shopping_cart = "add_shopping_cart";
       localStorage.removeItem(deleteKey);
@@ -225,8 +231,11 @@
 
       //console.log($rootScope.favoriteRows);
       var sendIndex = ($rootScope.favoriteCurrentPage-1)*20 + index;
-      var myKey = $rootScope.favoriteRows[sendIndex].place_id;
+      var myKey = $rootScope.favoriteRows[sendIndex]['itemId'][0];
       var parsedData = JSON.parse(localStorage.getItem(myKey));
+      console.log(localStorage);
+      console.log(myKey);
+      console.log(parsedData);    // parsedData[2]: ebay search api for this item
       var myLocationOption = parsedData[3];
       var locationInfo = parsedData[4];
       $scope.dataPack = [];
@@ -235,6 +244,10 @@
       $scope.dataPack[2] = locationInfo;
       $scope.dataPack[3] = JSON.parse(localStorage.getItem(myKey))[0];
       $scope.dataPack[4] = JSON.parse(localStorage.getItem(myKey))[1];
+
+      
+      $scope.dataPack[5] = parsedData[2]; // parsedData[2]: ebay search api for this itemId
+
       //console.log($scope.dataPack);
       $rootScope.favoriteRowIndex = sendIndex;
       favoriteDataService.setData($scope.dataPack);
@@ -245,24 +258,28 @@
         $rootScope.favoriteRows[i]['ifHighlight'] = false;
       }
       $rootScope.favoriteRows[sendIndex]['ifHighlight'] = true;
-      $rootScope.savedKey = $rootScope.favoriteRows[sendIndex].place_id;
+      $rootScope.savedKey = $rootScope.favoriteRows[sendIndex]['itemId'][0];
     }
 
     $scope.redirect = function(myPath)
     {
+      console.log("redirect to:" + myPath);
       $location.path(myPath);
     };
 
     $scope.redirectFavoriteDetailsPage = function()
     {
+      console.log("redirectFavoriteDetailsPage");
       $rootScope.ifSlide = true;
       $rootScope.moveToRight = true;
       if ($location.path() === '/favorites_page' && $rootScope.ifClickedFavoriteDetails === true)
       {
+        console.log("favoriteDetails_page");
         $location.path('/favoriteDetails_page');
       }
       else
       {
+        console.log("details_page");
         $location.path('/details_page');
       }
     }

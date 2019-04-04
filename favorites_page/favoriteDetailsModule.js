@@ -30,11 +30,18 @@
     $rootScope.shopping_cart = "add_shopping_cart";
 
     $scope.dataPack = favoriteDetailsDataService.getData();
+    console.log($scope.dataPack);
+    console.log($rootScope);
     $scope.storageKey = $scope.dataPack[0];
     $scope.myLocationOption = $scope.dataPack[1];
     $scope.placeDetails = $scope.dataPack[3];
-    $scope.photo_arr = $scope.dataPack[4];
-    $scope.name = $scope.placeDetails.name;
+    $scope.photo_arr = $scope.dataPack[4];  // keyword + itemId
+    $scope.name = $scope.placeDetails.Title;
+    console.log(window.localStorage);
+
+    $scope.ifHasPhoto = true;  // initail assign
+    $scope.ifHasSimilar = true;  // initail assign
+
 
     $scope.currentStorage = window.localStorage;
     for (var i = 0; i < $scope.currentStorage.length; i++)
@@ -49,21 +56,21 @@
 
     for (var i = 0; i < $rootScope.favoriteRows.length; i++)
     {
-      if ($rootScope.favoriteRows[i]['place_id'] === $scope.placeDetails.place_id)
+      if ($rootScope.favoriteRows[i]['itemId'][0] === $scope.placeDetails.ItemID)
       {
         $rootScope.tempFavoriteRow = $rootScope.favoriteRows[i];
       }
     }
 
-    $scope.destinationLat = $scope.placeDetails.geometry.location.lat;
-    $scope.destinationLng = $scope.placeDetails.geometry.location.lng;
-    $scope.destinationGeoLocation = {lat: $scope.destinationLat, lng: $scope.destinationLng};
+    // $scope.destinationLat = $scope.placeDetails.geometry.location.lat;
+    // $scope.destinationLng = $scope.placeDetails.geometry.location.lng;
+    // $scope.destinationGeoLocation = {lat: $scope.destinationLat, lng: $scope.destinationLng};
 
     if ($scope.myLocationOption === "option1")
     {
-      $scope.startGeoLocation = $scope.dataPack[2];
-      $scope.currentGeoLocation = $scope.startGeoLocation;
-      $scope.startLocation = "Your location";
+      // $scope.startGeoLocation = $scope.dataPack[2];
+      // $scope.currentGeoLocation = $scope.startGeoLocation;
+      $scope.startLocation = "90007";
     }
     else
     {
@@ -71,123 +78,179 @@
       $scope.startLocation = $scope.myInputLocation;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('formatted_address'))
-    {
-      $scope.showAddress = true;
-      $scope.address = $scope.placeDetails.formatted_address;
-    }
-    else
-    {
-      $scope.showAddress = false;
+
+    // assign Product tab
+    console.log("assign Product tab");
+    if ($scope.placeDetails.hasOwnProperty('PictureURL')) {
+      $scope.showProductImg = true;
+      $scope.ProductImg = $scope.placeDetails.PictureURL;
+      console.log($scope.ProductImg);
+    } else {
+      $scope.showProductImg = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('international_phone_number'))
-    {
-      $scope.showPhoneNumber = true;
-      $scope.phoneNumber = $scope.placeDetails.international_phone_number;
-    }
-    else
-    {
-      $scope.showPhoneNumber = false;
+    if ($scope.placeDetails.hasOwnProperty('Subtitle')) {
+      $scope.showSubtitle = true;
+      $scope.subtitle = $scope.placeDetails.Subtitle;
+    } else {
+      $scope.showSubtitle = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('price_level'))
-    {
-      $scope.showPriceLevel = true;
-      var levelNumber = $scope.placeDetails.price_level;
-      if (levelNumber === 0)
-      {
-        $scope.priceLevel = "";
+    if ($scope.placeDetails.hasOwnProperty('CurrentPrice')) {
+      if ($scope.placeDetails.CurrentPrice.hasOwnProperty('Value')) {
+        $scope.showPrice = true;
+        $scope.price = $scope.placeDetails.CurrentPrice.Value;
+      } else {
+        $scope.showPrice = false;
       }
-      else if (levelNumber === 1)
-      {
-        $scope.priceLevel = "$";
-      }
-      else if (levelNumber === 2)
-      {
-        $scope.priceLevel = "$$";
-      }
-      else if (levelNumber === 3)
-      {
-        $scope.priceLevel = "$$$";
-      }
-      else
-      {
-        $scope.priceLevel = "$$$$";
-      }
-    }
-    else
-    {
-      $scope.showPriceLevel = false;
+    } else {
+      $scope.showPrice = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('rating'))
-    {
-      $scope.showRating = true;
-      $scope.rating = $scope.placeDetails.rating;
-      $scope.ratingWidth = $scope.rating * 10
-    }
-    else
-    {
-      $scope.showRating = false;
+    if ($scope.placeDetails.hasOwnProperty('Location')) {
+      $scope.showLocation = true;
+      $scope.productLocation = $scope.placeDetails.Location;
+      // $scope.ratingWidth = $scope.rating * 10
+    } else {
+      $scope.showLocation = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('url'))
-    {
-      $scope.showUrl = true;
-      $scope.googlePage = $scope.placeDetails.url;
-    }
-    else
-    {
-      $scope.showUrl = false;
-    }
-
-    if ($scope.placeDetails.hasOwnProperty('website'))
-    {
-      $scope.showWebsite = true;
-        $scope.website = $scope.placeDetails.website;
-    }
-    else
-    {
-      $scope.showWebsite = false;
-    }
-
-    if ($scope.placeDetails.hasOwnProperty('opening_hours'))
-    {
-      $scope.showHours = true;
-      var newDay = new Date();
-      $scope.today = newDay.getDay();
-      var openday = $scope.placeDetails.opening_hours.weekday_text[$scope.today];
-      var openTime = openday.substring(openday.indexOf(":"), openday.length);
-      if ($scope.placeDetails.opening_hours.open_now === false)
-      {
-        $scope.hours = "Closed";
+    if ($scope.placeDetails.hasOwnProperty('ReturnPolicy')) {
+      if ($scope.placeDetails.ReturnPolicy.hasOwnProperty('ReturnsAccepted') && $scope.placeDetails.ReturnPolicy.hasOwnProperty('ReturnsWithin')) {
+        $scope.showReturnPolicy = true;
+        $scope.returnPolicy = $scope.placeDetails.ReturnPolicy.ReturnsAccepted + " Within " + $scope.placeDetails.ReturnPolicy.ReturnsWithin;
+      } else {
+        $scope.showReturnPolicy = false;
       }
-      else
-      {
-        $scope.hours = "Open now" + openTime;
+    } else {
+      $scope.showReturnPolicy = false;
+    }
+
+    if ($scope.placeDetails.hasOwnProperty('ItemSpecifics')) {
+      if ($scope.placeDetails.ItemSpecifics.hasOwnProperty('NameValueList')) {
+        $scope.showItemSpecifics = true;
+        $scope.itemSpecList = $scope.placeDetails.ItemSpecifics.NameValueList;
+      } else {
+        $scope.showItemSpecifics = false;
       }
-      $scope.weekdayHours = $scope.placeDetails.opening_hours.weekday_text;
-      $scope.weekdayArr = [];
-      $scope.weekdayHoursArr = [];
-      if ($scope.today === 0)
-        var todayIndex = 6;
-      else
-        var todayIndex = $scope.today-1;
-      for (var i = 0; i < $scope.weekdayHours.length; i++)
-      {
-        $scope.weekdayArr[i] = $scope.weekdayHours[todayIndex].substring(0, $scope.weekdayHours[todayIndex].indexOf(":"));
-        $scope.weekdayHoursArr[i] = $scope.weekdayHours[todayIndex].substring($scope.weekdayHours[todayIndex].indexOf(":")+1, $scope.weekdayHours[todayIndex].length);
-        todayIndex++;
-        if (todayIndex === 7)
-        {
-          todayIndex = 0;
+    } else {
+      $scope.showItemSpecifics = false;
+    }
+
+     // assign seller tab
+     console.log("assign seller tab");
+     if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackScore')) {
+      $scope.showFeedbackScore = true;
+      $scope.feedbackScore = $scope.placeDetails.Seller.FeedbackScore;
+    } else {
+      $scope.showFeedbackScore = false;
+    }
+    if ($scope.placeDetails.Seller.hasOwnProperty('PositiveFeedbackPercent')) {
+      $scope.showPopularity = true;
+      $scope.popularity = $scope.placeDetails.Seller.PositiveFeedbackPercent;
+    } else {
+      $scope.showPopularity = false;
+    }
+    if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackRatingStar')) {
+      $scope.showFeedbackRatingStar = true;
+      $scope.feedbackRatingStar = $scope.placeDetails.Seller.FeedbackRatingStar;
+    } else {
+      $scope.showFeedbackRatingStar = false;
+    }
+    if ($scope.placeDetails.Seller.hasOwnProperty('TopRatedSeller')) {
+      $scope.showTopRated = true;
+      $scope.topRated = $scope.placeDetails.Seller.TopRatedSeller;
+    } else {
+      $scope.showTopRated = false;
+    }
+  
+    if ($scope.placeDetails.hasOwnProperty('Storefront')) {
+      if ($scope.placeDetails.Storefront.hasOwnProperty('StoreName')) {
+        $scope.showStoreName = true;
+        $scope.storeName = $scope.placeDetails.Storefront.StoreName;
+      } else {
+        $scope.showStoreName = false;
+      }
+      if ($scope.placeDetails.Storefront.hasOwnProperty('StoreURL')) {
+        $scope.showBuyProductAt = true;
+        $scope.buyProductAt_url = $scope.placeDetails.Storefront.StoreURL;
+      } else {
+        $scope.showBuyProductAt = false;
+      }
+    } else {
+      $scope.showStoreName = false;
+      $scope.showBuyProductAt = false;
+    }
+
+
+    // shipping
+    var items = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+    console.log(items);
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].itemId[0] == $scope.placeDetails.ItemID) {
+        console.log(items[i].itemId[0]);
+
+        // assign shipping tab
+        if (items[i].shippingInfo[0].hasOwnProperty('shippingServiceCost')) {
+          if (items[i].shippingInfo[0].shippingServiceCost[0].hasOwnProperty('__value__')) {
+            $scope.showShippingCost = true;
+            var shipping_str = items[i].shippingInfo[0].shippingServiceCost[0].__value__;
+            var shipping_float = parseFloat(shipping_str);
+            if (shipping_float == 0.0) {
+              $scope.shippingCost = "Free Shipping";
+            } else {
+              $scope.shippingCost = shipping_str;
+            }
+          } else {
+            $scope.showShippingCost = false;
+          }
+        } else {
+          $scope.showShippingCost = false;
         }
+
+        if (items[i].shippingInfo[0].hasOwnProperty('shippingLocation')) {
+          $scope.showShippingLocation = true;
+          $scope.shippingLocation = items[i].shippingInfo[0].shippingLocation[0];
+        } else {
+          $scope.showShippingLocation = false;
+        }
+
+        if (items[i].shippingInfo[0].hasOwnProperty('handlingTime')) {
+          $scope.showHandlingTime = true;
+          var time_str = items[i].shippingInfo[0].handlingTime[0];
+          var time_int = parseInt(time_str);
+          if (time_int == 0 || time_int == 1) {
+          $scope.handlingTime = time_str + " Day";
+          } else {
+          $scope.handlingTime = time_str + " Days";
+          }          
+        } else {
+          $scope.showHandlingTime = false;
+        }
+      
+        if (items[i].shippingInfo[0].hasOwnProperty('expeditedShipping')) {
+          $scope.showExpeditedShipping = true;
+          $scope.expeditedShipping = items[i].shippingInfo[0].expeditedShipping[0];
+        } else {
+          $scope.showExpeditedShipping = false;
+        }
+
+        if (items[i].shippingInfo[0].hasOwnProperty('oneDayShippingAvailable')) {
+          $scope.showOneDayShipping = true;
+          $scope.oneDayShipping = items[i].shippingInfo[0].oneDayShippingAvailable[0];
+        } else {
+          $scope.showOneDayShipping = false;
+        }
+
+        if (items[i].hasOwnProperty('returnsAccepted')) {
+          $scope.showReturnAccepted = true;
+          $scope.returnAccepted = items[i].returnsAccepted[0];
+        } else {
+          $scope.showReturnAccepted = false;
+        }
+
+        
       }
-    }
-    else
-    {
-      $scope.showHours = false;
     }
 
     $scope.ifHasPhotos = function()
@@ -457,6 +520,93 @@
       $scope.yelpReviewsArr = arrToSort2;
     };
 
+
+    $scope.requestPhotoApi = function() {
+      // photo tab
+      // google custom search api -----------------------------------
+      // if ($scope.ifHasPhoto == false) { // avoid re-call api
+        var inputData = {
+          keyword_photo: $scope.passData[1][0]
+        }
+        console.log(inputData);
+        $http({
+          method: 'GET',
+          url: "http://localhost:8081/?",
+          // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
+          params: inputData
+        })
+        .then (function (response) {
+          console.log("photo api response");
+          $scope.photo_items = response.data.items;
+          console.log($scope.photo_items);
+          $scope.ifHasPhoto = false;
+          if (typeof $scope.photo_items !== 'undefined') {
+            $scope.photo_arr = [];
+            for (var i = 0; i < $scope.photo_items.length; i++) {
+              var photo_url = $scope.photo_items[i].link;
+              $scope.photo_arr[i] = photo_url;
+              $scope.ifHasPhoto = true;
+            }
+            console.log($scope.photo_arr);
+          }
+        },
+        function(response)
+        {
+          console.error("Request error!");
+          $rootScope.showProgressBar = false;
+          $scope.ifHasPhoto = false;
+        });
+      // } else {
+      //   console.log("duplicate requestPhotoApi ");
+      // }
+    };
+
+
+    $scope.requestSimilarApi = function()  // requestYelpApi => requestSimilarApi
+    {
+      // similar tab
+      // ebay similar api ------------------------------
+      var inputSimilarData = {
+        similar: "true",
+        itemId_similar: $scope.placeDetails.ItemID
+      }
+      console.log(inputSimilarData);
+      $http({
+        method: 'GET',
+        url: "http://localhost:8081/?",
+        // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
+        params: inputSimilarData
+      })
+      .then (function (response) {
+        console.log("similar api response");
+        console.log(response);
+        $scope.similar_items = response.data.getSimilarItemsResponse.itemRecommendations.item;
+        console.log($scope.similar_items);
+
+
+        // getReviews(); 
+        $scope.reviewTypeButtonName = "Default";
+        $scope.reviewOrderButtonName = "Ascending";
+        $scope.reviewSelection = true;
+        if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
+          $scope.ifHasSimilar = false;
+        } else {
+          $scope.ifHasSimilar = true;
+          $scope.similar_items_arr = $scope.similar_items;
+
+        }
+        
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        $rootScope.showProgressBar = false;
+        $scope.ifHasSimilar = false;
+      });
+
+    };
+
+
     $scope.requestYelpApi = function()
     {
       var placeName = $scope.placeDetails.name;
@@ -524,19 +674,16 @@
       }
     };
 
-    $scope.openTweetWindow = function()
+    $scope.openFacebookWindow = function()
     {
-      if ($scope.placeDetails.hasOwnProperty('website'))
-      {
-        var placeUrl = $scope.placeDetails.website;
+      if ($scope.placeDetails.hasOwnProperty('ViewItemURLForNaturalSearch')) {
+        var placeUrl = $scope.placeDetails.ViewItemURLForNaturalSearch;
+      } else {
+        var placeUrl = "http://www.google.com/";
       }
-      else
-      {
-        var placeUrl = $scope.placeDetails.url;
-      }
-      
-      var fb_text = "Buy " + $scope.placeDetails.name;
-      fb_text += " at " + $scope.placeDetails.formatted_address; 
+
+      var fb_text = "Buy " + $scope.placeDetails.Title;;
+      fb_text += " at $" + $scope.placeDetails.CurrentPrice.Value;
       fb_text += " from LINK below.";
       var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + placeUrl + "&quote=" + fb_text;
       $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
@@ -566,14 +713,18 @@
         $rootScope.shopping_cart = "remove_shopping_cart";
         $scope.passData = [];
         $scope.passData[0] = $scope.placeDetails;
-        $scope.passData[1] = $scope.photo_arr;
+        // $scope.passData[1] = $scope.photo_arr;
+        $scope.savedData[1] = [];
+        $scope.savedData[1][0] = $scope.passedKeyword;
+        $scope.savedData[1][1] = $scope.placeDetails.ItemID;
+
         $scope.passData[2] = $rootScope.tempFavoriteRow;
         $scope.passData[3] = $scope.myLocationOption;
         //console.log($scope.myLocationOption);
         if ($scope.myLocationOption === "option1")
         {
-          $scope.passData[4] = $scope.startGeoLocation;
-          //console.log($scope.startGeoLocation);
+          // $scope.passData[4] = $scope.startGeoLocation;
+          $scope.savedData[4] = "90007";
         }
         else
         {
@@ -588,7 +739,7 @@
       {
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
-        localStorage.removeItem($scope.placeDetails.place_id);
+        localStorage.removeItem($scope.placeDetails.ItemID);
       }
     }
   }]);

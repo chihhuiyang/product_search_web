@@ -253,45 +253,7 @@
       $scope.showItemSpecifics = false;
     }
 
-/*
-    if ($scope.placeDetails.hasOwnProperty('opening_hours'))
-    {
-      $scope.showHours = true;
-      var newDay = new Date();
-      $scope.today = newDay.getDay();
-      var openday = $scope.placeDetails.opening_hours.weekday_text[$scope.today];
-      var openTime = openday.substring(openday.indexOf(":"), openday.length);
-      if ($scope.placeDetails.opening_hours.open_now === false)
-      {
-        $scope.hours = "Closed";
-      }
-      else
-      {
-        $scope.hours = "Open now" + openTime;
-      }
-      $scope.weekdayHours = $scope.placeDetails.opening_hours.weekday_text;
-      $scope.weekdayArr = [];
-      $scope.weekdayHoursArr = [];
-      if ($scope.today === 0)
-        var todayIndex = 6;
-      else
-        var todayIndex = $scope.today-1;
-      for (var i = 0; i < $scope.weekdayHours.length; i++)
-      {
-        $scope.weekdayArr[i] = $scope.weekdayHours[todayIndex].substring(0, $scope.weekdayHours[todayIndex].indexOf(":"));
-        $scope.weekdayHoursArr[i] = $scope.weekdayHours[todayIndex].substring($scope.weekdayHours[todayIndex].indexOf(":")+1, $scope.weekdayHours[todayIndex].length);
-        todayIndex++;
-        if (todayIndex === 7)
-        {
-          todayIndex = 0;
-        }
-      }
-    }
-    else
-    {
-      $scope.showHours = false;
-    }
-*/
+
 
     $scope.ifHasPhotos = function()
     {
@@ -664,7 +626,7 @@
       }
     };
 
-    $scope.openTweetWindow = function()
+    $scope.openFacebookWindow = function()
     {
       if ($scope.placeDetails.hasOwnProperty('ViewItemURLForNaturalSearch')) {
         var placeUrl = $scope.placeDetails.ViewItemURLForNaturalSearch;
@@ -703,18 +665,23 @@
       {
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
-        $rootScope.jsonData[$rootScope.currentPage-1].results[$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
-        $rootScope.jsonData[$rootScope.currentPage-1].results[$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
-        var myKey = $scope.placeDetails.place_id;
+        $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
+        $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
+        var myKey = $scope.passedItemId;
         $scope.savedData = [];
-        $scope.savedData[0] = $scope.placeDetails;
-        $scope.savedData[1] = $scope.photo_arr;
-        $scope.savedData[2] = $rootScope.curRowData;
+        $scope.savedData[0] = $scope.placeDetails;  // single api response
+        // $scope.savedData[1] = $scope.photo_arr;
+        $scope.savedData[1] = [];
+        $scope.savedData[1][0] = $scope.passedKeyword;
+        $scope.savedData[1][1] = $scope.passedItemId;
+
+        $scope.savedData[2] = $rootScope.curRowData;  // ebay search api for this itemId
         $scope.savedData[3] = $scope.myLocationOption;
         console.log($scope.myLocationOption);
         if ($scope.myLocationOption === "option1")
         {
-          $scope.savedData[4] = $scope.startGeoLocation;
+          // $scope.savedData[4] = $scope.startGeoLocation;
+          $scope.savedData[4] = "90007";
         }
         else
         {
@@ -728,9 +695,9 @@
       {
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
-        $rootScope.jsonData[$rootScope.currentPage-1].results[$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
-        $rootScope.jsonData[$rootScope.currentPage-1].results[$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
-        localStorage.removeItem($scope.placeDetails.place_id);
+        $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
+        $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
+        localStorage.removeItem($scope.placeDetails.ItemID);
       }
 
     }
