@@ -253,129 +253,9 @@
       }
     }
 
-    $scope.ifHasPhotos = function()
-    {
-      if (typeof $scope.photo_arr === 'undefined' || $scope.photo_arr === null) {
-        $scope.ifHasPhoto = false;
-      } else {
-        $scope.ifHasPhoto = true;
-      }
-    };
 
-    $scope.getMap = function()
-    {
-      $scope.showMap = true;
-      $scope.showRouteDetails = false;
-      $scope.buttonImage = "http://www.pvhc.net/img22/moawaqcbhovgehpljceh.jpg";
 
-      $scope.initMap();
-      //Add placehold for destination's input box
-      var targetName = $scope.placeDetails.name;
-      var targetAddress = $scope.placeDetails.formatted_address;
-      $scope.targetDestination = targetName + ", " + targetAddress;
-    };
 
-    $scope.initMap = function()
-    {
-      $scope.directionsDisplay = new google.maps.DirectionsRenderer({panel:document.getElementById('routeDetails')});
-      $scope.directionsService = new google.maps.DirectionsService();
-
-      $scope.newGoogleMap = new google.maps.Map(document.getElementById('googleMap'),
-      {
-        zoom: 10,
-        center: $scope.destinationGeoLocation
-      });
-      $scope.newMarker = new google.maps.Marker(
-      {
-        position: $scope.destinationGeoLocation,
-        map: $scope.newGoogleMap
-      });
-      $scope.directionsDisplay.setMap($scope.newGoogleMap);
-    };
-
-    $scope.calcRoute = function()
-    {
-      $scope.showRouteDetails = true;
-      var startPoint;
-
-      if ($scope.startLocation === "Your location" || $scope.startLocation === "My location"
-       || $scope.startLocation === "your location" || $scope.startLocation === "my location")
-      {
-        if ($scope.myLocationOption === "option1")
-        {
-          startPoint = $scope.currentGeoLocation;
-        }
-        else
-        {
-          startPoint = $scope.myInputLocation;
-        }
-      }
-      else
-      {
-        startPoint = $scope.startLocation;
-        //console.log($scope.autocompleteObj);
-        if (typeof $scope.autocompleteObj.getPlace() !== 'undefined')
-        {
-          $scope.startLocation = $scope.autocompleteObj.getPlace().formatted_address;
-          startPoint = $scope.startLocation;
-          console.log(startPoint);
-        }
-      }
-
-      var directionMode = document.getElementById('travelModes').value;
-      var request =
-      {
-        origin: startPoint,
-        destination: $scope.destinationGeoLocation,
-        travelMode: directionMode,
-        provideRouteAlternatives: true
-      };
-      //console.log(request);
-      $scope.directionsService.route(request, function(result, status)
-      {
-        if (status == 'OK')
-        {
-          //console.log(result);
-          $scope.directionsDisplay.setDirections(result);
-        }
-        else
-        {
-          $scope.mapDirectionError = "Direction routes not found";
-          console.log($scope.mapDirectionError);
-          $scope.showRouteDetails = false;
-          alert($scope.mapDirectionError);
-        }
-      });
-      $scope.newMarker.setMap(null);
-    };
-
-    $scope.getStreetView = function()
-    {
-      $scope.panorama = $scope.newGoogleMap.getStreetView();
-      $scope.panorama.setPosition($scope.destinationGeoLocation);
-      $scope.panorama.setPov(
-      {
-        heading: 250,
-        pitch: 0
-      });
-    };
-
-    $scope.switchMap = function()
-    {
-      if ($scope.showMap === true)
-      {
-        $scope.showMap = false;
-        $scope.buttonImage = "http://cs-server.usc.edu:45678/hw/hw8/images/Map.png";
-        $scope.getStreetView();
-        $scope.panorama.setVisible(true);
-      }
-      else
-      {
-        $scope.showMap = true;
-        $scope.buttonImage = "http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png";
-        $scope.panorama.setVisible(false);
-      }
-    };
 
     $scope.checkDisableCondition = function()
     {
@@ -562,7 +442,7 @@
     };
 
 
-    $scope.requestSimilarApi = function()  // requestYelpApi => requestSimilarApi
+    $scope.requestSimilarApi = function()
     {
       // similar tab
       // ebay similar api ------------------------------
@@ -607,59 +487,6 @@
     };
 
 
-    $scope.requestYelpApi = function()
-    {
-      var placeName = $scope.placeDetails.name;
-      var fullAddress = $scope.placeDetails.formatted_address;
-      var splitAddress = fullAddress.split(", ");
-      var myAddress1 = splitAddress[0];
-      var myAddress2 = splitAddress[1] + ", " + splitAddress[2];
-      var myCity = splitAddress[1];
-      var myState = splitAddress[2].substring(0, splitAddress[2].indexOf(" "));
-
-      inputData = {
-        ifYelp: "yelpData",
-        name: placeName,
-        address1: myAddress1,
-        address2: myAddress2,
-        city: myCity,
-        state: myState,
-        country: 'US'
-      }
-      //console.log(inputData);
-      // inputData = {
-      //   ifYelp: "yelpData",
-      //   term: placeName,
-      //   lat: $scope.destinationLat,
-      //   lng: $scope.destinationLng
-      // }
-
-      $http({
-        method: 'GET',
-        url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-        // url: 'http://travelsearchnodejs-env.us-east-2.elasticbeanstalk.com/',
-        params: inputData
-      })
-      .then (function (response)
-      {
-        //console.log(response);
-        $scope.yelpReviews = response.data.reviews;
-        var defaultProfilePhoto = "https://s3-media1.fl.yelpcdn.com/photo/uup2RtyJCfUuMALwNBxITA/o.jpg";
-        for (var i = 0; i < $scope.yelpReviews.length; i++)
-        {
-          if ($scope.yelpReviews[i].user.image_url == null)
-          {
-            $scope.yelpReviews[i].user.image_url = defaultProfilePhoto;
-          }
-        }
-        $scope.yelpReviewsArr = $scope.yelpReviews.slice(0);
-        //console.log($scope.yelpReviewsArr);
-      },
-      function(response)
-      {
-        console.error("Request error!");
-      });
-    };
 
     $scope.ifHasYelpReviews = function()
     {

@@ -49,49 +49,49 @@
     $scope.passedJsonObj = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
     $scope.name = $scope.placeDetails.Title;
 
-             // assign seller tab
-             if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackScore')) {
-              $scope.showFeedbackScore = true;
-              $scope.feedbackScore = $scope.placeDetails.Seller.FeedbackScore;
-            } else {
-              $scope.showFeedbackScore = false;
-            }
-            if ($scope.placeDetails.Seller.hasOwnProperty('PositiveFeedbackPercent')) {
-              $scope.showPopularity = true;
-              $scope.popularity = $scope.placeDetails.Seller.PositiveFeedbackPercent;
-            } else {
-              $scope.showPopularity = false;
-            }
-            if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackRatingStar')) {
-              $scope.showFeedbackRatingStar = true;
-              $scope.feedbackRatingStar = $scope.placeDetails.Seller.FeedbackRatingStar;
-            } else {
-              $scope.showFeedbackRatingStar = false;
-            }
-            if ($scope.placeDetails.Seller.hasOwnProperty('TopRatedSeller')) {
-              $scope.showTopRated = true;
-              $scope.topRated = $scope.placeDetails.Seller.TopRatedSeller;
-            } else {
-              $scope.showTopRated = false;
-            }
-          
-            if ($scope.placeDetails.hasOwnProperty('Storefront')) {
-              if ($scope.placeDetails.Storefront.hasOwnProperty('StoreName')) {
-                $scope.showStoreName = true;
-                $scope.storeName = $scope.placeDetails.Storefront.StoreName;
-              } else {
-                $scope.showStoreName = false;
-              }
-              if ($scope.placeDetails.Storefront.hasOwnProperty('StoreURL')) {
-                $scope.showBuyProductAt = true;
-                $scope.buyProductAt_url = $scope.placeDetails.Storefront.StoreURL;
-              } else {
-                $scope.showBuyProductAt = false;
-              }
-            } else {
-              $scope.showStoreName = false;
-              $scope.showBuyProductAt = false;
-            }
+    // assign seller tab
+    if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackScore')) {
+      $scope.showFeedbackScore = true;
+      $scope.feedbackScore = $scope.placeDetails.Seller.FeedbackScore;
+    } else {
+      $scope.showFeedbackScore = false;
+    }
+    if ($scope.placeDetails.Seller.hasOwnProperty('PositiveFeedbackPercent')) {
+      $scope.showPopularity = true;
+      $scope.popularity = $scope.placeDetails.Seller.PositiveFeedbackPercent;
+    } else {
+      $scope.showPopularity = false;
+    }
+    if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackRatingStar')) {
+      $scope.showFeedbackRatingStar = true;
+      $scope.feedbackRatingStar = $scope.placeDetails.Seller.FeedbackRatingStar;
+    } else {
+      $scope.showFeedbackRatingStar = false;
+    }
+    if ($scope.placeDetails.Seller.hasOwnProperty('TopRatedSeller')) {
+      $scope.showTopRated = true;
+      $scope.topRated = $scope.placeDetails.Seller.TopRatedSeller;
+    } else {
+      $scope.showTopRated = false;
+    }
+  
+    if ($scope.placeDetails.hasOwnProperty('Storefront')) {
+      if ($scope.placeDetails.Storefront.hasOwnProperty('StoreName')) {
+        $scope.showStoreName = true;
+        $scope.storeName = $scope.placeDetails.Storefront.StoreName;
+      } else {
+        $scope.showStoreName = false;
+      }
+      if ($scope.placeDetails.Storefront.hasOwnProperty('StoreURL')) {
+        $scope.showBuyProductAt = true;
+        $scope.buyProductAt_url = $scope.placeDetails.Storefront.StoreURL;
+      } else {
+        $scope.showBuyProductAt = false;
+      }
+    } else {
+      $scope.showStoreName = false;
+      $scope.showBuyProductAt = false;
+    }
 
     // shipping
     var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
@@ -255,129 +255,6 @@
 
 
 
-    $scope.ifHasPhotos = function()
-    {
-      if (typeof $scope.photo_arr === 'undefined' || $scope.photo_arr === null) {
-        $scope.ifHasPhoto = false;
-      } else {
-        $scope.ifHasPhoto = true;
-      }
-    };
-
-    $scope.getMap = function()
-    {
-      $scope.showMap = true;
-      $scope.showRouteDetails = false;
-      $scope.buttonImage = "http://www.pvhc.net/img22/moawaqcbhovgehpljceh.jpg";
-
-      $scope.initMap();
-      //Add placehold for destination's input box
-      var targetName = $scope.placeDetails.name;
-      var targetAddress = $scope.placeDetails.formatted_address;
-      $scope.targetDestination = targetName + ", " + targetAddress;
-    };
-
-    $scope.initMap = function()
-    {
-      $scope.directionsDisplay = new google.maps.DirectionsRenderer({panel:document.getElementById('routeDetails')});
-      $scope.directionsService = new google.maps.DirectionsService();
-
-      $scope.newGoogleMap = new google.maps.Map(document.getElementById('googleMap'),
-      {
-        zoom: 10,
-        center: $scope.destinationGeoLocation
-      });
-      $scope.newMarker = new google.maps.Marker(
-      {
-        position: $scope.destinationGeoLocation,
-        map: $scope.newGoogleMap
-      });
-      $scope.directionsDisplay.setMap($scope.newGoogleMap);
-    };
-
-    $scope.calcRoute = function()
-    {
-      $scope.showRouteDetails = true;
-      var startPoint;
-
-      if ($scope.startLocation === "Your location" || $scope.startLocation === "My location"
-       || $scope.startLocation === "your location" || $scope.startLocation === "my location")
-      {
-        if ($scope.myLocationOption === "option1")
-        {
-          startPoint = $scope.currentGeoLocation;
-        }
-        else
-        {
-          startPoint = $scope.myInputLocation;
-        }
-      }
-      else
-      {
-        startPoint = $scope.startLocation;
-        //console.log($scope.autocompleteObj);
-        if (typeof $scope.autocompleteObj.getPlace() !== 'undefined')
-        {
-          $scope.startLocation = $scope.autocompleteObj.getPlace().formatted_address;
-          startPoint = $scope.startLocation;
-          console.log(startPoint);
-        }
-      }
-
-      var directionMode = document.getElementById('travelModes').value;
-      var request =
-      {
-        origin: startPoint,
-        destination: $scope.destinationGeoLocation,
-        travelMode: directionMode,
-        provideRouteAlternatives: true
-      };
-      //console.log(request);
-      $scope.directionsService.route(request, function(result, status)
-      {
-        if (status == 'OK')
-        {
-          //console.log(result);
-          $scope.directionsDisplay.setDirections(result);
-        }
-        else
-        {
-          $scope.mapDirectionError = "Direction routes not found!";
-          console.log($scope.mapDirectionError);
-          $scope.showRouteDetails = false;
-          alert($scope.mapDirectionError);
-        }
-      });
-      $scope.newMarker.setMap(null);
-    };
-
-    $scope.getStreetView = function()
-    {
-      $scope.panorama = $scope.newGoogleMap.getStreetView();
-      $scope.panorama.setPosition($scope.destinationGeoLocation);
-      $scope.panorama.setPov(
-      {
-        heading: 250,
-        pitch: 0
-      });
-    };
-
-    $scope.switchMap = function()
-    {
-      if ($scope.showMap === true)
-      {
-        $scope.showMap = false;
-        //$scope.buttonImage = "http://cs-server.usc.edu:45678/hw/hw8/images/Map.png";
-        $scope.getStreetView();
-        $scope.panorama.setVisible(true);
-      }
-      else
-      {
-        $scope.showMap = true;
-        //$scope.buttonImage = "http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png";
-        $scope.panorama.setVisible(false);
-      }
-    };
 
     $scope.checkDisableCondition = function()
     {
@@ -569,7 +446,7 @@
       // }
     };
 
-    $scope.requestSimilarApi = function()  // requestYelpApi => requestSimilarApi
+    $scope.requestSimilarApi = function()  
     {
       // similar tab
       // ebay similar api ------------------------------
