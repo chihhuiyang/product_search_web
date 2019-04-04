@@ -243,18 +243,32 @@
                 <th>Handling time</th>
                 <td>{{handlingTime}}</td>
               </tr>
-              <tr ng-if="showExpeditedShipping">
+              <tr ng-if="showExpeditedShipping && expeditedShipping">
                 <th>Expedited Shipping</th>
-                <td>{{expeditedShipping}}</td>
+                <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
-              <tr ng-if="showOneDayShipping">
+              <tr ng-if="showExpeditedShipping && !expeditedShipping">
+                  <th>Expedited Shipping</th>
+                  <td><i class="material-icons md-18" style="color:red">clear</i></td>
+                </tr>
+              <tr ng-if="showOneDayShipping && oneDayShipping">
                 <th>One Day Shipping</th>
-                <td>{{oneDayShipping}}</td>
+                <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
-              <tr ng-if="showReturnAccepted">
-                  <th>Return Accepted</th>
-                  <td>{{returnAccepted}}</td>
+              <tr ng-if="showOneDayShipping && !oneDayShipping">
+                <th>One Day Shipping</th>
+                <td><i class="material-icons md-18" style="color:red">clear</i></td>
               </tr>
+              <tr ng-if="showReturnAccepted && returnAccepted">
+                <th>Return Accepted</th>
+                <td><i class="material-icons md-18" style="color:green">done</i></td>
+              </tr>
+              <tr ng-if="showReturnAccepted && !returnAccepted">
+                <th>Return Accepted</th>
+                <td><i class="material-icons md-18" style="color:red">clear</i></td>
+              </tr>
+
+
             </table>
           </div>
 
@@ -267,16 +281,40 @@
               </tr>
               <tr ng-if="showPopularity">
                 <th>Popularity</th>
-                <td>{{popularity}}</td>
+                <td>
+
+
+                  <div class="positionRelative">
+                    <round-progress
+                    max="100"
+                    current="popularity"
+                    color="#376d33"
+                    bgcolor="#fff23f"
+                    radius="23"
+                    stroke="3"
+                    rounded="false"
+                    clockwise="false"></round-progress>
+
+                    <div class="pop_value">
+                        {{popularity}}
+                    </div>
+                  </div>
+
+
+                </td>
               </tr>
               <tr ng-if="showFeedbackRatingStar">
                 <th>Feedback Rating Star</th>
                 <td>{{feedbackRatingStar}}</td>
               </tr>
-              <tr ng-if="showTopRated">
+              <tr ng-if="showTopRated && topRated">
                 <th>Top Rated</th>
-                <td>{{topRated}}</td>
+                <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
+              <tr ng-if="showTopRated && !topRated">
+                <th>Top Rated</th>
+                <td><i class="material-icons md-18" style="color:red">clear</i></td>
+              </tr>              
               <tr ng-if="showStoreName">
                 <th>Store Name</th>
                 <td>{{storeName}}</td>

@@ -1,7 +1,7 @@
 
 (function(angular)
 {
-  var searchApp = angular.module('travelSearchMvc', [
+  var searchApp = angular.module('travelSearchMvc', [ 'angular-svg-round-progressbar',
     'ngRoute',
     'travelSearchMvc.resultsModule',
     'travelSearchMvc.detailsModule',

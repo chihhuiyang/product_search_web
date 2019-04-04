@@ -1,7 +1,7 @@
 
 (function(angular)
 {
-  var detailsModule = angular.module('travelSearchMvc.detailsModule', ['ngRoute', 'ngAnimate']);
+  var detailsModule = angular.module('travelSearchMvc.detailsModule', ['angular-svg-round-progressbar', 'ngRoute', 'ngAnimate']);
   detailsModule.config(['$routeProvider', function($routeProvider)
   {
     $routeProvider.when('/details_page', {
@@ -70,7 +70,12 @@
     }
     if ($scope.placeDetails.Seller.hasOwnProperty('TopRatedSeller')) {
       $scope.showTopRated = true;
-      $scope.topRated = $scope.placeDetails.Seller.TopRatedSeller;
+      var toprate = $scope.placeDetails.Seller.TopRatedSeller;
+      if (toprate == "true") {
+        $scope.topRated = true;
+      } else {
+        $scope.topRated = false;
+      }
     } else {
       $scope.showTopRated = false;
     }
@@ -139,21 +144,36 @@
       
         if (items[i].shippingInfo[0].hasOwnProperty('expeditedShipping')) {
           $scope.showExpeditedShipping = true;
-          $scope.expeditedShipping = items[i].shippingInfo[0].expeditedShipping[0];
+          var ship = items[i].shippingInfo[0].expeditedShipping[0];
+          if (ship == "true") {
+            $scope.expeditedShipping = true;
+          } else {
+            $scope.expeditedShipping = false;
+          }
         } else {
           $scope.showExpeditedShipping = false;
         }
 
         if (items[i].shippingInfo[0].hasOwnProperty('oneDayShippingAvailable')) {
           $scope.showOneDayShipping = true;
-          $scope.oneDayShipping = items[i].shippingInfo[0].oneDayShippingAvailable[0];
+          var oneday = items[i].shippingInfo[0].oneDayShippingAvailable[0];
+          if (oneday == "true") {
+            $scope.oneDayShipping = true;
+          } else {
+            $scope.oneDayShipping = false;
+          }
         } else {
           $scope.showOneDayShipping = false;
         }
 
         if (items[i].hasOwnProperty('returnsAccepted')) {
           $scope.showReturnAccepted = true;
-          $scope.returnAccepted = items[i].returnsAccepted[0];
+          var returnacc = items[i].returnsAccepted[0];
+          if (returnacc == "true") {
+            $scope.returnAccepted = true;
+          } else {
+            $scope.returnAccepted = false;
+          }
         } else {
           $scope.showReturnAccepted = false;
         }

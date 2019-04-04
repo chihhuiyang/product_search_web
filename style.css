@@ -3,6 +3,18 @@
   max-height: 600px !important;
 }
 
+.positionRelative{
+  position: relative;
+}
+
+.pop_value {
+  left: 9px;
+  top: 10px;
+  position: absolute;
+  font-size: 15px;
+}
+
+
 input[type="text"]:disabled
 {
   background-color:#eaeaf2;
