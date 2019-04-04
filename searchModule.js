@@ -157,7 +157,6 @@
         }
         var url_params = "http://localhost:8081/?"
         // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
-        // var url_params = "http://cs571placesearch-env.us-east-2.elasticbeanstalk.com/?"
         url_params += "category=" + $scope.myCategory + "&distance=" + $scope.myDistance +
         "&keyword=" + $scope.myKeyword + "&location=" + $scope.myInputLocation;
         console.log(url_params);

@@ -20,6 +20,33 @@ input[type="text"]:disabled
   background-color: #222121 !important;
 }
 
+.modal-title {
+  color: black !important;
+}
+
+  /* Make the image fully responsive */
+  .carousel-inner img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .carousel-control-prev-icon {
+  	background-color: black;
+  }
+  
+  .carousel-control-next-icon {
+  	background-color: black;
+  }
+  
+  .carousel_border {
+  	border: 5px solid black;
+    border-radius: 5px;
+  }
+  
+  .carousel-inner {
+    border: 3px solid white;
+  }
+
 .table {
   max-width: 1000px;
   /* border-top: 1px #dbdde0 solid !important; */
@@ -311,10 +338,12 @@ a.similar_name {
   height: 2em;
 }
 
-/* p.similar_name:hover {
+/* 
+p.similar_name:hover {
 	color: rgb(70, 156, 167);
 	text-decoration: underline !important;
-} */
+} 
+*/
 
 p.similar_price {
   font-size: 13px;

@@ -49,9 +49,51 @@
     $scope.passedJsonObj = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
     $scope.name = $scope.placeDetails.Title;
 
-    
+             // assign seller tab
+             if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackScore')) {
+              $scope.showFeedbackScore = true;
+              $scope.feedbackScore = $scope.placeDetails.Seller.FeedbackScore;
+            } else {
+              $scope.showFeedbackScore = false;
+            }
+            if ($scope.placeDetails.Seller.hasOwnProperty('PositiveFeedbackPercent')) {
+              $scope.showPopularity = true;
+              $scope.popularity = $scope.placeDetails.Seller.PositiveFeedbackPercent;
+            } else {
+              $scope.showPopularity = false;
+            }
+            if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackRatingStar')) {
+              $scope.showFeedbackRatingStar = true;
+              $scope.feedbackRatingStar = $scope.placeDetails.Seller.FeedbackRatingStar;
+            } else {
+              $scope.showFeedbackRatingStar = false;
+            }
+            if ($scope.placeDetails.Seller.hasOwnProperty('TopRatedSeller')) {
+              $scope.showTopRated = true;
+              $scope.topRated = $scope.placeDetails.Seller.TopRatedSeller;
+            } else {
+              $scope.showTopRated = false;
+            }
+          
+            if ($scope.placeDetails.hasOwnProperty('Storefront')) {
+              if ($scope.placeDetails.Storefront.hasOwnProperty('StoreName')) {
+                $scope.showStoreName = true;
+                $scope.storeName = $scope.placeDetails.Storefront.StoreName;
+              } else {
+                $scope.showStoreName = false;
+              }
+              if ($scope.placeDetails.Storefront.hasOwnProperty('StoreURL')) {
+                $scope.showBuyProductAt = true;
+                $scope.buyProductAt_url = $scope.placeDetails.Storefront.StoreURL;
+              } else {
+                $scope.showBuyProductAt = false;
+              }
+            } else {
+              $scope.showStoreName = false;
+              $scope.showBuyProductAt = false;
+            }
 
-    // shipping + seller tab
+    // shipping
     var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
     for (var i = 0; i < items.length; i++) {
       if (items[i].itemId[0] == $scope.placeDetails.ItemID) {
@@ -116,53 +158,6 @@
           $scope.showReturnAccepted = false;
         }
 
-        // assign seller tab
-        if (items[i].sellerInfo[0].hasOwnProperty('feedbackScore')) {
-          $scope.showFeedbackScore = true;
-          $scope.feedbackScore = items[i].sellerInfo[0].feedbackScore[0];
-        } else {
-          $scope.showFeedbackScore = false;
-        }
-
-        if (items[i].sellerInfo[0].hasOwnProperty('positiveFeedbackPercent')) {
-          $scope.showPopularity = true;
-          $scope.popularity = items[i].sellerInfo[0].positiveFeedbackPercent[0];
-        } else {
-          $scope.showPopularity = false;
-        }
-
-        if (items[i].sellerInfo[0].hasOwnProperty('feedbackRatingStar')) {
-          $scope.showFeedbackRatingStar = true;
-          $scope.feedbackRatingStar = items[i].sellerInfo[0].feedbackRatingStar[0];
-        } else {
-          $scope.showFeedbackRatingStar = false;
-        }
-
-        if (items[i].sellerInfo[0].hasOwnProperty('topRatedSeller')) {
-          $scope.showTopRated = true;
-          $scope.topRated = items[i].sellerInfo[0].topRatedSeller[0];
-        } else {
-          $scope.showTopRated = false;
-        }
-
-        if (items[i].hasOwnProperty('storeInfo')) {
-          if (items[i].storeInfo[0].hasOwnProperty('storeName')) {
-            $scope.showStoreName = true;
-            $scope.storeName = items[i].sellerInfo[0].storeName[0];
-          } else {
-            $scope.showStoreName = false;
-          }
-  
-          if (items[i].storeInfo[0].hasOwnProperty('storeURL')) {
-            $scope.showBuyProductAt = true;
-            $scope.buyProductAt_url = items[i].sellerInfo[0].storeURL[0];
-          } else {
-            $scope.showBuyProductAt = false;
-          }
-        } else {
-          $scope.showStoreName = false;
-          $scope.showBuyProductAt = false;
-        }
         
       }
     }
@@ -205,6 +200,7 @@
     if ($scope.placeDetails.hasOwnProperty('PictureURL')) {
       $scope.showProductImg = true;
       $scope.ProductImg = $scope.placeDetails.PictureURL;
+      console.log($scope.ProductImg);
     } else {
       $scope.showProductImg = false;
     }
