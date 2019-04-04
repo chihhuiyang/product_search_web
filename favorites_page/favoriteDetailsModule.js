@@ -142,6 +142,20 @@
      if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackScore')) {
       $scope.showFeedbackScore = true;
       $scope.feedbackScore = $scope.placeDetails.Seller.FeedbackScore;
+
+      // star color 
+      var scores = $scope.feedbackScore;
+      if (scores >= 0 && scores < 10000) {
+        $scope.overTop = false;
+        if (scores >= 0 && scores <= 9) {
+          $scope.showFeedbackRatingStar = false;
+        } else {
+          $scope.showFeedbackRatingStar = true;
+        }
+      } else {
+        $scope.overTop = true;
+      }
+
     } else {
       $scope.showFeedbackScore = false;
     }
@@ -152,8 +166,10 @@
       $scope.showPopularity = false;
     }
     if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackRatingStar')) {
-      $scope.showFeedbackRatingStar = true;
-      $scope.feedbackRatingStar = $scope.placeDetails.Seller.FeedbackRatingStar;
+      // $scope.showFeedbackRatingStar = true; // 1~9
+      var color_str = $scope.placeDetails.Seller.FeedbackRatingStar;
+      color_str = color_str.toLowerCase();
+      $scope.starColor = color_str;
     } else {
       $scope.showFeedbackRatingStar = false;
     }

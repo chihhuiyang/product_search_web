@@ -303,10 +303,15 @@
 
                 </td>
               </tr>
-              <tr ng-if="showFeedbackRatingStar">
+              <tr ng-if="showFeedbackRatingStar && overTop">
                 <th>Feedback Rating Star</th>
-                <td>{{feedbackRatingStar}}</td>
+                <td><i class="material-icons md-18" ng-style="{'color': starColor}">stars</i></td>
               </tr>
+              <tr ng-if="showFeedbackRatingStar && !overTop">
+                <th>Feedback Rating Star</th>
+                <td><i class="material-icons md-18" ng-style="{'color': starColor}">star_border</i></td>
+              </tr>
+
               <tr ng-if="showTopRated && topRated">
                 <th>Top Rated</th>
                 <td><i class="material-icons md-18" style="color:green">done</i></td>
