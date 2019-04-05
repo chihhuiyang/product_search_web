@@ -5,7 +5,7 @@
     'productSearchModel.resultsModule',
     'productSearchModel.detailsModule',
     'productSearchModel.wishModule',
-    'productSearchModel.favoriteDetailsModule'
+    'productSearchModel.wishDetailsModule'
   ]);
 
   searchApp.config(['$qProvider', function ($qProvider) {

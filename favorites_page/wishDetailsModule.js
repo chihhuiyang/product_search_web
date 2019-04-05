@@ -1,14 +1,14 @@
 
 (function(angular) {
-  var favoriteDetailsModule = angular.module('productSearchModel.favoriteDetailsModule', ['ngRoute', 'ngAnimate']);
-  favoriteDetailsModule.config(['$routeProvider', function($routeProvider) {
+  var wishDetailsModule = angular.module('productSearchModel.wishDetailsModule', ['ngRoute', 'ngAnimate']);
+  wishDetailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/favoriteDetails_page', {
       templateUrl: 'details_page/detailsView.html',
       controller: 'favoriteDetailsController'
     });
   }]);
 
-  favoriteDetailsModule.service('favoriteDetailsDataService', function(favoriteDataService) {
+  wishDetailsModule.service('favoriteDetailsDataService', function(favoriteDataService) {
     this.setData = function() {
       favoriteDataService.setData('newVal');
     };
@@ -17,7 +17,7 @@
     };
   });
 
-  favoriteDetailsModule.controller('favoriteDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
+  wishDetailsModule.controller('favoriteDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
     $rootScope.ifSlide = true;
     $rootScope.moveToRight = false;
     $rootScope.detailWishIconClass = "material-icons md-18";
