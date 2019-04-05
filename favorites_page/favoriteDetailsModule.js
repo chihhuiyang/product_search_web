@@ -23,13 +23,13 @@
     $rootScope.detailWishIconClass = "material-icons md-18";
     $rootScope.shopping_cart = "add_shopping_cart";
 
-    $scope.dataPack = favoriteDetailsDataService.getData();
-    console.log($scope.dataPack);
+    $scope.favData = favoriteDetailsDataService.getData();
+    console.log($scope.favData);
     console.log($rootScope);
-    $scope.storageKey = $scope.dataPack[0];
-    $scope.myLocationOption = $scope.dataPack[1];
-    $scope.singleItemDetail = $scope.dataPack[3];
-    $scope.photo_arr = $scope.dataPack[4];  // keyword + itemId
+    $scope.storageKey = $scope.favData[0];
+    $scope.myLocationOption = $scope.favData[1];
+    $scope.singleItemDetail = $scope.favData[3];
+    $scope.photo_arr = $scope.favData[4];  // keyword + itemId
     $scope.name = $scope.singleItemDetail.Title;
     console.log(window.localStorage);
 
@@ -56,7 +56,7 @@
     if ($scope.myLocationOption === "option1") {  // current location
 
     } else { // TODO : zip code location
-      $scope.myInputLocation = $scope.dataPack[2];
+      $scope.myInputLocation = $scope.favData[2];
     }
 
 
@@ -510,34 +510,28 @@
     $scope.addToFavorite = function() {
       console.log($rootScope.detailWishIconClass);
 
-      if ($rootScope.detailWishIconClass === "material-icons md-18")
-      {
+      if ($rootScope.detailWishIconClass === "material-icons md-18") {
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
         $scope.passData = [];
         $scope.passData[0] = $scope.singleItemDetail;
-        $scope.savedData[1] = [];
-        $scope.savedData[1][0] = $scope.passedKeyword;
-        $scope.savedData[1][1] = $scope.singleItemDetail.ItemID;
+        $scope.input_search_single_api_time_Data[1] = [];
+        $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
+        $scope.input_search_single_api_time_Data[1][1] = $scope.singleItemDetail.ItemID;
 
         $scope.passData[2] = $rootScope.tempFavoriteRow;
         $scope.passData[3] = $scope.myLocationOption;
         //console.log($scope.myLocationOption);
-        if ($scope.myLocationOption === "option1")
-        {
-          $scope.savedData[4] = "90007";
-        }
-        else
-        {
+        if ($scope.myLocationOption === "option1") {
+          $scope.input_search_single_api_time_Data[4] = "90007";
+        } else {
           $scope.passData[4] = $scope.myInputLocation;
         }
         var timeStamp = Date.now();
         $scope.passData[5] = timeStamp;
         console.log($scope.passData);
         localStorage.setItem($scope.storageKey, JSON.stringify($scope.passData));
-      }
-      else
-      {
+      } else {
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
         localStorage.removeItem($scope.singleItemDetail.ItemID);

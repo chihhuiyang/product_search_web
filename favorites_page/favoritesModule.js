@@ -204,19 +204,19 @@
       console.log(parsedData);    // parsedData[2]: ebay search api for this item
       var myLocationOption = parsedData[3];
       var locationInfo = parsedData[4];
-      $scope.dataPack = [];
-      $scope.dataPack[0] = myKey;
-      $scope.dataPack[1] = myLocationOption;
-      $scope.dataPack[2] = locationInfo;
-      $scope.dataPack[3] = JSON.parse(localStorage.getItem(myKey))[0];
-      $scope.dataPack[4] = JSON.parse(localStorage.getItem(myKey))[1];
+      $scope.favData = [];
+      $scope.favData[0] = myKey;
+      $scope.favData[1] = myLocationOption;
+      $scope.favData[2] = locationInfo;
+      $scope.favData[3] = JSON.parse(localStorage.getItem(myKey))[0];
+      $scope.favData[4] = JSON.parse(localStorage.getItem(myKey))[1];
 
       
-      $scope.dataPack[5] = parsedData[2]; // parsedData[2]: ebay search api for this itemId
+      $scope.favData[5] = parsedData[2]; // parsedData[2]: ebay search api for this itemId
 
-      //console.log($scope.dataPack);
+      //console.log($scope.favData);
       $rootScope.favoriteRowIndex = sendIndex;
-      favoriteDataService.setData($scope.dataPack);
+      favoriteDataService.setData($scope.favData);
       $rootScope.ifClickedDetails = false;
       $rootScope.ifClickedFavoriteDetails = true;
       for (var i = 0; i < $rootScope.favoriteRows.length; i++) {
