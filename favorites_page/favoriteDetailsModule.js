@@ -1,6 +1,6 @@
 
 (function(angular) {
-  var favoriteDetailsModule = angular.module('travelSearchMvc.favoriteDetailsModule', ['ngRoute', 'ngAnimate']);
+  var favoriteDetailsModule = angular.module('productSearchModel.favoriteDetailsModule', ['ngRoute', 'ngAnimate']);
   favoriteDetailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/favoriteDetails_page', {
       templateUrl: 'details_page/detailsView.html',

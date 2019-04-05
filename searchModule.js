@@ -1,11 +1,11 @@
 
 (function(angular) {
-  var searchApp = angular.module('travelSearchMvc', [ 'angular-svg-round-progressbar',
+  var searchApp = angular.module('productSearchModel', [ 'angular-svg-round-progressbar',
     'ngRoute',
-    'travelSearchMvc.resultsModule',
-    'travelSearchMvc.detailsModule',
-    'travelSearchMvc.favoritesModule',
-    'travelSearchMvc.favoriteDetailsModule'
+    'productSearchModel.resultsModule',
+    'productSearchModel.detailsModule',
+    'productSearchModel.wishModule',
+    'productSearchModel.favoriteDetailsModule'
   ]);
 
   searchApp.config(['$qProvider', function ($qProvider) {

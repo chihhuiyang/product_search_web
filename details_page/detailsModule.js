@@ -1,6 +1,6 @@
 
 (function(angular) {
-  var detailsModule = angular.module('travelSearchMvc.detailsModule', ['angular-svg-round-progressbar', 'ngRoute', 'ngAnimate']);
+  var detailsModule = angular.module('productSearchModel.detailsModule', ['angular-svg-round-progressbar', 'ngRoute', 'ngAnimate']);
   detailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/details_page', {
       templateUrl: 'details_page/detailsView.html',

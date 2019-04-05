@@ -1,6 +1,6 @@
 
 (function(angular) {
-  var resultsModule = angular.module('travelSearchMvc.resultsModule', ['angular-svg-round-progressbar', 'ngRoute']);
+  var resultsModule = angular.module('productSearchModel.resultsModule', ['angular-svg-round-progressbar', 'ngRoute']);
   resultsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/results_page', {
       templateUrl: 'results_page/resultsView.html',

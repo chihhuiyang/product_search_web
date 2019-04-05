@@ -1,14 +1,14 @@
 
 (function(angular) {
-  var favoritesModule = angular.module('travelSearchMvc.favoritesModule', ['ngRoute']);
-  favoritesModule.config(['$routeProvider', function($routeProvider) {
+  var wishModule = angular.module('productSearchModel.wishModule', ['ngRoute']);
+  wishModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/favorites_page', {
       templateUrl: 'favorites_page/favoritesView.html',
       controller: 'favoritesController'
     });
   }]);
 
-  favoritesModule.service('favoriteDataService', function() {
+  wishModule.service('favoriteDataService', function() {
     this.setData = function(val) {
       this.myData = val;
     };
@@ -17,7 +17,7 @@
     };
   });
 
-  favoritesModule.controller('favoritesController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q) {
+  wishModule.controller('favoritesController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q) {
     console.log($rootScope);
     console.log($scope);
 
