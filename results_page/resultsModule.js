@@ -58,11 +58,9 @@
           }
         }
       }
-      // if ($rootScope.currentPage === 1) 
       $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
       $scope.showNext = true;
       $scope.showPrevious = true;
-      // $scope.rowData1 = $scope.rowData2 = $scope.rowData3
       
     }
     else
@@ -89,6 +87,20 @@
           console.log($rootScope.jsonData);
 
           $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+
+          
+          // free shipping
+          for (var i = 0; i < $scope.rowData.length; i++) {
+            $scope.rowData[i]['shipCost'] = $scope.rowData[i].shippingInfo[0]['shippingServiceCost'][0]['__value__'];
+            var ship_cost = parseFloat($scope.rowData[i]['shipCost']);
+            if (ship_cost == 0.0) {
+              $scope.rowData[i]['shipCost'] = "Free Shipping";
+            } else {
+              $scope.rowData[i]['shipCost'] = "$" + $scope.rowData[i]['shipCost'];
+            }
+          }
+
+
           for (var i = 0; i < $scope.rowData.length; i++) {
             if ($scope.rowData[i]['ifSaved'] !== true) {
               $scope.rowData[i]['wishIconClass'] = "material-icons md-18";
@@ -105,7 +117,12 @@
             }
           }
           console.log($scope.rowData);
+
           $scope.rowData1 = $scope.rowData;
+
+
+
+          
         }
       }
 
@@ -428,9 +445,6 @@
 
 
           if ($scope.myLocationOption === "option1") {
-            // $scope.currentLocation_lat = $scope.$parent.currentlat;
-            // $scope.currentLocation_lng = $scope.$parent.currentlng;
-            // $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
             $scope.passData[4] = "90007";
           }
           else {
@@ -462,7 +476,6 @@
         $scope.rowData[index]['wishIconClass'] = "material-icons md-18";
         $scope.rowData[index]['shopping_cart'] = "add_shopping_cart";
 
-        // if ($rootScope.currentPage === 1)
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = false;
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "add_shopping_cart";

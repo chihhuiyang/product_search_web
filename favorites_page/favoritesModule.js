@@ -42,7 +42,7 @@
 
     $scope.sortedStorage.sort(function(x, y)
     {
-      return x[5] - y[5];
+      return x[5] - y[5]; // sort by time
     })
     console.log($scope.sortedStorage);
 
@@ -76,7 +76,7 @@
     }
 
     $scope.favoriteRowData = [];
-    for (var i = 0; i < $rootScope.favoriteRows.length && i < 20; i++)
+    for (var i = 0; i < $rootScope.favoriteRows.length && i < 10; i++)
     {
       $scope.favoriteRowData[i] = $rootScope.favoriteRows[i];
     }
@@ -85,12 +85,12 @@
     $rootScope.favoriteCurrentPage = 1;
     $scope.arrangePages = function()
     {
-      $rootScope.totalFavoritePage = ~~($rootScope.favoriteRows.length / 20) + 1;
+      $rootScope.totalFavoritePage = ~~($rootScope.favoriteRows.length / 10) + 1;
 
       for (var i = 0; i < $rootScope.totalFavoritePage; i++)
       {
         $rootScope.allFavoriteData[i] = [];
-        for (var j = i * 20; j < 20 * (i+1); j++)
+        for (var j = i * 10; j < 10 * (i+1); j++)
         {
           if (typeof $rootScope.favoriteRows[j] !== 'undefined')
           {
@@ -102,7 +102,7 @@
 
     $scope.arrangePages();
     console.log($rootScope.allFavoriteData);
-    $scope.numOfFavorite = ($rootScope.totalFavoritePage-1) * 20 + $rootScope.allFavoriteData[$rootScope.totalFavoritePage-1].length;
+    $scope.numOfFavorite = ($rootScope.totalFavoritePage-1) * 10 + $rootScope.allFavoriteData[$rootScope.totalFavoritePage-1].length;
     if ($rootScope.favoriteCurrentPage === 1)
     {
       if ($scope.numOfFavorite <= 20)
@@ -121,7 +121,7 @@
     {
       if ($rootScope.favoriteCurrentPage === 1)
       {
-        if ($scope.numOfFavorite <= 20)
+        if ($scope.numOfFavorite <= 10)
         {
           $scope.showPrevious = false;
           $scope.showNext = false;
@@ -171,7 +171,7 @@
 
     $scope.removeLocalStorage = function(index)
     {
-      var deleteIndex = ($rootScope.favoriteCurrentPage-1)*20 + index;
+      var deleteIndex = ($rootScope.favoriteCurrentPage-1)*10 + index;
       var deleteKey = $rootScope.favoriteRows[deleteIndex]['itemId'][0];
       $rootScope.favoriteRows.splice(deleteIndex, 1);
       $scope.arrangePages();
@@ -182,26 +182,20 @@
       {
         $scope.getPreviousPage();
       }
-      if ($rootScope.favoriteRows.length === 0)
-      {
+      if ($rootScope.favoriteRows.length === 0) {
         $scope.ifHasFavoriteItems = false;
-      }
-      else
-      {
+      } else {
         $scope.ifHasFavoriteItems = true;
       }
 
-      if (typeof $rootScope.jsonData !== 'undefined')
-      {
-        for (var i = 0; i < $rootScope.jsonData.length; i++)
-        {
-          for (var j = 0; j < $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++)
-          {
-            if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $scope.sortedStorage[deleteIndex][6])
-            {
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifSaved'] = false;
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['wishIconClass'] = "material-icons md-18";
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['shopping_cart'] = "add_shopping_cart";
+      if (typeof $rootScope.jsonData !== 'undefined') {
+        for (var i = 0; i < $rootScope.jsonData.length; i++) {
+          var items = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+          for (var j = 0; j < items.length; j++) {
+            if (items[j]['itemId'][0] === $scope.sortedStorage[deleteIndex][6]) {
+              items[j]['ifSaved'] = false;
+              items[j]['wishIconClass'] = "material-icons md-18";
+              items[j]['shopping_cart'] = "add_shopping_cart";
             }
           }
         }
@@ -253,8 +247,7 @@
       favoriteDataService.setData($scope.dataPack);
       $rootScope.ifClickedDetails = false;
       $rootScope.ifClickedFavoriteDetails = true;
-      for (var i = 0; i < $rootScope.favoriteRows.length; i++)
-      {
+      for (var i = 0; i < $rootScope.favoriteRows.length; i++) {
         $rootScope.favoriteRows[i]['ifHighlight'] = false;
       }
       $rootScope.favoriteRows[sendIndex]['ifHighlight'] = true;

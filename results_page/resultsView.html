@@ -25,18 +25,21 @@
                   </tr>
                 </thead>
                 <tbody>
+
                   <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.ifHighlight}">
                     <td><b>{{$index + 1}}</b></td>
                     <td><img src='{{x.galleryURL[0]}}' height='40px' width='40px'/></td>
                     <td class="name_link" ng-click="requestDetails($index);">{{x.title[0]}}</td>
                     <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
-                    <td>${{x.shippingInfo[0]['shippingServiceCost'][0]['__value__']}}</td>
+                    <td>{{x.shipCost}}</td> 
                     <td>{{x.postalCode[0]}}</td>
                     <td>{{x.sellerInfo[0]['sellerUserName'][0]}}</td>
-                    <td>
+                    <td> 
                       <button type="button" class="btn btn-default btn-sm" ng-click="saveToLocalStorage($index)">
                         <i ng-class="x.wishIconClass">{{x.shopping_cart}}</i>
                       </button>
+
+
                     </td>
                   </tr>
                 </tbody>

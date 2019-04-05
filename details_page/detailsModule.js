@@ -203,12 +203,9 @@
     console.log($scope.placeDetails);
 
     $scope.myLocationOption = $scope.$parent.locationOption;
-    if ($scope.myLocationOption === "option1")  // current location
-    {
+    if ($scope.myLocationOption === "option1") { // current location
 
-    }
-    else  // TODO : zip code location
-    {
+    } else { // TODO : zip code location
       $scope.myInputLocation = $scope.$parent.myInputLocation;
     }
 
@@ -292,18 +289,6 @@
     };
 
 
-
-    $scope.showGoogleReviews = function()
-    {
-      $scope.reviewTypeButtonName = "Google Reviews";
-      $scope.reviewSelection = true;
-    };
-
-    $scope.showYelpReviews = function()
-    {
-      $scope.reviewTypeButtonName = "Yelp Reviews"
-      $scope.reviewSelection = false;
-    };
 
     $scope.setArray = function(params)
     {
@@ -486,7 +471,6 @@
         console.log($scope.similar_items);
 
 
-        // getReviews(); 
         $scope.reviewTypeButtonName = "Default";
         $scope.reviewOrderButtonName = "Ascending";
         $scope.reviewSelection = true;
@@ -495,7 +479,6 @@
         } else {
           $scope.ifHasSimilar = true;
           $scope.similar_items_arr = $scope.similar_items;
-
         }
         
       },
@@ -508,18 +491,6 @@
 
     };
 
-    $scope.ifHasYelpReviews = function()
-    {
-      if (typeof $scope.yelpReviewsArr === 'undefined' || $scope.yelpReviewsArr.length === 0)
-      {
-        //console.log(typeof $scope.yelpReviewsArr);
-        $scope.ifHasYelpReview = false;
-      }
-      else
-      {
-        $scope.ifHasYelpReview = true;
-      }
-    };
 
     $scope.openFacebookWindow = function()
     {
@@ -565,7 +536,6 @@
         var myKey = $scope.passedItemId;
         $scope.savedData = [];
         $scope.savedData[0] = $scope.placeDetails;  // single api response
-        // $scope.savedData[1] = $scope.photo_arr;
         $scope.savedData[1] = [];
         $scope.savedData[1][0] = $scope.passedKeyword;
         $scope.savedData[1][1] = $scope.passedItemId;
@@ -575,7 +545,6 @@
         console.log($scope.myLocationOption);
         if ($scope.myLocationOption === "option1")
         {
-          // $scope.savedData[4] = $scope.startGeoLocation;
           $scope.savedData[4] = "90007";
         }
         else

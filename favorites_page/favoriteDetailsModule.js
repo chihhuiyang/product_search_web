@@ -44,31 +44,24 @@
 
 
     $scope.currentStorage = window.localStorage;
-    for (var i = 0; i < $scope.currentStorage.length; i++)
-    {
+    for (var i = 0; i < $scope.currentStorage.length; i++) {
       var currentKey = $scope.currentStorage.key(i);
-      if (currentKey === $scope.storageKey)
-      {
+      if (currentKey === $scope.storageKey) {
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
       }
     }
 
-    for (var i = 0; i < $rootScope.favoriteRows.length; i++)
-    {
-      if ($rootScope.favoriteRows[i]['itemId'][0] === $scope.placeDetails.ItemID)
-      {
+    for (var i = 0; i < $rootScope.favoriteRows.length; i++)  {
+      if ($rootScope.favoriteRows[i]['itemId'][0] === $scope.placeDetails.ItemID) {
         $rootScope.tempFavoriteRow = $rootScope.favoriteRows[i];
       }
     }
 
 
-    if ($scope.myLocationOption === "option1")
-    {
+    if ($scope.myLocationOption === "option1") {
 
-    }
-    else
-    {
+    } else {
       $scope.myInputLocation = $scope.dataPack[2];
     }
 
@@ -281,9 +274,6 @@
     }
 
 
-
-
-
     $scope.checkDisableCondition = function()
     {
       $scope.mapForm.mapInputLocation.$setPristine();
@@ -326,17 +316,7 @@
       }
     };
 
-    $scope.showGoogleReviews = function()
-    {
-      $scope.reviewTypeButtonName = "Google Reviews";
-      $scope.reviewSelection = true;
-    };
 
-    $scope.showYelpReviews = function()
-    {
-      $scope.reviewTypeButtonName = "Yelp Reviews"
-      $scope.reviewSelection = false;
-    };
 
     $scope.setArray = function(params)
     {
@@ -490,8 +470,6 @@
         $scope.similar_items = response.data.getSimilarItemsResponse.itemRecommendations.item;
         console.log($scope.similar_items);
 
-
-        // getReviews(); 
         $scope.reviewTypeButtonName = "Default";
         $scope.reviewOrderButtonName = "Ascending";
         $scope.reviewSelection = true;
@@ -500,7 +478,6 @@
         } else {
           $scope.ifHasSimilar = true;
           $scope.similar_items_arr = $scope.similar_items;
-
         }
         
       },
@@ -514,19 +491,6 @@
     };
 
 
-
-    $scope.ifHasYelpReviews = function()
-    {
-      if (typeof $scope.yelpReviewsArr === 'undefined' || $scope.yelpReviewsArr.length === 0)
-      {
-        //console.log(typeof $scope.yelpReviewsArr);
-        $scope.ifHasYelpReview = false;
-      }
-      else
-      {
-        $scope.ifHasYelpReview = true;
-      }
-    };
 
     $scope.openFacebookWindow = function()
     {
@@ -567,7 +531,6 @@
         $rootScope.shopping_cart = "remove_shopping_cart";
         $scope.passData = [];
         $scope.passData[0] = $scope.placeDetails;
-        // $scope.passData[1] = $scope.photo_arr;
         $scope.savedData[1] = [];
         $scope.savedData[1][0] = $scope.passedKeyword;
         $scope.savedData[1][1] = $scope.placeDetails.ItemID;
@@ -577,7 +540,6 @@
         //console.log($scope.myLocationOption);
         if ($scope.myLocationOption === "option1")
         {
-          // $scope.passData[4] = $scope.startGeoLocation;
           $scope.savedData[4] = "90007";
         }
         else
