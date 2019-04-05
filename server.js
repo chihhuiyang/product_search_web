@@ -9,9 +9,6 @@ var url = require("url");
 var serverApp = express();
 var router = express.Router();
 
-const YELP_APIKEY = "SE7TiH0yZ0PTeQaRPHJANY_Dmdf5GYRbheeevXG7ydRg7eX5J3L9s6utXD9cOUR-6HmCnnCbHak-CaVS9lY6hvo-k8X3F-D9SDQp6XvG7YH1lNrR2aF7uFrWuRq_WnYx";
-const yelp = require('yelp-fusion');
-const client = yelp.client(YELP_APIKEY);
 
 serverApp.all('*', function(req, res, next)
 {

@@ -159,7 +159,7 @@ td.name_link:hover {
 .btn-extra:active, .btn-extra:focus
 {
   color: white !important;
-  background-color: #1a6bed !important;
+  background-color: #176aef !important;
 }
 
 .star
@@ -224,9 +224,8 @@ td.name_link:hover {
   display:inline-block;
 }
 
-a
-{
-  color: #1a6bed;
+a {
+  color: #176aef;
 }
 
 .star-ratings-css
