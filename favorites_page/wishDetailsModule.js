@@ -4,7 +4,7 @@
   wishDetailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/favoriteDetails_page', {
       templateUrl: 'details_page/detailsView.html',
-      controller: 'favoriteDetailsController'
+      controller: 'wishDetailsController'
     });
   }]);
 
@@ -17,7 +17,7 @@
     };
   });
 
-  wishDetailsModule.controller('favoriteDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
+  wishDetailsModule.controller('wishDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
     $rootScope.ifSlide = true;
     $rootScope.moveToRight = false;
     $rootScope.detailWishIconClass = "material-icons md-18";

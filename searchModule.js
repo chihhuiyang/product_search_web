@@ -2,7 +2,7 @@
 (function(angular) {
   var searchApp = angular.module('productSearchModel', [ 'angular-svg-round-progressbar',
     'ngRoute',
-    'productSearchModel.resultsModule',
+    'productSearchModel.productModule',
     'productSearchModel.detailsModule',
     'productSearchModel.wishModule',
     'productSearchModel.wishDetailsModule'

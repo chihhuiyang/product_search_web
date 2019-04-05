@@ -1,14 +1,14 @@
 
 (function(angular) {
-  var resultsModule = angular.module('productSearchModel.resultsModule', ['angular-svg-round-progressbar', 'ngRoute']);
-  resultsModule.config(['$routeProvider', function($routeProvider) {
+  var productModule = angular.module('productSearchModel.productModule', ['angular-svg-round-progressbar', 'ngRoute']);
+  productModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/results_page', {
       templateUrl: 'results_page/resultsView.html',
-      controller: 'resultsController'
+      controller: 'productController'
     });
   }]);
 
-  resultsModule.service('resultsDataService', function() {
+  productModule.service('resultsDataService', function() {
     this.setData = function(val)
     {
       this.myData = val;
@@ -19,7 +19,7 @@
     };
   });
 
-  resultsModule.controller('resultsController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q) {
+  productModule.controller('productController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q) {
     $rootScope.ifSlide = false;
     $rootScope.moveToRight = true;
     $scope.myLocationOption = $scope.$parent.locationOption;
