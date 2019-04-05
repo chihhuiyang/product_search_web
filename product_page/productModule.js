@@ -81,7 +81,18 @@
 
           $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
 
+         
           
+          // short title
+          for (var i = 0; i < $scope.rowData.length; i++) {
+            $scope.rowData[i]['short_title'] = $scope.rowData[i]['title'][0];
+            var title_str = $scope.rowData[i]['title'][0];
+            if (title_str.length > 35) {
+              $scope.rowData[i]['short_title'] = title_str.substring(0,35) + "...";
+            }
+          }
+
+
           // free shipping
           for (var i = 0; i < $scope.rowData.length; i++) {
             $scope.rowData[i]['shipCost'] = $scope.rowData[i].shippingInfo[0]['shippingServiceCost'][0]['__value__'];

@@ -28,7 +28,7 @@ input[type="text"]:disabled
 #mainContainer
 {
   color: white;
-  max-width: 1000px !important;
+  max-width: 1150px !important;
   padding-top: 10px !important;
   border-style: solid !important;
   border-color: #c1c1c1 !important;
@@ -65,8 +65,7 @@ input[type="text"]:disabled
   }
 
 .table {
-  max-width: 1000px;
-  /* border-top: 1px #dbdde0 solid !important; */
+  max-width: 1200px;
 }
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
@@ -74,7 +73,7 @@ input[type="text"]:disabled
 }
 
 table.hoverTable tr:hover td {
-  background-color: #d6d1d1;
+  background-color: #424246;
 }
 
 
@@ -86,7 +85,7 @@ i.material-icons {
 }
 
 .material-icons.yellow {
-  color: rgba(238, 199, 25, 0.884); 
+  color: rgba(179, 153, 41, 0.884); 
 }
 
 td.name_link {
@@ -195,17 +194,17 @@ td.name_link:hover {
 
 .detailsPage
 {
-  max-width: 1000px !important;
+  max-width: 1100px !important;
 }
 
 .resultsTable
 {
-  max-width: 1000px !important;
+  max-width: 1100px !important;
 }
 
 .similarTable
 {
-  max-width: 1000px !important;
+  max-width: 1100px !important;
 }
 
 
@@ -305,7 +304,7 @@ img.googlePhoto {
 
 .noRecords
 {
-  max-width: 1000px;
+  max-width: 1100px;
   background-color: #fff2c1;
   text-align: left;
   padding-top: 8px;
@@ -400,19 +399,9 @@ p.similar_days {
   background-color: none !important;
 }
 
-.glyphicon-star
-{
-  color: #e8bc2c !important;
-}
-
-.reviewStar
-{
-  color: #e7711b !important;
-}
-
 .failedSearch
 {
-  max-width: 1000px;
+  max-width: 1100px;
   background-color: #f2b8bc;
   text-align: left;
   padding-top: 8px;
@@ -422,12 +411,12 @@ p.similar_days {
 
 .highlightRow
 {
-  background-color: #f9db95;
+  background-color: #c7c7c7;
 }
 
 .row
 {
-  max-width: 1000px !important;
+  max-width: 1100px !important;
 }
 
 

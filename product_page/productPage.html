@@ -18,24 +18,26 @@
                     <th>Image</th>
                     <th>Title</th>
                     <th>Price</th>
-                    <th>Shipping</th>
+                    <th width="150px">Shipping</th>
                     <th>Zip</th>
                     <th>Seller</th>
-                    <th>Wish List</th>
+                    <th width="100px">Wish List</th>
                   </tr>
                 </thead>
                 <tbody>
 
                   <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.b_picked}">
                     <td><b>{{$index + 1}}</b></td>
-                    <td><img src='{{x.galleryURL[0]}}' height='80px' width='80px'/></td>
-                    <td class="name_link" ng-click="requestDetails($index);">{{x.title[0]}}</td>
+                    <td><img src='{{x.galleryURL[0]}}' height='100px' width='100px'/></td>
+                    <!-- <td class="name_link" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td> -->
+                    <td class="name_link" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
+
                     <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
                     <td>{{x.shipCost}}</td> 
                     <td>{{x.postalCode[0]}}</td>
                     <td>{{x.sellerInfo[0]['sellerUserName'][0]}}</td>
                     <td> 
-                      <button type="button" class="btn btn-default btn-sm" ng-click="saveToLocalStorage($index)">
+                      <button type="button" class="btn btn-default" ng-click="saveToLocalStorage($index)">
                         <i ng-class="x.wishIconClass">{{x.shopping_cart}}</i>
                       </button>
                     </td>
