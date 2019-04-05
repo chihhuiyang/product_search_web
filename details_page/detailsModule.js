@@ -1,29 +1,23 @@
 
-(function(angular)
-{
+(function(angular) {
   var detailsModule = angular.module('travelSearchMvc.detailsModule', ['angular-svg-round-progressbar', 'ngRoute', 'ngAnimate']);
-  detailsModule.config(['$routeProvider', function($routeProvider)
-  {
+  detailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/details_page', {
       templateUrl: 'details_page/detailsView.html',
       controller: 'detailsController'
     });
   }]);
 
-  detailsModule.service('detailsDataService', function(resultsDataService)
-  {
-    this.setData = function(newVal)
-    {
+  detailsModule.service('detailsDataService', function(resultsDataService) {
+    this.setData = function(newVal) {
       resultsDataService.setData(newVal);
     };
-    this.getData = function()
-    {
+    this.getData = function() {
       return resultsDataService.getData();
     };
   });
 
-  detailsModule.controller('detailsController', ['$scope', '$http', '$rootScope', 'detailsDataService', '$location', function($scope, $http, $rootScope, detailsDataService, $location)
-  {
+  detailsModule.controller('detailsController', ['$scope', '$http', '$rootScope', 'detailsDataService', '$location', function($scope, $http, $rootScope, detailsDataService, $location) {
     $rootScope.moveToRight = false;
     $rootScope.detailWishIconClass = $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].wishIconClass;
     $rootScope.shopping_cart = $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].shopping_cart;
@@ -271,12 +265,10 @@
 
 
 
-    $scope.checkDisableCondition = function()
-    {
+    $scope.checkDisableCondition = function() {
       $scope.mapForm.mapInputLocation.$setPristine();
       $scope.mapForm.mapInputLocation.$setUntouched();
-      if ($scope.mapForm.mapInputLocation.$invalid)
-      {
+      if ($scope.mapForm.mapInputLocation.$invalid) {
         return true;
       }
     };
@@ -492,8 +484,7 @@
     };
 
 
-    $scope.openFacebookWindow = function()
-    {
+    $scope.openFacebookWindow = function() {
       if ($scope.placeDetails.hasOwnProperty('ViewItemURLForNaturalSearch')) {
         var placeUrl = $scope.placeDetails.ViewItemURLForNaturalSearch;
       } else {
@@ -525,10 +516,8 @@
       }
     }
 
-    $scope.addToFavorite = function()
-    {
-      if ($rootScope.detailWishIconClass === "material-icons md-18")
-      {
+    $scope.addToFavorite = function() {
+      if ($rootScope.detailWishIconClass === "material-icons md-18") {
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
         $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
@@ -543,20 +532,15 @@
         $scope.savedData[2] = $rootScope.curRowData;  // ebay search api for this itemId
         $scope.savedData[3] = $scope.myLocationOption;
         console.log($scope.myLocationOption);
-        if ($scope.myLocationOption === "option1")
-        {
+        if ($scope.myLocationOption === "option1") {
           $scope.savedData[4] = "90007";
-        }
-        else
-        {
+        } else {
           $scope.savedData[4] = $scope.myInputLocation;
         }
         var timeStamp = Date.now();
         $scope.savedData[5] = timeStamp;
         localStorage.setItem(myKey, JSON.stringify($scope.savedData));
-      }
-      else
-      {
+      } else {
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
         $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;

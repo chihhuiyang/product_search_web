@@ -1,29 +1,23 @@
 
-(function(angular)
-{
+(function(angular) {
   var favoriteDetailsModule = angular.module('travelSearchMvc.favoriteDetailsModule', ['ngRoute', 'ngAnimate']);
-  favoriteDetailsModule.config(['$routeProvider', function($routeProvider)
-  {
+  favoriteDetailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/favoriteDetails_page', {
       templateUrl: 'details_page/detailsView.html',
       controller: 'favoriteDetailsController'
     });
   }]);
 
-  favoriteDetailsModule.service('favoriteDetailsDataService', function(favoriteDataService)
-  {
-    this.setData = function()
-    {
+  favoriteDetailsModule.service('favoriteDetailsDataService', function(favoriteDataService) {
+    this.setData = function() {
       favoriteDataService.setData('newVal');
     };
-    this.getData = function()
-    {
+    this.getData = function() {
       return favoriteDataService.getData();
     };
   });
 
-  favoriteDetailsModule.controller('favoriteDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location)
-  {
+  favoriteDetailsModule.controller('favoriteDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
     $rootScope.ifSlide = true;
     $rootScope.moveToRight = false;
     $rootScope.detailWishIconClass = "material-icons md-18";
@@ -59,9 +53,9 @@
     }
 
 
-    if ($scope.myLocationOption === "option1") {
+    if ($scope.myLocationOption === "option1") {  // current location
 
-    } else {
+    } else { // TODO : zip code location
       $scope.myInputLocation = $scope.dataPack[2];
     }
 
@@ -274,25 +268,21 @@
     }
 
 
-    $scope.checkDisableCondition = function()
-    {
+    $scope.checkDisableCondition = function() {
       $scope.mapForm.mapInputLocation.$setPristine();
       $scope.mapForm.mapInputLocation.$setUntouched();
-      if ($scope.mapForm.mapInputLocation.$invalid)
-      {
+      if ($scope.mapForm.mapInputLocation.$invalid) {
         return true;
       }
     };
 
-    $scope.autoComplete = function()
-    {
+    $scope.autoComplete = function() {
       var input = document.getElementById('mapInputLocation');
       var options = {types: ['address']};
       $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
     };
 
-    $scope.getReviews = function()
-    {
+    $scope.getReviews = function() {
       $scope.reviewTypeButtonName = "Google Reviews";
       $scope.reviewOrderButtonName = "Default Order";
       $scope.reviewSelection = true;
@@ -318,13 +308,11 @@
 
 
 
-    $scope.setArray = function(params)
-    {
+    $scope.setArray = function(params) {
       return new Array(params);
     };
 
-    $scope.getDefaultOrder = function()
-    {
+    $scope.getDefaultOrder = function() {
       $scope.reviewOrderButtonName = "Default Order";
       $scope.googleReviewsArr = $scope.googleReviews.slice(0);
       $scope.yelpReviewsArr = $scope.yelpReviews.slice(0);
@@ -449,8 +437,7 @@
     };
 
 
-    $scope.requestSimilarApi = function()
-    {
+    $scope.requestSimilarApi = function() {
       // similar tab
       // ebay similar api ------------------------------
       var inputSimilarData = {
@@ -492,8 +479,7 @@
 
 
 
-    $scope.openFacebookWindow = function()
-    {
+    $scope.openFacebookWindow = function() {
       if ($scope.placeDetails.hasOwnProperty('ViewItemURLForNaturalSearch')) {
         var placeUrl = $scope.placeDetails.ViewItemURLForNaturalSearch;
       } else {
@@ -521,8 +507,7 @@
       }
     }
 
-    $scope.addToFavorite = function()
-    {
+    $scope.addToFavorite = function() {
       console.log($rootScope.detailWishIconClass);
 
       if ($rootScope.detailWishIconClass === "material-icons md-18")

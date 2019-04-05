@@ -1,17 +1,14 @@
 
-(function(angular)
-{
+(function(angular) {
   var resultsModule = angular.module('travelSearchMvc.resultsModule', ['angular-svg-round-progressbar', 'ngRoute']);
-  resultsModule.config(['$routeProvider', function($routeProvider)
-  {
+  resultsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/results_page', {
       templateUrl: 'results_page/resultsView.html',
       controller: 'resultsController'
     });
   }]);
 
-  resultsModule.service('resultsDataService', function()
-  {
+  resultsModule.service('resultsDataService', function() {
     this.setData = function(val)
     {
       this.myData = val;
@@ -22,8 +19,7 @@
     };
   });
 
-  resultsModule.controller('resultsController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q)
-  {
+  resultsModule.controller('resultsController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q) {
     $rootScope.ifSlide = false;
     $rootScope.moveToRight = true;
     $scope.myLocationOption = $scope.$parent.locationOption;
@@ -35,8 +31,7 @@
 
     var storageKey;
 
-    if (typeof resultsDataService.getData() !== 'undefined' && resultsDataService.getData()[1][0] === $scope.$parent.jsonObj)
-    {
+    if (typeof resultsDataService.getData() !== 'undefined' && resultsDataService.getData()[1][0] === $scope.$parent.jsonObj) {
       // ebay search api
       $scope.ifHasTable = true;
       $rootScope.currentPage = resultsDataService.getData()[0];
@@ -62,9 +57,7 @@
       $scope.showNext = true;
       $scope.showPrevious = true;
       
-    }
-    else
-    {
+    } else {
       $rootScope.jsonData = [];
       $rootScope.jsonData[0] = $scope.$parent.jsonObj;
       $rootScope.currentPage = 1;
@@ -120,22 +113,15 @@
 
           $scope.rowData1 = $scope.rowData;
 
-
-
-          
         }
       }
 
     }
 
-    $scope.getNextPageData = function()
-    {
-      if ($rootScope.currentPage === 1)
-      {
-        if (typeof $scope.rowData2 === 'undefined')
-        {
-          if ($rootScope.jsonData[0].hasOwnProperty('next_page_token'))
-          {
+    $scope.getNextPageData = function() {
+      if ($rootScope.currentPage === 1) {
+        if (typeof $scope.rowData2 === 'undefined') {
+          if ($rootScope.jsonData[0].hasOwnProperty('next_page_token')) {
             console.log("jsonData[0]: ")
             console.log($rootScope.jsonData[0]);
             $rootScope.currentPage++;
@@ -312,8 +298,7 @@
       }
     };
 
-    $scope.requestDetails = function(index)
-    {
+    $scope.requestDetails = function(index) {
       $rootScope.ifSlide = true;
       $rootScope.moveToRight = true;
       $rootScope.ifClickedFavoriteDetails = false;
@@ -376,11 +361,10 @@
           }
         }
 
-
       },
-      function(response)
+      function(response) 
       {
-        console.error("Request error!");
+        console.error("single Response error!!!");
         $rootScope.showProgressBar = false;
         $scope.ifSearchSuccess = false;
       });
@@ -388,13 +372,11 @@
 
     };
 
-    $scope.redirect = function(myPath)
-    {
+    $scope.redirect = function(myPath) {
       $location.path(myPath);
     };
 
-    $scope.saveToLocalStorage = function(index)
-    {
+    $scope.saveToLocalStorage = function(index) {
       console.log("local_storage");
       // ebay search api
       if ($scope.rowData[index]['wishIconClass'] === "material-icons md-18") {
@@ -490,15 +472,13 @@
 
     };
 
-    $scope.redirectDetailsPage = function()
-    {
+    $scope.redirectDetailsPage = function() {
       $rootScope.ifSlide = true;
       console.log("redirectDetailsPage");
       $location.path('/details_page');
     };
 
-    $scope.changeAnimation = function()
-    {
+    $scope.changeAnimation = function() {
 
     }
 

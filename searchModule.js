@@ -1,6 +1,5 @@
 
-(function(angular)
-{
+(function(angular) {
   var searchApp = angular.module('travelSearchMvc', [ 'angular-svg-round-progressbar',
     'ngRoute',
     'travelSearchMvc.resultsModule',
@@ -9,13 +8,11 @@
     'travelSearchMvc.favoriteDetailsModule'
   ]);
 
-  searchApp.config(['$qProvider', function ($qProvider)
-  {
+  searchApp.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }]);
 
-  searchApp.controller('searchController', ['$scope', '$http', '$log', '$location', '$rootScope', function($scope, $http, $log, $location, $rootScope)
-  {
+  searchApp.controller('searchController', ['$scope', '$http', '$log', '$location', '$rootScope', function($scope, $http, $log, $location, $rootScope) {
     $rootScope.ifSlide = false;
     $rootScope.ifClickedFavoriteDetails = false;
     $rootScope.slideAnimation = false;
@@ -23,8 +20,7 @@
     $scope.clickedSearch = false;
     $scope.clickedResults = true;
     $rootScope.tempFavoriteRow = [];
-    if ($location.path() === '/favorites_page')
-    {
+    if ($location.path() === '/favorites_page') {
       $scope.clickedResults = false;
       $scope.clickedFavorite = true;
     }
@@ -32,41 +28,31 @@
     $rootScope.ifClickedDetails = true;
     $rootScope.ifClickedFavoriteDetails = true;
 
-    $scope.validateForm = function()
-    {
-      if (document.getElementById('location_option1').checked)
-      {
+    $scope.validateForm = function() {
+      if (document.getElementById('location_option1').checked) {
         document.getElementById('input_location').disabled = true;
         $scope.myInputLocation = "";
       }
-      if (document.getElementById('location_option2').checked)
-      {
+      if (document.getElementById('location_option2').checked) {
         document.getElementById('input_location').disabled = false;
       }
     };
 
-    $scope.checkDisableCondition = function()
-    {
-      if ($scope.myLocation === 1)
-      {
+    $scope.checkDisableCondition = function() {
+      if ($scope.myLocation === 1) {
         $scope.myForm.inputLocation.$setPristine();
         $scope.myForm.inputLocation.$setUntouched();
-        if ($scope.myForm.keyword.$invalid)
-        {
+        if ($scope.myForm.keyword.$invalid) {
           return true;
         }
-      }
-      else if ($scope.myLocation === 2)
-      {
-        if ($scope.myForm.keyword.$invalid || $scope.myForm.inputLocation.$invalid)
-        {
+      } else if ($scope.myLocation === 2) {
+        if ($scope.myForm.keyword.$invalid || $scope.myForm.inputLocation.$invalid) {
           return true;
         }
       }
     };
 
-    $scope.clearInputs = function()
-    {
+    $scope.clearInputs = function() {
       $rootScope.ifSlide = false;
       $location.path('/');
       $scope.myForm.$setPristine();
@@ -86,8 +72,7 @@
       $rootScope.ifClickedFavoriteDetails = true;
     };
 
-    $scope.getInputs = function(myPath)
-    {
+    $scope.getInputs = function(myPath) {
       $rootScope.ifSlide = false;
       $location.path('/');
       $scope.showTable = true;
@@ -100,13 +85,11 @@
       $rootScope.ifClickedFavoriteDetails = true;
       console.log(myPath);
       var inputData;
-      if (typeof $scope.myDistance === 'undefined' || $scope.myDistance == "")
-      {
+      if (typeof $scope.myDistance === 'undefined' || $scope.myDistance == "") {
         $scope.myDistance = 10;
       }
 
-      if ($scope.myLocation === 1)
-      {
+      if ($scope.myLocation === 1) {
         $scope.locationOption = "option1";
         $http({
           method: 'GET',
@@ -173,13 +156,11 @@
         {
           console.error("Request error!");
         });
-      }
-      else if ($scope.myLocation === 2)
-      {
+      } else if ($scope.myLocation === 2) {
         $scope.locationOption = "option2";
         
-        if (typeof $scope.autocompleteObj !== 'undefined')
-        {
+        // autocomplete 
+        if (typeof $scope.autocompleteObj !== 'undefined') {
           console.log($scope.autocompleteObj);
           // $scope.myInputLocation = $scope.autocompleteObj.getPlace().formatted_address;
         }
@@ -241,23 +222,16 @@
       }
     };
 
-    $scope.ifClickedSearch = function()
-    {
+    $scope.ifClickedSearch = function() {
       $rootScope.ifSlide = false;
-      if ($scope.clickedSearch === true)
-      {
+      if ($scope.clickedSearch === true) {
         $scope.clickedResults = true;
         $scope.clickedFavorite = false;
         $location.path('/results_page');
-      }
-      else
-      {
-        if ($scope.clickedFavorite !== true)
-        {
+      } else {
+        if ($scope.clickedFavorite !== true) {
           alert("Please click Search button to get results table before clicking Resluts Tab!");
-        }
-        else
-        {
+        } else {
           $scope.clickedResults = false;
           $scope.clickedFavorite = true;
           alert("Please click Search button to get results table before clicking Resluts Tab!");
@@ -265,21 +239,18 @@
       }
     }
 
-    $scope.ifClickFavorite = function()
-    {
+    $scope.ifClickFavorite = function() {
       $scope.clickedFavorite = true;
       $scope.clickedResults = false;
       $rootScope.ifSlide = false;
       $location.path('favorites_page');
     }
 
-    $scope.redirect = function(myPath)
-    {
+    $scope.redirect = function(myPath) {
       $location.path(myPath);
     };
 
-    $scope.autoComplete = function()
-    {
+    $scope.autoComplete = function() {
       var input = document.getElementById('input_location');
       // var options = {types: ['address']};
       // $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
@@ -313,8 +284,7 @@
 
     };
 
-    $scope.cleanAnimation = function()
-    {
+    $scope.cleanAnimation = function() {
       $rootScope.ifSlide = false;
     }
 
