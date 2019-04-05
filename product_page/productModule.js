@@ -472,15 +472,13 @@
 
     };
 
-    $scope.redirectDetailsPage = function() {
+    $scope.redirect_to_Detail_page = function() {
       $rootScope.b_slide = true;
-      console.log("redirectDetailsPage");
+      console.log("redirect_to_Detail_page");
       $location.path('/details_page');
     };
 
-    $scope.changeAnimation = function() {
 
-    }
 
   }]);
 })(angular);
