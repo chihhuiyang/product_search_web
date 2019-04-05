@@ -1,6 +1,7 @@
 
 (function(angular) {
-  var searchApp = angular.module('productSearchModel', [ 'angular-svg-round-progressbar',
+  var searchApp = angular.module('productSearchModel', [ 
+    'angular-svg-round-progressbar',
     'ngRoute',
     'productSearchModel.productModule',
     'productSearchModel.detailsModule',
@@ -13,22 +14,23 @@
   }]);
 
   searchApp.controller('searchController', ['$scope', '$http', '$log', '$location', '$rootScope', function($scope, $http, $log, $location, $rootScope) {
-    $rootScope.ifSlide = false;
-    $rootScope.ifClickedFavoriteDetails = false;
-    $rootScope.slideAnimation = false;
+    $rootScope.b_slide = false;
+    $rootScope.b_animation = false;
+    $rootScope.b_clickWishDetail = false;
     $scope.myCategory = "default";
-    $scope.clickedSearch = false;
-    $scope.clickedResults = true;
+    $scope.b_clickSearch = false;
+    $scope.b_clickResults = true;
     $rootScope.tempFavoriteRow = [];
-    if ($location.path() === '/favorites_page') {
-      $scope.clickedResults = false;
-      $scope.clickedFavorite = true;
-    }
-    $scope.ifSearchSuccess = true;
-    $rootScope.ifClickedDetails = true;
-    $rootScope.ifClickedFavoriteDetails = true;
 
-    $scope.validateForm = function() {
+    $scope.b_searchDone = true;
+    $rootScope.b_clickDetail = true;
+    $rootScope.b_clickWishDetail = true;
+    if ($location.path() === '/wish_page') {
+      $scope.b_clickResults = false;
+      $scope.b_clickWish = true;
+    }
+
+    $scope.validateLocation = function() {
       if (document.getElementById('location_option1').checked) {
         document.getElementById('input_location').disabled = true;
         $scope.myInputLocation = "";
@@ -38,7 +40,7 @@
       }
     };
 
-    $scope.checkDisableCondition = function() {
+    $scope.b_disableKeywordLocation = function() {
       if ($scope.myLocation === 1) {
         $scope.myForm.inputLocation.$setPristine();
         $scope.myForm.inputLocation.$setUntouched();
@@ -53,8 +55,14 @@
     };
 
     $scope.clearInputs = function() {
-      $rootScope.ifSlide = false;
       $location.path('/');
+
+      $rootScope.b_slide = false;
+      $rootScope.b_clickDetail = true;
+      $rootScope.b_clickWishDetail = true;
+
+      $scope.b_clickResults = true;
+      $scope.b_clickWish = false;
       $scope.myForm.$setPristine();
       $scope.myForm.$setUntouched();
       $scope.myForm.$submitted = false;
@@ -65,26 +73,24 @@
       $scope.myInputLocation = "";
       $scope.showTable = false;
       document.getElementById('input_location').disabled = true;
-      $scope.clickedResults = true;
-      $scope.clickedFavorite = false;
-
-      $rootScope.ifClickedDetails = true;
-      $rootScope.ifClickedFavoriteDetails = true;
     };
 
     $scope.getInputs = function(myPath) {
-      $rootScope.ifSlide = false;
       $location.path('/');
-      $scope.showTable = true;
-      $scope.clickedSearch = true;
+
+      $rootScope.b_slide = false;
       $rootScope.showProgressBar = true;
-      $scope.clickedResults = true;
-      $scope.clickedFavorite = false;
-      $scope.ifSearchSuccess = true;
-      $rootScope.ifClickedDetails = true;
-      $rootScope.ifClickedFavoriteDetails = true;
+      $rootScope.b_clickDetail = true;
+      $rootScope.b_clickWishDetail = true;
+
+      $scope.showTable = true;
+      $scope.b_clickSearch = true;
+      $scope.b_clickResults = true;
+      $scope.b_clickWish = false;
+      $scope.b_searchDone = true;
+
       console.log(myPath);
-      var inputData;
+
       if (typeof $scope.myDistance === 'undefined' || $scope.myDistance == "") {
         $scope.myDistance = 10;
       }
@@ -142,14 +148,14 @@
             $scope.jsonObj = response.data;
             //console.log($scope.jsonObj);
             $rootScope.showProgressBar = false;
-            $rootScope.ifSlide = false;
+            $rootScope.b_slide = false;
             $location.path(myPath);
           },
           function(response)
           {
             console.error("Request error!");
             $rootScope.showProgressBar = false;
-            $scope.ifSearchSuccess = false;
+            $scope.b_searchDone = false;
           });
         },
         function(response)
@@ -162,7 +168,6 @@
         // autocomplete 
         if (typeof $scope.autocompleteObj !== 'undefined') {
           console.log($scope.autocompleteObj);
-          // $scope.myInputLocation = $scope.autocompleteObj.getPlace().formatted_address;
         }
         var url_params = "http://localhost:8081/?"
         // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
@@ -208,42 +213,42 @@
           $scope.jsonObj = response.data;
           //console.log($scope.jsonObj);
           $rootScope.showProgressBar = false;
-          $scope.ifSearchSuccess = true;
-          $rootScope.slideAnimation = true;
-          $rootScope.ifSlide = false;
+          $scope.b_searchDone = true;
+          $rootScope.b_animation = true;
+          $rootScope.b_slide = false;
           $location.path(myPath);
         },
         function(response)
         {
           console.error("Request error!");
           $rootScope.showProgressBar = false;
-          $scope.ifSearchSuccess = false;
+          $scope.b_searchDone = false;
         });
       }
     };
 
-    $scope.ifClickedSearch = function() {
-      $rootScope.ifSlide = false;
-      if ($scope.clickedSearch === true) {
-        $scope.clickedResults = true;
-        $scope.clickedFavorite = false;
-        $location.path('/results_page');
+    $scope.clickSearchButton = function() {
+      $rootScope.b_slide = false;
+      if ($scope.b_clickSearch === true) {
+        $scope.b_clickResults = true;
+        $scope.b_clickWish = false;
+        $location.path('/product_page');
       } else {
-        if ($scope.clickedFavorite !== true) {
+        if ($scope.b_clickWish !== true) {
           alert("Please click Search button to get results table before clicking Resluts Tab!");
         } else {
-          $scope.clickedResults = false;
-          $scope.clickedFavorite = true;
+          $scope.b_clickResults = false;
+          $scope.b_clickWish = true;
           alert("Please click Search button to get results table before clicking Resluts Tab!");
         }
       }
     }
 
-    $scope.ifClickFavorite = function() {
-      $scope.clickedFavorite = true;
-      $scope.clickedResults = false;
-      $rootScope.ifSlide = false;
-      $location.path('favorites_page');
+    $scope.clickWishButton = function() {
+      $scope.b_clickWish = true;
+      $scope.b_clickResults = false;
+      $rootScope.b_slide = false;
+      $location.path('wish_page');
     }
 
     $scope.redirect = function(myPath) {
@@ -252,8 +257,6 @@
 
     $scope.autoComplete = function() {
       var input = document.getElementById('input_location');
-      // var options = {types: ['address']};
-      // $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
 
 
       // autocomplete api -------------------------------
@@ -276,16 +279,14 @@
       },
       function(response)
       {
-        console.error("Request error!");
-        // $rootScope.showProgressBar = false;
-        // $scope.ifSearchSuccess = false;
+        console.error("autocomplete request error!!!");
       });
 
 
     };
 
     $scope.cleanAnimation = function() {
-      $rootScope.ifSlide = false;
+      $rootScope.b_slide = false;
     }
 
   }]);

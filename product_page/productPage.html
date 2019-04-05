@@ -6,7 +6,7 @@
       <div class="detailsPage resultsSec" ng-show="showResultsTable">
         <div ng-if="ifHasTable">
           <div align="right" style="margin-bottom:10px;">
-            <button type="button" class="btn btn-default btn-sm" ng-disabled="ifClickedDetails" ng-click="changeAnimation();redirectDetailsPage()">
+            <button type="button" class="btn btn-default btn-sm" ng-disabled="b_clickDetail" ng-click="changeAnimation();redirectDetailsPage()">
                Detail<i class="material-icons md-18">chevron_right</i>
             </button>
           </div>       
@@ -28,7 +28,7 @@
 
                   <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.ifHighlight}">
                     <td><b>{{$index + 1}}</b></td>
-                    <td><img src='{{x.galleryURL[0]}}' height='40px' width='40px'/></td>
+                    <td><img src='{{x.galleryURL[0]}}' height='80px' width='80px'/></td>
                     <td class="name_link" ng-click="requestDetails($index);">{{x.title[0]}}</td>
                     <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
                     <td>{{x.shipCost}}</td> 

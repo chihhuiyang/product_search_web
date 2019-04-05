@@ -2,8 +2,8 @@
 (function(angular) {
   var productModule = angular.module('productSearchModel.productModule', ['angular-svg-round-progressbar', 'ngRoute']);
   productModule.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/results_page', {
-      templateUrl: 'results_page/resultsView.html',
+    $routeProvider.when('/product_page', {
+      templateUrl: 'product_page/productPage.html',
       controller: 'productController'
     });
   }]);
@@ -20,7 +20,7 @@
   });
 
   productModule.controller('productController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q) {
-    $rootScope.ifSlide = false;
+    $rootScope.b_slide = false;
     $rootScope.moveToRight = true;
     $scope.myLocationOption = $scope.$parent.locationOption;
     $scope.showResultsTable = $scope.$parent.showTable;
@@ -299,9 +299,9 @@
     };
 
     $scope.requestDetails = function(index) {
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
       $rootScope.moveToRight = true;
-      $rootScope.ifClickedFavoriteDetails = false;
+      $rootScope.b_clickWishDetail = false;
       $rootScope.showProgressBar = true;
       console.log($rootScope.currentPage);
       $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
@@ -340,7 +340,7 @@
         resultsDataService.setData($scope.passData);
         $rootScope.currentIndex = index;
         console.log($scope.passData);
-        $rootScope.ifClickedDetails = false;
+        $rootScope.b_clickDetail = false;
         $rootScope.showProgressBar = false;
         $rootScope.savedKey = $scope.singleItemDetail.ItemID;
         console.log("before details_page (single api)");
@@ -366,7 +366,7 @@
       {
         console.error("single Response error!!!");
         $rootScope.showProgressBar = false;
-        $scope.ifSearchSuccess = false;
+        $scope.b_searchDone = false;
       });
 
 
@@ -407,7 +407,7 @@
           $scope.jsonObj = response.data;
           console.log($scope.jsonObj);
           $rootScope.showProgressBar = false;
-          $rootScope.ifSlide = false;
+          $rootScope.b_slide = false;
 
 
           $scope.passData = [];
@@ -450,7 +450,7 @@
         {
           console.error("saveToLocalStorage: single api Request error!");
           $rootScope.showProgressBar = false;
-          $scope.ifSearchSuccess = false;
+          $scope.b_searchDone = false;
         });
 
 
@@ -473,7 +473,7 @@
     };
 
     $scope.redirectDetailsPage = function() {
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
       console.log("redirectDetailsPage");
       $location.path('/details_page');
     };

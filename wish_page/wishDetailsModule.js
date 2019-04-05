@@ -3,7 +3,7 @@
   var wishDetailsModule = angular.module('productSearchModel.wishDetailsModule', ['ngRoute', 'ngAnimate']);
   wishDetailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/favoriteDetails_page', {
-      templateUrl: 'details_page/detailsView.html',
+      templateUrl: 'details_page/detailsPage.html',
       controller: 'wishDetailsController'
     });
   }]);
@@ -18,7 +18,7 @@
   });
 
   wishDetailsModule.controller('wishDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
-    $rootScope.ifSlide = true;
+    $rootScope.b_slide = true;
     $rootScope.moveToRight = false;
     $rootScope.detailWishIconClass = "material-icons md-18";
     $rootScope.shopping_cart = "add_shopping_cart";
@@ -268,7 +268,7 @@
     }
 
 
-    $scope.checkDisableCondition = function() {
+    $scope.b_disableKeywordLocation = function() {
       $scope.mapForm.mapInputLocation.$setPristine();
       $scope.mapForm.mapInputLocation.$setUntouched();
       if ($scope.mapForm.mapInputLocation.$invalid) {
@@ -495,15 +495,15 @@
 
     $scope.goBack = function()
     {
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
       $rootScope.moveToRight = false;
       if ($location.path() == '/details_page')
       {
-        $location.path('/results_page');
+        $location.path('/product_page');
       }
       else if ($location.path() == '/favoriteDetails_page')
       {
-        $location.path('/favorites_page');
+        $location.path('/wish_page');
       }
     }
 

@@ -32,10 +32,10 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="autocomplete.js"></script>
   <script src="searchModule.js"></script>
-  <script src="results_page/productModule.js"></script>
+  <script src="product_page/productModule.js"></script>
   <script src="details_page/detailsModule.js"></script>
-  <script src="favorites_page/wishModule.js"></script>
-  <script src="favorites_page/wishDetailsModule.js"></script>
+  <script src="wish_page/wishModule.js"></script>
+  <script src="wish_page/wishDetailsModule.js"></script>
 </head>
 
 
@@ -133,11 +133,11 @@
           <div class="form-group row">
             <label for="input_location" class="col-md-3 col-form-label">From<font color="red">*</font></label>
             <div class="col-md-9" ng-init="myLocation=1" style="padding-right: 30px;">  
-                <input type="radio" id="location_option1" name="location" ng-model="myLocation" ng-value="1" ng-click="validateForm()">
+                <input type="radio" id="location_option1" name="location" ng-model="myLocation" ng-value="1" ng-click="validateLocation()">
                 Current Location<br>
-                <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateForm()">
+                <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateLocation()">
                 Other. Please specify zip code:<br>
-                <input type="text" id="input_location" name="inputLocation" class="form-control" ng-model="myInputLocation" ng-required="true" ng-click="validateForm(); autoComplete()" placeholder="Enter a location" disabled>
+                <input type="text" id="input_location" name="inputLocation" class="form-control" ng-model="myInputLocation" ng-required="true" ng-click="validateLocation(); autoComplete()" placeholder="Enter a location" disabled>
 
                 <!-- Autocomplete -->
 
@@ -147,7 +147,7 @@
 
           <div class="form-group row">
             <div class="col-md-12">
-              <button type="submit" id="searchButton" class="btn btn-primary" name="search" ng-disabled="checkDisableCondition()" ng-click="cleanAnimation();getInputs('/results_page')">
+              <button type="submit" id="searchButton" class="btn btn-primary" name="search" ng-disabled="b_disableKeywordLocation()" ng-click="cleanAnimation();getInputs('/product_page')">
                 <i class="material-icons md-18">search</i>Search</button>
               <button type="button" id="clearButton" class="btn btn-info" name="clear" ng-click="cleanAnimation();clearInputs()"> 
                 <i class="material-icons md-18">clear_all</i>Clear</button>
@@ -162,8 +162,8 @@
     <div class="form-group">
       <div class="col-md-12">
         <center>
-          <button type="button" id="resultsButton" class="btn btn-outline-primary btn-md" name="results" ng-class="{'changeToActive':clickedResults}" ng-click="cleanAnimation();ifClickedSearch()" autofocus>Results</button>
-          <button type="button" id="favoritesButton" class="btn btn-outline-primary btn-md" name="favorites" ng-class="{'changeToActive':clickedFavorite}" ng-click="cleanAnimation();ifClickFavorite()">Wish List</button>
+          <button type="button" id="resultsButton" class="btn btn-outline-primary btn-md" name="results" ng-class="{'changeToActive':b_clickResults}" ng-click="cleanAnimation();clickSearchButton()" autofocus>Results</button>
+          <button type="button" id="favoritesButton" class="btn btn-outline-primary btn-md" name="favorites" ng-class="{'changeToActive':b_clickWish}" ng-click="cleanAnimation();clickWishButton()">Wish List</button>
         </center>
       </div>
     </div>
@@ -174,13 +174,13 @@
     </div>
   </div>
 
-  <div ng-if="!ifSearchSuccess" align="center">
+  <div ng-if="!b_searchDone" align="center">
     <br><br>
     <p class="failedSearch"><font color="#96000a"> Failed to get search results.</font></p>
     <br><br><br>
   </div>
 
-  <div ng-view ng-class="{'slide': ifSlide, 'moveToRight': moveToRight}" ng-if="ifSearchSuccess"></div>
+  <div ng-view ng-class="{'slide': b_slide, 'moveToRight': moveToRight}" ng-if="b_searchDone"></div>
 
 </body>
 </html>

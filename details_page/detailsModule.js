@@ -3,7 +3,7 @@
   var detailsModule = angular.module('productSearchModel.detailsModule', ['angular-svg-round-progressbar', 'ngRoute', 'ngAnimate']);
   detailsModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/details_page', {
-      templateUrl: 'details_page/detailsView.html',
+      templateUrl: 'details_page/detailsPage.html',
       controller: 'detailsController'
     });
   }]);
@@ -264,7 +264,7 @@
 
 
 
-    $scope.checkDisableCondition = function() {
+    $scope.b_disableKeywordLocation = function() {
       $scope.mapForm.mapInputLocation.$setPristine();
       $scope.mapForm.mapInputLocation.$setUntouched();
       if ($scope.mapForm.mapInputLocation.$invalid) {
@@ -499,7 +499,7 @@
 
     $scope.goBack = function()
     {
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
       $rootScope.moveToRight = false;
       if ($location.path() === '/details_page')
       {
@@ -511,7 +511,7 @@
       }
       else if ($location.path() === '/favoriteDetails_page')
       {
-        $location.path('/favorites_page');
+        $location.path('/wish_page');
       }
     }
 

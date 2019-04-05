@@ -2,8 +2,8 @@
 (function(angular) {
   var wishModule = angular.module('productSearchModel.wishModule', ['ngRoute']);
   wishModule.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/favorites_page', {
-      templateUrl: 'favorites_page/favoritesView.html',
+    $routeProvider.when('/wish_page', {
+      templateUrl: 'wish_page/wishPage.html',
       controller: 'favoritesController'
     });
   }]);
@@ -193,7 +193,7 @@
     }
 
     $scope.sendKey = function(index) {
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
 
       //console.log($rootScope.favoriteRows);
       var sendIndex = ($rootScope.favoriteCurrentPage-1)*20 + index;
@@ -217,8 +217,8 @@
       //console.log($scope.favData);
       $rootScope.favoriteRowIndex = sendIndex;
       favoriteDataService.setData($scope.favData);
-      $rootScope.ifClickedDetails = false;
-      $rootScope.ifClickedFavoriteDetails = true;
+      $rootScope.b_clickDetail = false;
+      $rootScope.b_clickWishDetail = true;
       for (var i = 0; i < $rootScope.favoriteRows.length; i++) {
         $rootScope.favoriteRows[i]['ifHighlight'] = false;
       }
@@ -233,9 +233,9 @@
 
     $scope.redirectFavoriteDetailsPage = function() {
       console.log("redirectFavoriteDetailsPage");
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
       $rootScope.moveToRight = true;
-      if ($location.path() === '/favorites_page' && $rootScope.ifClickedFavoriteDetails === true)
+      if ($location.path() === '/wish_page' && $rootScope.b_clickWishDetail === true)
       {
         console.log("favoriteDetails_page");
         $location.path('/favoriteDetails_page');
@@ -248,7 +248,7 @@
     }
 
     $scope.addAnimation = function() {
-      $rootScope.ifSlide = true;
+      $rootScope.b_slide = true;
     }
   }]);
 })(angular);

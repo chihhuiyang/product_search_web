@@ -6,7 +6,7 @@
       <div class="detailsPage" ng-controller="favoritesController">
         <div ng-if="ifHasFavoriteItems">
           <div align="right" style="margin-bottom:10px;">
-            <button type="button" class="btn btn-default btn-sm" ng-disabled="ifClickedDetails" ng-click="addAnimation();redirectFavoriteDetailsPage()">
+            <button type="button" class="btn btn-default btn-sm" ng-disabled="b_clickDetail" ng-click="addAnimation();redirectFavoriteDetailsPage()">
                Detail<i class="material-icons md-18">chevron_right</i>
             </button>
           </div>
@@ -14,23 +14,23 @@
             <table class="table table-dark table-dark table-striped hoverTable">
               <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Shipping</th>
-                    <th>Zip</th>
-                    <th>Seller</th>
-                    <th>Wish List</th>
-                  </tr>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Price</th>
+                  <th>Shipping</th>
+                  <th>Zip</th>
+                  <th>Seller</th>
+                  <th>Wish List</th>
+                </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="x in favoriteRowData track by $index" ng-class="{highlightRow: x.ifHighlight}">
                   <td><b>{{$index + 1}}</b></td>
-                  <td><img src='{{x.galleryURL[0]}}' height='40px' width='40px'/></td>
+                  <td><img src='{{x.galleryURL[0]}}' height='80px' width='80px'/></td>
                   <td class="name_link" ng-click="sendKey($index); redirect('/favoriteDetails_page')">{{x.title[0]}}</td>
                   <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
-                  <td>${{x.shippingInfo[0]['shippingServiceCost'][0]['__value__']}}</td>
+                  <td>{{x.shipCost}}</td>
                   <td>{{x.postalCode[0]}}</td>
                   <td>{{x.sellerInfo[0]['sellerUserName'][0]}}</td>
                   <td>
