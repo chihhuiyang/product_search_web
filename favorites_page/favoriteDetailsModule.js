@@ -62,20 +62,14 @@
       }
     }
 
-    // $scope.destinationLat = $scope.placeDetails.geometry.location.lat;
-    // $scope.destinationLng = $scope.placeDetails.geometry.location.lng;
-    // $scope.destinationGeoLocation = {lat: $scope.destinationLat, lng: $scope.destinationLng};
 
     if ($scope.myLocationOption === "option1")
     {
-      // $scope.startGeoLocation = $scope.dataPack[2];
-      // $scope.currentGeoLocation = $scope.startGeoLocation;
-      $scope.startLocation = "90007";
+
     }
     else
     {
       $scope.myInputLocation = $scope.dataPack[2];
-      $scope.startLocation = $scope.myInputLocation;
     }
 
 
@@ -282,8 +276,7 @@
         } else {
           $scope.showReturnAccepted = false;
         }
-
-        
+     
       }
     }
 

@@ -199,35 +199,17 @@
     }
 
 
-    
 
-
-
-/*
-    $scope.destinationLat = $scope.placeDetails.geometry.location.lat();
-    $scope.destinationLng = $scope.placeDetails.geometry.location.lng();
-    $scope.destinationGeoLocation = {lat: $scope.destinationLat, lng: $scope.destinationLng};
-*/    
     console.log($scope.placeDetails);
 
     $scope.myLocationOption = $scope.$parent.locationOption;
     if ($scope.myLocationOption === "option1")  // current location
     {
-      /*
-      $scope.currentLocation_lat = $scope.$parent.currentlat;
-      $scope.currentLocation_lng = $scope.$parent.currentlng;
-      $scope.startGeoLocation = {lat: $scope.currentLocation_lat, lng: $scope.currentLocation_lng};
-      $scope.currentGeoLocation = $scope.startGeoLocation;
-      $scope.startLocation = "Your location";
-      */
+
     }
     else  // TODO : zip code location
     {
-      // $scope.inputLocation_lat = $scope.$parent.myLat;
-      // $scope.inputLocation_lng = $scope.$parent.myLng;
       $scope.myInputLocation = $scope.$parent.myInputLocation;
-      //$scope.startGeoLocation = {lat: $scope.inputLocation_lat, lng: $scope.inputLocation_lng};
-      $scope.startLocation = $scope.myInputLocation;
     }
 
 
