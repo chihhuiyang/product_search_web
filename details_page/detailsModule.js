@@ -34,8 +34,8 @@
     console.log($scope.passedKeyword);
     console.log($scope.passedItemId);
 
-    $scope.ifHasPhoto = true;  // initail assign
-    $scope.ifHasSimilar = true;  // initail assign
+    $scope.b_containPhoto = true;  // initail assign
+    $scope.b_containSimilar = true;  // initail assign
 
 
     $scope.passedPage = $rootScope.passData[2];
@@ -403,7 +403,7 @@
     $scope.requestPhotoApi = function() {
       // photo tab
       // google custom search api -----------------------------------
-      // if ($scope.ifHasPhoto == false) { // avoid re-call api
+      // if ($scope.b_containPhoto == false) { // avoid re-call api
         var inputData = {
           keyword_photo: $scope.passedKeyword
         }
@@ -418,13 +418,13 @@
           console.log("photo api response");
           $scope.photo_items = response.data.items;
           console.log($scope.photo_items);
-          $scope.ifHasPhoto = false;
+          $scope.b_containPhoto = false;
           if (typeof $scope.photo_items !== 'undefined') {
             $scope.photo_arr = [];
             for (var i = 0; i < $scope.photo_items.length; i++) {
               var photo_url = $scope.photo_items[i].link;
               $scope.photo_arr[i] = photo_url;
-              $scope.ifHasPhoto = true;
+              $scope.b_containPhoto = true;
             }
             console.log($scope.photo_arr);
           }
@@ -433,7 +433,7 @@
         {
           console.error("Request error!");
           $rootScope.showProgressBar = false;
-          $scope.ifHasPhoto = false;
+          $scope.b_containPhoto = false;
         });
       // } else {
       //   console.log("duplicate requestPhotoApi ");
@@ -466,9 +466,9 @@
         $scope.reviewOrderButtonName = "Ascending";
         $scope.reviewSelection = true;
         if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
-          $scope.ifHasSimilar = false;
+          $scope.b_containSimilar = false;
         } else {
-          $scope.ifHasSimilar = true;
+          $scope.b_containSimilar = true;
           $scope.similar_items_arr = $scope.similar_items;
         }
         
@@ -477,7 +477,7 @@
       {
         console.error("Request error!");
         $rootScope.showProgressBar = false;
-        $scope.ifHasSimilar = false;
+        $scope.b_containSimilar = false;
       });
 
     };
@@ -497,7 +497,7 @@
       $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
     };
 
-    $scope.goBack = function()
+    $scope.backToList = function()
     {
       $rootScope.b_slide = true;
       $rootScope.moveToRight = false;

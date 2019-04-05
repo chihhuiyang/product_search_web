@@ -26,7 +26,7 @@
                 </thead>
                 <tbody>
 
-                  <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.ifHighlight}">
+                  <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.b_picked}">
                     <td><b>{{$index + 1}}</b></td>
                     <td><img src='{{x.galleryURL[0]}}' height='80px' width='80px'/></td>
                     <td class="name_link" ng-click="requestDetails($index);">{{x.title[0]}}</td>
@@ -38,8 +38,6 @@
                       <button type="button" class="btn btn-default btn-sm" ng-click="saveToLocalStorage($index)">
                         <i ng-class="x.wishIconClass">{{x.shopping_cart}}</i>
                       </button>
-
-
                     </td>
                   </tr>
                 </tbody>
@@ -58,14 +56,6 @@
               <li class="page-item"><a class="page-link" href="#">4</a></li>
               <li class="page-item"><a class="page-link" href="#">5</a></li>
               <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-          </div>
-
-          <div class="pagination">
-            <ul>
-              <li ng-class="{disabled: noPrevious()}"><a ng-click="selectPrevious()">Previous</a></li>
-              <li ng-repeat="page in pages" ng-class="{active: isActive(page)}"><a ng-click="selectPage(page)">{{page}}</a></li>
-              <li ng-class="{disabled: noNext()}"><a ng-click="selectNext()">Next</a></li>
             </ul>
           </div>
 

@@ -4,7 +4,7 @@
   wishModule.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/wish_page', {
       templateUrl: 'wish_page/wishPage.html',
-      controller: 'favoritesController'
+      controller: 'wishController'
     });
   }]);
 
@@ -17,72 +17,75 @@
     };
   });
 
-  wishModule.controller('favoritesController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q) {
+  wishModule.controller('wishController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q) {
     console.log($rootScope);
     console.log($scope);
 
-    //localStorage.clear();
     $rootScope.moveToRight = true;
-    $scope.myStorage = window.localStorage;
-    $scope.sortedStorage = [];
+    $scope.userStorage = window.localStorage;
+    $scope.sorted_localStorage = [];
     var copy_key;
     var copy_arr;
-    for (var i = 0; i < $scope.myStorage.length; i++) {
-      copy_key = $scope.myStorage.key(i);
+    for (var i = 0; i < $scope.userStorage.length; i++) {
+      copy_key = $scope.userStorage.key(i);
       copy_arr = JSON.parse(localStorage.getItem(copy_key));
       copy_arr[6] = copy_key;
-      $scope.sortedStorage.push(copy_arr);
+      $scope.sorted_localStorage.push(copy_arr);
     }
 
-    $scope.sortedStorage.sort(function(x, y) {
+    $scope.sorted_localStorage.sort(function(x, y) {
       return x[5] - y[5]; // sort by time
     })
 
-    console.log($scope.sortedStorage);
+    console.log($scope.sorted_localStorage);
 
     $scope.showPrevious = true;
     $scope.showNext = true;
-    if ($scope.myStorage.length === 0) {
-      $scope.ifHasFavoriteItems = false;
+    if ($scope.userStorage.length === 0) {
+      $scope.b_containWishList = false;
     } else {
-      $scope.ifHasFavoriteItems = true;
+      $scope.b_containWishList = true;
     }
 
-    $rootScope.favoriteRows = [];
-    for (var i = 0; i < $scope.sortedStorage.length; i++) {
-      $rootScope.favoriteRows.push($scope.sortedStorage[i][2]);
+    // save to wishItems
+    $rootScope.wishItems = [];
+    for (var i = 0; i < $scope.sorted_localStorage.length; i++) {
+      $rootScope.wishItems.push($scope.sorted_localStorage[i][2]);
     }
-    for (var i = 0; i < $rootScope.favoriteRows.length; i++) {
-      $rootScope.favoriteRows[i]['ifHighlight'] = false;
-      if ($rootScope.favoriteRows[i]['itemId'][0] === $rootScope.savedKey) {
-        console.log($rootScope.favoriteRows[i]);
-        $rootScope.favoriteRows[i]['ifHighlight'] = true;
+    for (var i = 0; i < $rootScope.wishItems.length; i++) {
+      $rootScope.wishItems[i]['b_picked'] = false;
+      if ($rootScope.wishItems[i]['itemId'][0] === $rootScope.savedKey) {
+        console.log($rootScope.wishItems[i]);
+        $rootScope.wishItems[i]['b_picked'] = true;
       }
     }
 
-    $scope.favoriteRowData = [];
-    for (var i = 0; i < $rootScope.favoriteRows.length && i < 10; i++) {
-      $scope.favoriteRowData[i] = $rootScope.favoriteRows[i];
+    $scope.wishData = [];
+    for (var i = 0; i < $rootScope.wishItems.length && i < 10; i++) {
+      $scope.wishData[i] = $rootScope.wishItems[i];
     }
 
-    $rootScope.allFavoriteData = [];
+
+    
+
+    $rootScope.wishPacks = [];
     $rootScope.favoriteCurrentPage = 1;
     $scope.arrangePages = function() {
-      $rootScope.totalFavoritePage = ~~($rootScope.favoriteRows.length / 10) + 1;
+      $rootScope.totalFavoritePage = ~~($rootScope.wishItems.length / 10) + 1;
 
       for (var i = 0; i < $rootScope.totalFavoritePage; i++) {
-        $rootScope.allFavoriteData[i] = [];
+        $rootScope.wishPacks[i] = [];
         for (var j = i * 10; j < 10 * (i+1); j++) {
-          if (typeof $rootScope.favoriteRows[j] !== 'undefined') {
-            $rootScope.allFavoriteData[i].push($rootScope.favoriteRows[j]);
+          if (typeof $rootScope.wishItems[j] !== 'undefined') {
+            $rootScope.wishPacks[i].push($rootScope.wishItems[j]);
           }
         }
       }
     }
 
     $scope.arrangePages();
-    console.log($rootScope.allFavoriteData);
-    $scope.numOfFavorite = ($rootScope.totalFavoritePage-1) * 10 + $rootScope.allFavoriteData[$rootScope.totalFavoritePage-1].length;
+    console.log($rootScope.wishPacks);
+    $scope.numOfFavorite = ($rootScope.totalFavoritePage-1) * 10 + $rootScope.wishPacks[$rootScope.totalFavoritePage-1].length;
     if ($rootScope.favoriteCurrentPage === 1) {
       if ($scope.numOfFavorite <= 20) {
         $scope.showPrevious = false;
@@ -106,7 +109,7 @@
           $scope.showPrevious = true;
           $scope.showNext = true;
         }
-        $scope.favoriteRowData = $rootScope.allFavoriteData[$rootScope.favoriteCurrentPage];
+        $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage];
         $rootScope.favoriteCurrentPage++;
         if ($rootScope.favoriteCurrentPage === $rootScope.totalFavoritePage)
         {
@@ -118,7 +121,7 @@
       {
         $scope.showPrevious = true;
         $scope.showNext = true;
-        $scope.favoriteRowData = $rootScope.allFavoriteData[$rootScope.favoriteCurrentPage];
+        $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage];
         $rootScope.favoriteCurrentPage++;
         if ($rootScope.favoriteCurrentPage === $rootScope.totalFavoritePage)
         {
@@ -141,31 +144,31 @@
         $scope.showNext = true;
       }
       $rootScope.favoriteCurrentPage--;
-      $scope.favoriteRowData = $rootScope.allFavoriteData[$rootScope.favoriteCurrentPage-1];
+      $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage-1];
     }
 
     $scope.removeLocalStorage = function(index) {
       var deleteIndex = ($rootScope.favoriteCurrentPage-1)*10 + index;
-      var deleteKey = $rootScope.favoriteRows[deleteIndex]['itemId'][0];
-      $rootScope.favoriteRows.splice(deleteIndex, 1);
+      var deleteKey = $rootScope.wishItems[deleteIndex]['itemId'][0];
+      $rootScope.wishItems.splice(deleteIndex, 1);
       $scope.arrangePages();
-      $scope.favoriteRowData = $rootScope.allFavoriteData[$rootScope.favoriteCurrentPage-1];
+      $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage-1];
 
       if (index === 0 && $rootScope.favoriteCurrentPage !== 1
-        && ($rootScope.allFavoriteData[[$rootScope.favoriteCurrentPage-1]].length === 0)) {
+        && ($rootScope.wishPacks[[$rootScope.favoriteCurrentPage-1]].length === 0)) {
         $scope.getPreviousPage();
       }
-      if ($rootScope.favoriteRows.length === 0) {
-        $scope.ifHasFavoriteItems = false;
+      if ($rootScope.wishItems.length === 0) {
+        $scope.b_containWishList = false;
       } else {
-        $scope.ifHasFavoriteItems = true;
+        $scope.b_containWishList = true;
       }
 
       if (typeof $rootScope.jsonData !== 'undefined') {
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           var items = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
           for (var j = 0; j < items.length; j++) {
-            if (items[j]['itemId'][0] === $scope.sortedStorage[deleteIndex][6]) {
+            if (items[j]['itemId'][0] === $scope.sorted_localStorage[deleteIndex][6]) {
               items[j]['ifSaved'] = false;
               items[j]['wishIconClass'] = "material-icons md-18";
               items[j]['shopping_cart'] = "add_shopping_cart";
@@ -177,12 +180,12 @@
 
       $scope.showPrevious = false;
       $scope.showNext = false;
-      // if ($rootScope.favoriteRows.length <= 40 && $rootScope.favoriteRows.length > 20 && $rootScope.favoriteCurrentPage !== 1)
+      // if ($rootScope.wishItems.length <= 40 && $rootScope.wishItems.length > 20 && $rootScope.favoriteCurrentPage !== 1)
       // {
       //   $scope.showPrevious = true;
       //   $scope.showNext = false;
       // }
-      // if ($rootScope.favoriteRows.length <= 20)
+      // if ($rootScope.wishItems.length <= 20)
       // {
       //   $scope.showPrevious = false;
       //   $scope.showNext = false;
@@ -195,9 +198,9 @@
     $scope.sendKey = function(index) {
       $rootScope.b_slide = true;
 
-      //console.log($rootScope.favoriteRows);
+      //console.log($rootScope.wishItems);
       var sendIndex = ($rootScope.favoriteCurrentPage-1)*20 + index;
-      var myKey = $rootScope.favoriteRows[sendIndex]['itemId'][0];
+      var myKey = $rootScope.wishItems[sendIndex]['itemId'][0];
       var parsedData = JSON.parse(localStorage.getItem(myKey));
       console.log(localStorage);
       console.log(myKey);
@@ -219,11 +222,11 @@
       favoriteDataService.setData($scope.favData);
       $rootScope.b_clickDetail = false;
       $rootScope.b_clickWishDetail = true;
-      for (var i = 0; i < $rootScope.favoriteRows.length; i++) {
-        $rootScope.favoriteRows[i]['ifHighlight'] = false;
+      for (var i = 0; i < $rootScope.wishItems.length; i++) {
+        $rootScope.wishItems[i]['b_picked'] = false;
       }
-      $rootScope.favoriteRows[sendIndex]['ifHighlight'] = true;
-      $rootScope.savedKey = $rootScope.favoriteRows[sendIndex]['itemId'][0];
+      $rootScope.wishItems[sendIndex]['b_picked'] = true;
+      $rootScope.savedKey = $rootScope.wishItems[sendIndex]['itemId'][0];
     }
 
     $scope.redirect = function(myPath) {

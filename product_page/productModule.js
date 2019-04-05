@@ -24,7 +24,7 @@
     $rootScope.moveToRight = true;
     $scope.myLocationOption = $scope.$parent.locationOption;
     $scope.showResultsTable = $scope.$parent.showTable;
-    $scope.myStorage = window.localStorage;
+    $scope.userStorage = window.localStorage;
 
     $scope.myKeywordData = $scope.$parent.myKeyword;
     console.log($scope.myKeywordData);
@@ -42,14 +42,14 @@
         console.log(i);
         for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
           if (typeof $rootScope.jsonData[i] !== 'undefined') {
-            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = false;
+            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = false;
           }
         }
       }
       for (var i = 0; i < $rootScope.jsonData.length; i++) {
         for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
           if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
-            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = true;
+            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
           }
         }
       }
@@ -100,8 +100,8 @@
               $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
             }
           }
-          for (var k = 0; k < $scope.myStorage.length; k++) {
-            storageKey = $scope.myStorage.key(k);
+          for (var k = 0; k < $scope.userStorage.length; k++) {
+            storageKey = $scope.userStorage.key(k);
             for (var i = 0; i < $scope.rowData.length; i++) {
               if ($scope.rowData[i]['itemId'][0] === storageKey) {
                 $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
@@ -159,9 +159,9 @@
                   $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
                 }
               }
-              for (var k = 0; k < $scope.myStorage.length; k++)
+              for (var k = 0; k < $scope.userStorage.length; k++)
               {
-                storageKey = $scope.myStorage.key(k);
+                storageKey = $scope.userStorage.key(k);
                 for (var i = 0; i < $scope.rowData.length; i++)
                 {
                   if ($scope.rowData[i]['itemId'][0] === storageKey)
@@ -234,9 +234,9 @@
                   $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
                 }
               }
-              for (var k = 0; k < $scope.myStorage.length; k++)
+              for (var k = 0; k < $scope.userStorage.length; k++)
               {
-                storageKey = $scope.myStorage.key(k);
+                storageKey = $scope.userStorage.key(k);
                 for (var i = 0; i < $scope.rowData.length; i++)
                 {
                   if ($scope.rowData[i]['itemId'][0] === storageKey)
@@ -349,14 +349,14 @@
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
             if (typeof $rootScope.jsonData[i] !== 'undefined') {
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = false;
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = false;
             }
           }
         }
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
             if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['ifHighlight'] = true;
+              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
             }
           }
         }

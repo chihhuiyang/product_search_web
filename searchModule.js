@@ -67,10 +67,10 @@
       $scope.myForm.$setUntouched();
       $scope.myForm.$submitted = false;
       $scope.myKeyword = "";
-      $scope.myCategory = "default";
       $scope.myDistance = "";
       $scope.myLocation = 1;
       $scope.myInputLocation = "";
+      $scope.myCategory = "default";
       $scope.showTable = false;
       document.getElementById('input_location').disabled = true;
     };
@@ -88,8 +88,6 @@
       $scope.b_clickResults = true;
       $scope.b_clickWish = false;
       $scope.b_searchDone = true;
-
-      console.log(myPath);
 
       if (typeof $scope.myDistance === 'undefined' || $scope.myDistance == "") {
         $scope.myDistance = 10;
@@ -235,11 +233,11 @@
         $location.path('/product_page');
       } else {
         if ($scope.b_clickWish !== true) {
-          alert("Please click Search button to get results table before clicking Resluts Tab!");
+          alert("Please search something first.");
         } else {
           $scope.b_clickResults = false;
           $scope.b_clickWish = true;
-          alert("Please click Search button to get results table before clicking Resluts Tab!");
+          alert("Please search something first.");
         }
       }
     }
@@ -257,7 +255,6 @@
 
     $scope.autoComplete = function() {
       var input = document.getElementById('input_location');
-
 
       // autocomplete api -------------------------------
       var input_Data = {
