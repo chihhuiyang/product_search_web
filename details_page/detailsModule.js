@@ -26,7 +26,7 @@
       $rootScope.passData = detailsDataService.getData();
     }
     console.log($rootScope.passData);
-    $scope.placeDetails = $rootScope.passData[0];
+    $scope.singleItemDetail = $rootScope.passData[0];
 
     // keyword + itemId
     // $scope.placePhotos = $rootScope.passData[1];     // placePhotos => photo_arr
@@ -41,12 +41,12 @@
 
     $scope.passedPage = $rootScope.passData[2];
     $scope.passedJsonObj = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
-    $scope.name = $scope.placeDetails.Title;
+    $scope.name = $scope.singleItemDetail.Title;
 
     // assign seller tab
-    if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackScore')) {
+    if ($scope.singleItemDetail.Seller.hasOwnProperty('FeedbackScore')) {
       $scope.showFeedbackScore = true;
-      $scope.feedbackScore = $scope.placeDetails.Seller.FeedbackScore;
+      $scope.feedbackScore = $scope.singleItemDetail.Seller.FeedbackScore;
 
       // star color 
       var scores = $scope.feedbackScore;
@@ -64,23 +64,23 @@
     } else {
       $scope.showFeedbackScore = false;
     }
-    if ($scope.placeDetails.Seller.hasOwnProperty('PositiveFeedbackPercent')) {
+    if ($scope.singleItemDetail.Seller.hasOwnProperty('PositiveFeedbackPercent')) {
       $scope.showPopularity = true;
-      $scope.popularity = $scope.placeDetails.Seller.PositiveFeedbackPercent;
+      $scope.popularity = $scope.singleItemDetail.Seller.PositiveFeedbackPercent;
     } else {
       $scope.showPopularity = false;
     }
-    if ($scope.placeDetails.Seller.hasOwnProperty('FeedbackRatingStar')) {
+    if ($scope.singleItemDetail.Seller.hasOwnProperty('FeedbackRatingStar')) {
       // $scope.showFeedbackRatingStar = true; // 1~9
-      var color_str = $scope.placeDetails.Seller.FeedbackRatingStar;
+      var color_str = $scope.singleItemDetail.Seller.FeedbackRatingStar;
       color_str = color_str.toLowerCase();
       $scope.starColor = color_str;
     } else {
       $scope.showFeedbackRatingStar = false;
     }
-    if ($scope.placeDetails.Seller.hasOwnProperty('TopRatedSeller')) {
+    if ($scope.singleItemDetail.Seller.hasOwnProperty('TopRatedSeller')) {
       $scope.showTopRated = true;
-      var toprate = $scope.placeDetails.Seller.TopRatedSeller;
+      var toprate = $scope.singleItemDetail.Seller.TopRatedSeller;
       if (toprate == "true") {
         $scope.topRated = true;
       } else {
@@ -90,16 +90,16 @@
       $scope.showTopRated = false;
     }
   
-    if ($scope.placeDetails.hasOwnProperty('Storefront')) {
-      if ($scope.placeDetails.Storefront.hasOwnProperty('StoreName')) {
+    if ($scope.singleItemDetail.hasOwnProperty('Storefront')) {
+      if ($scope.singleItemDetail.Storefront.hasOwnProperty('StoreName')) {
         $scope.showStoreName = true;
-        $scope.storeName = $scope.placeDetails.Storefront.StoreName;
+        $scope.storeName = $scope.singleItemDetail.Storefront.StoreName;
       } else {
         $scope.showStoreName = false;
       }
-      if ($scope.placeDetails.Storefront.hasOwnProperty('StoreURL')) {
+      if ($scope.singleItemDetail.Storefront.hasOwnProperty('StoreURL')) {
         $scope.showBuyProductAt = true;
-        $scope.buyProductAt_url = $scope.placeDetails.Storefront.StoreURL;
+        $scope.buyProductAt_url = $scope.singleItemDetail.Storefront.StoreURL;
       } else {
         $scope.showBuyProductAt = false;
       }
@@ -111,7 +111,7 @@
     // shipping
     var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
     for (var i = 0; i < items.length; i++) {
-      if (items[i].itemId[0] == $scope.placeDetails.ItemID) {
+      if (items[i].itemId[0] == $scope.singleItemDetail.ItemID) {
         console.log(items[i].itemId[0]);
 
         // assign shipping tab
@@ -194,7 +194,7 @@
 
 
 
-    console.log($scope.placeDetails);
+    console.log($scope.singleItemDetail);
 
     $scope.myLocationOption = $scope.$parent.locationOption;
     if ($scope.myLocationOption === "option1") { // current location
@@ -206,25 +206,25 @@
 
     // assign Product tab
     console.log("assign Product tab");
-    if ($scope.placeDetails.hasOwnProperty('PictureURL')) {
+    if ($scope.singleItemDetail.hasOwnProperty('PictureURL')) {
       $scope.showProductImg = true;
-      $scope.ProductImg = $scope.placeDetails.PictureURL;
+      $scope.ProductImg = $scope.singleItemDetail.PictureURL;
       console.log($scope.ProductImg);
     } else {
       $scope.showProductImg = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('Subtitle')) {
+    if ($scope.singleItemDetail.hasOwnProperty('Subtitle')) {
       $scope.showSubtitle = true;
-      $scope.subtitle = $scope.placeDetails.Subtitle;
+      $scope.subtitle = $scope.singleItemDetail.Subtitle;
     } else {
       $scope.showSubtitle = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('CurrentPrice')) {
-      if ($scope.placeDetails.CurrentPrice.hasOwnProperty('Value')) {
+    if ($scope.singleItemDetail.hasOwnProperty('CurrentPrice')) {
+      if ($scope.singleItemDetail.CurrentPrice.hasOwnProperty('Value')) {
         $scope.showPrice = true;
-        $scope.price = $scope.placeDetails.CurrentPrice.Value;
+        $scope.price = $scope.singleItemDetail.CurrentPrice.Value;
       } else {
         $scope.showPrice = false;
       }
@@ -232,18 +232,18 @@
       $scope.showPrice = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('Location')) {
+    if ($scope.singleItemDetail.hasOwnProperty('Location')) {
       $scope.showLocation = true;
-      $scope.productLocation = $scope.placeDetails.Location;
+      $scope.productLocation = $scope.singleItemDetail.Location;
       // $scope.ratingWidth = $scope.rating * 10
     } else {
       $scope.showLocation = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('ReturnPolicy')) {
-      if ($scope.placeDetails.ReturnPolicy.hasOwnProperty('ReturnsAccepted') && $scope.placeDetails.ReturnPolicy.hasOwnProperty('ReturnsWithin')) {
+    if ($scope.singleItemDetail.hasOwnProperty('ReturnPolicy')) {
+      if ($scope.singleItemDetail.ReturnPolicy.hasOwnProperty('ReturnsAccepted') && $scope.singleItemDetail.ReturnPolicy.hasOwnProperty('ReturnsWithin')) {
         $scope.showReturnPolicy = true;
-        $scope.returnPolicy = $scope.placeDetails.ReturnPolicy.ReturnsAccepted + " Within " + $scope.placeDetails.ReturnPolicy.ReturnsWithin;
+        $scope.returnPolicy = $scope.singleItemDetail.ReturnPolicy.ReturnsAccepted + " Within " + $scope.singleItemDetail.ReturnPolicy.ReturnsWithin;
       } else {
         $scope.showReturnPolicy = false;
       }
@@ -251,10 +251,10 @@
       $scope.showReturnPolicy = false;
     }
 
-    if ($scope.placeDetails.hasOwnProperty('ItemSpecifics')) {
-      if ($scope.placeDetails.ItemSpecifics.hasOwnProperty('NameValueList')) {
+    if ($scope.singleItemDetail.hasOwnProperty('ItemSpecifics')) {
+      if ($scope.singleItemDetail.ItemSpecifics.hasOwnProperty('NameValueList')) {
         $scope.showItemSpecifics = true;
-        $scope.itemSpecList = $scope.placeDetails.ItemSpecifics.NameValueList;
+        $scope.itemSpecList = $scope.singleItemDetail.ItemSpecifics.NameValueList;
       } else {
         $scope.showItemSpecifics = false;
       }
@@ -485,14 +485,14 @@
 
 
     $scope.openFacebookWindow = function() {
-      if ($scope.placeDetails.hasOwnProperty('ViewItemURLForNaturalSearch')) {
-        var placeUrl = $scope.placeDetails.ViewItemURLForNaturalSearch;
+      if ($scope.singleItemDetail.hasOwnProperty('ViewItemURLForNaturalSearch')) {
+        var placeUrl = $scope.singleItemDetail.ViewItemURLForNaturalSearch;
       } else {
         var placeUrl = "http://www.google.com/";
       }
 
-      var fb_text = "Buy " + $scope.placeDetails.Title;;
-      fb_text += " at $" + $scope.placeDetails.CurrentPrice.Value;
+      var fb_text = "Buy " + $scope.singleItemDetail.Title;;
+      fb_text += " at $" + $scope.singleItemDetail.CurrentPrice.Value;
       fb_text += " from LINK below.";
       var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + placeUrl + "&quote=" + fb_text;
       $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
@@ -524,7 +524,7 @@
         $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
         var myKey = $scope.passedItemId;
         $scope.savedData = [];
-        $scope.savedData[0] = $scope.placeDetails;  // single api response
+        $scope.savedData[0] = $scope.singleItemDetail;  // single api response
         $scope.savedData[1] = [];
         $scope.savedData[1][0] = $scope.passedKeyword;
         $scope.savedData[1][1] = $scope.passedItemId;
@@ -545,7 +545,7 @@
         $rootScope.shopping_cart = "add_shopping_cart";
         $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
         $rootScope.jsonData[$rootScope.currentPage-1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
-        localStorage.removeItem($scope.placeDetails.ItemID);
+        localStorage.removeItem($scope.singleItemDetail.ItemID);
       }
 
     }

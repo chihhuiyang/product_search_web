@@ -321,9 +321,9 @@
       {
         console.log("single api response");
         $scope.passData = [];
-        $scope.placeDetails = response.data.Item;
-        console.log($scope.placeDetails);
-        $scope.passData[0] = $scope.placeDetails;
+        $scope.singleItemDetail = response.data.Item;
+        console.log($scope.singleItemDetail);
+        $scope.passData[0] = $scope.singleItemDetail;
 
         // pass keyword + itemId
         $scope.passData[1] = [];
@@ -342,7 +342,7 @@
         console.log($scope.passData);
         $rootScope.ifClickedDetails = false;
         $rootScope.showProgressBar = false;
-        $rootScope.savedKey = $scope.placeDetails.ItemID;
+        $rootScope.savedKey = $scope.singleItemDetail.ItemID;
         console.log("before details_page (single api)");
         $location.path('/details_page');
         console.log("after details_page (single api)");
@@ -411,9 +411,9 @@
 
 
           $scope.passData = [];
-          $scope.placeDetails = response.data.Item;
-          console.log($scope.placeDetails);
-          $scope.passData[0] = $scope.placeDetails;
+          $scope.singleItemDetail = response.data.Item;
+          console.log($scope.singleItemDetail);
+          $scope.passData[0] = $scope.singleItemDetail;
 
           // pass keyword + itemId
           $scope.myKeywordData = $scope.$parent.myKeyword;
