@@ -1,0 +1,70 @@
+<html>
+  <head>
+  </head>
+  <body ng-controller="productController">
+    <center>
+      <div class="detailsPage resultsSec" ng-show="showResultsTable">
+        <div ng-if="ifHasTable">
+          <div align="right" style="margin-bottom:10px;">
+            <button type="button" class="btn btn-default btn-sm" ng-disabled="b_clickDetail" ng-click="redirect_to_Detail_page()">
+               Detail<i class="material-icons md-18">chevron_right</i>
+            </button>
+          </div>       
+            <div class="resultsTable table-responsive">
+              <table class="table table-dark table-striped hoverTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Shipping</th>
+                    <th>Zip</th>
+                    <th>Seller</th>
+                    <th>Wish List</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.b_picked}">
+                    <td><b>{{$index + 1}}</b></td>
+                    <td><img src='{{x.galleryURL[0]}}' height='80px' width='80px'/></td>
+                    <td class="name_link" ng-click="requestDetails($index);">{{x.title[0]}}</td>
+                    <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
+                    <td>{{x.shipCost}}</td> 
+                    <td>{{x.postalCode[0]}}</td>
+                    <td>{{x.sellerInfo[0]['sellerUserName'][0]}}</td>
+                    <td> 
+                      <button type="button" class="btn btn-default btn-sm" ng-click="saveToLocalStorage($index)">
+                        <i ng-class="x.wishIconClass">{{x.shopping_cart}}</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          <div>
+
+            <ul class="pagination justify-content-center">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item active"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </div>
+
+
+        </div>
+
+        <div ng-if="!ifHasTable">
+          <br>
+          <p class="noRecords"><font color="#af9233">  No records.</font></p>
+        </div>
+      </div>
+    </center>
+    <br></br>
+  </body>
+</html>
