@@ -16,12 +16,12 @@
                   <tr>
                     <th>#</th>
                     <th>Image</th>
-                    <th width="500px">Title</th>
+                    <th>Title</th>
                     <th>Price</th>
-                    <th width="150px">Shipping</th>
+                    <th>Shipping</th>
                     <th>Zip</th>
                     <th>Seller</th>
-                    <th width="100px">Wish List</th>
+                    <th class="text-nowrap">Wish List</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -30,10 +30,10 @@
                     <td><b>{{$index + 1}}</b></td>
                     <td><img src='{{x.galleryURL[0]}}' height='100px' width='100px'/></td>
                     <!-- <td class="name_link" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td> -->
-                    <td class="name_link" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
+                    <td class="text-nowrap title" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
 
                     <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
-                    <td>{{x.shipCost}}</td> 
+                    <td class="text-nowrap">{{x.shipCost}}</td> 
                     <td>{{x.postalCode[0]}}</td>
                     <td>{{x.sellerInfo[0]['sellerUserName'][0]}}</td>
                     <td> 

@@ -18,22 +18,20 @@
                   <th>Image</th>
                   <th>Title</th>
                   <th>Price</th>
-                  <th width="150px">Shipping</th>
-                  <th>Zip</th>
-                  <th width="150px">Seller</th>
-                  <th width="100px">Wish List</th>
+                  <th class="text-nowrap">Shipping</th>
+                  <th>Seller</th>
+                  <th class="text-nowrap">Wish List</th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="x in wishData track by $index" ng-class="{highlightRow: x.b_picked}">
+                <tr ng-repeat="x in wishData track by $index" >  <!-- ng-class="{highlightRow: x.b_picked}" -->
                   <td><b>{{$index + 1}}</b></td>
                   <td><img src='{{x.galleryURL[0]}}' height='100px' width='100px'/></td>
                   <!-- <td class="name_link" ng-click="sendKey($index); redirect('/favoriteDetails_page')">{{x.title[0]}}</td> -->
-                  <td class="name_link" ng-click="sendKey($index); redirect('/favoriteDetails_page')" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
+                  <td class="text-nowrap title" ng-click="sendKey($index); redirect('/favoriteDetails_page')" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
 
                   <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
-                  <td>{{x.shipCost}}</td>
-                  <td>{{x.postalCode[0]}}</td>
+                  <td class="text-nowrap">{{x.shipCost}}</td>
                   <td>{{x.sellerInfo[0]['sellerUserName'][0]}}</td>
                   <td>
                     <button type="button" class="btn btn-default" ng-click="removeLocalStorage($index)">
@@ -48,8 +46,7 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
-                  <td>Total Shopping</td>
+                  <td class="text-nowrap">Total Shopping</td>
                   <td>${{total_shopping_price}}</td>
                 </tr>
 
