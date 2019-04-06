@@ -282,31 +282,6 @@
       $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
     };
 
-    $scope.getReviews = function() {
-      $scope.reviewTypeButtonName = "Google Reviews";
-      $scope.reviewOrderButtonName = "Default Order";
-      $scope.reviewSelection = true;
-      if (typeof $scope.singleItemDetail.reviews === 'undefined' || $scope.singleItemDetail.reviews.length === 0)
-      {
-        $scope.ifHasGoogleReview = false;
-      }
-      else
-      {
-        $scope.ifHasGoogleReview = true;
-        $scope.googleReviews = $scope.singleItemDetail.reviews;
-        var oriTime = new Date('1970-01-01 00:00:00');
-        for (var i = 0; i < $scope.googleReviews.length; i++)
-        {
-          var timeSecond = $scope.googleReviews[i].time;
-          var newTime = moment(timeSecond*1000).format('YYYY-MM-DD HH:mm:ss')
-          $scope.googleReviews[i]['newTime'] = newTime;
-        }
-        $scope.googleReviewsArr = $scope.googleReviews.slice(0);
-        //console.log($scope.googleReviewsArr);
-      }
-    };
-
-
 
     $scope.setArray = function(params) {
       return new Array(params);
@@ -457,9 +432,11 @@
         $scope.similar_items = response.data.getSimilarItemsResponse.itemRecommendations.item;
         console.log($scope.similar_items);
 
-        $scope.reviewTypeButtonName = "Default";
-        $scope.reviewOrderButtonName = "Ascending";
-        $scope.reviewSelection = true;
+        // set initial value
+        $scope.mySortMethod_option = "simi_defalt";
+        $scope.mySortDirection_option = "simi_ascending";
+
+        
         if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
           $scope.b_containSimilar = false;
         } else {

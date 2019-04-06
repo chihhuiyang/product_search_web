@@ -281,47 +281,19 @@
 
               <!-- form-option version -->
               <form class="form-inline">
-                <select class="form-control col-md-2" id="simi_option" name="simi_option">
-                  <option value="simi_defalt" id="simi_defalt">Default</option>
-                  <option value="simi_name" id="simi_name">Product Name</option>
-                  <option value="simi_days" id="simi_days">Days Left</option>
-                  <option value="simi_price" id="simi_price">Price</option>
-                  <option value="simi_cost" id="simi_cost">Shipping Cost</option>
+                <select class="form-control col-md-2" id="simi_sort_method_option" ng-model="mySortMethod_option" ng-change="sort()">
+                  <option value="simi_defalt">Default</option>
+                  <option value="simi_name">Product Name</option>
+                  <option value="simi_days">Days Left</option>
+                  <option value="simi_price">Price</option>
+                  <option value="simi_cost">Shipping Cost</option>
                 </select>
 
-                <select class="form-control col-md-2" id="simi_sort" name="simi_sort" style="margin-left:20px;">
-                  <option value="simi_ascending" id="simi_ascending">Ascending</option>
-                  <option value="simi_descending" id="simi_descending">Descending</option>
+                <select class="form-control col-md-2" id="simi_sort_direction_option" style="margin-left:20px;" ng-model="mySortDirection_option" ng-change="sort()">
+                  <option value="simi_ascending">Ascending</option>
+                  <option value="simi_descending">Descending</option>
                 </select>
-             </form>
-
-              <!-- dropdown version -->
-              <!-- <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewTypeButtonName}}<span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li ng-click=""><a>Default</a></li>
-                  <li ng-click=""><a>Product Name</a></li>
-                  <li ng-click=""><a>Days Left</a></li>
-                  <li ng-click=""><a>Price</a></li>
-                  <li ng-click=""><a>Shipping Cost</a></li>
-                  <li ng-click="showGoogleReviews();"><a>Google Reviews</a></li>
-                  <li ng-click="showYelpReviews(); ifHasYelpReviews()"><a>Yelp Reviews</a></li>
-                </ul>
-
-                <span class="dropdown" style="margin-left:15px">
-                  <button class="btn btn-primary dropdown-toggle" id="reviewButton" type="button" data-toggle="dropdown">{{reviewOrderButtonName}}<span class="caret"></span></button>
-                  <ul class="dropdown-menu">
-                    <li ng-click=""><a>Ascending</a></li>
-                    <li ng-click=""><a>Descending</a></li>
-                    <li ng-click="getDefaultOrder()"><a>Default Order</a></li>
-                    <li ng-click="getHighestRatingOrder()"><a>Highest Rating</a></li>
-                    <li ng-click="getLowestRatingOrder()"><a>Lowest Rating</a></li>
-                    <li ng-click="getMostRecentOrder()"><a>Most Recent</a></li>
-                    <li ng-click="getLeastRecentOrder()"><a>Least Recent</a></li>
-                  </ul>
-                </span>
-
-              </div> -->
+              </form>
             
             </div>
             <br>
@@ -354,60 +326,6 @@
 
             <br><br><br>
 
-            <!-- Google reviews  -->
-            <!-- <div id="googleReviews" class="fade-in-out" ng-show="reviewSelection">
-              <div class="panel panel-default" ng-repeat="reviewPerson in googleReviewsArr">
-                <div class="panel-body">
-                  <div class="media">
-                    <div class="media-left">
-                      <a ng-href="{{reviewPerson.author_url}}" target="_blank">
-                        <img ng-src="{{reviewPerson.profile_photo_url}}" class="media-object" style="width:50px"/>
-                      </a>
-                    </div>
-                    <div class="media-body" align="left">
-                      <h4 class="media-heading"><font color="#1a6bed"><a ng-href="{{reviewPerson.author_url}}" target="_blank">{{reviewPerson.author_name}}</a></font></h4>
-                      <div class="zeroPadding">
-                        <span ng-repeat="r in setArray(reviewPerson.rating) track by $index"><i class="glyphicon glyphicon-star reviewStar"></i></span>
-                        <span class="reviewTimeBox">{{reviewPerson.newTime}}</span>
-                      </div>
-                      <p>{{reviewPerson.text}}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div ng-if="!ifHasGoogleReview">
-                <br>
-                <p class="noRecords"><font color="#af9233">  No records.</font></p>
-              </div>
-            </div> -->
-
-            <!-- yelp reviews -->
-            <!-- <div id="yelpReviews" class="fade-in-out" ng-show="reviewSelection">
-              <div class="panel panel-default" ng-repeat="x in similar_items_arr">
-                <div class="panel-body">
-                  <div class="media">
-                    <div class="media-left">
-                      <a ng-href="{{x.url}}" target="_blank">
-                        <img ng-src="{{x.user.image_url}}" class="media-object img-circle" style="width:50px;height:50px"/>
-                      </a>
-                    </div>
-                    <div class="media-body" align="left">
-                      <h4 class="media-heading"><font color="#1a6bed"><a ng-href="{{x.url}}" target="_blank">{{x.user.name}}</a></font></h4>
-                      <div class="zeroPadding">
-                        <span ng-repeat="r in setArray(x.rating) track by $index"><i class="glyphicon glyphicon-star reviewStar"></i></span>
-                        <span class="reviewTimeBox">{{x.time_created}}</span>
-                      </div>
-                      <p>{{x.text}}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div ng-if="!ifHasYelpReview">
-                <br /><br /><br />
-                <p class="noRecords"><font color="#af9233">  No records.</font></p>
-              </div>
-            </div> -->
           </div>
 
         </div>
