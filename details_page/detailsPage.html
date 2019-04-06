@@ -168,49 +168,6 @@
             </div>
           </div>
 
-          <!-- map tab -->
-          <div id="mapTab" class="tab-pane fade">
-            <div class="detailsPage">
-              <form id="mapForm" name="mapForm" method="GET" onsubmit="return false;">
-                <div class="form-group row" align="left">
-                  <div class="col-md-4">
-                    <label for="mapInputLocation">From</label>
-                    <input class="form-control" id="mapInputLocation" name="mapInputLocation" type="text" ng-required="true" ng-model="startLocation" ng-value="startLocation" ng-click="autoComplete()"/>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="mapDestination">To</label>
-                    <input class="form-control" id="mapDestination" type="text" ng-model="targetDestination" ng-value="targetDestination" ng-disabled="true"/>
-                  </div>
-                  <div class="col-md-2">
-                    <label for="travelMode">Travel Mode</label>
-                    <select class="form-control" id="travelModes" name="category">
-                      <option value="DRIVING" id="driving">Driving</option>
-                      <option value="BICYCLING" id="bicycling">Bicycling</option>
-                      <option value="TRANSIT" id="transit">Transit</option>
-                      <option value="WALKING" id="walking">Walking</option>
-                    </select>
-                  </div>
-                  <div class="col-md-2">
-                    <label></label>
-                    <button type="submit" class="btn btn-primary" ng-disabled="b_disableKeywordLocation()" ng-click="calcRoute(); autoComplete()" style="margin-top:25px">Get Directions</button>
-                  </div>
-                </div>
-                <div align="left" style="padding:0px; margin-bottom:5px;" ng-show="showMap">
-                  <button class="btn btn-default" id="googleViewButton" style="padding:0px" ng-click="switchMap()">
-                    <img src="http://csci571.com/hw/hw8/Images/facebook.png" style="width:40px; height:40px"/>
-                  </button>
-                </div>
-                <div align="left" style="padding:0px; margin-bottom:5px;" ng-show="!showMap">
-                  <button class="btn btn-default" id="googleViewButton" style="padding:0px" ng-click="switchMap()">
-                    <img src="http://csci571.com/hw/hw8/Images/facebook.png" style="width:40px; height:40px"/>
-                  </button>
-                </div>
-                <div id="googleMap"></div>
-                <div id="routeDetails" ng-show="showRouteDetails" align="left"></div>
-              </form>
-            </div>
-          </div>
-
           <!-- shipping tab -->
           <div id="shippingTab" class="tab-pane fade">
             <table class="table table-dark table-striped">
@@ -316,7 +273,7 @@
             </table>
           </div>
 
-          <!-- reviews tab -->
+          <!-- similar tab -->
           <div id="reviewsTab" class="tab-pane fade">
 
             <!-- button -->
@@ -374,7 +331,7 @@
               <table class="table table-dark similarTable">
 
                   <tr class="simiBlock" ng-repeat="x in similar_items_arr track by $index">
-                    <td style="width: 100px;"><img src='{{x.imageURL}}' height='100px' width='100px'/></td>
+                    <td style="width: 150px;"><img src='{{x.imageURL}}' height='150px' width='150px'/></td>
                     <td>
 	                    <a class="similar_name" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a>
                     	<p class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</p>

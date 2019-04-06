@@ -369,7 +369,7 @@ img.googlePhoto {
 
 a.similar_name {
   display:inline-block;
-  font-size: 13px;
+  font-size: 16px;
 	color: rgb(70, 156, 167);
   height: 2em;
 }
@@ -382,21 +382,21 @@ p.similar_name:hover {
 */
 
 p.similar_price {
-  font-size: 13px;
+  font-size: 16px;
 	color:rgb(160, 223, 160);
-  line-height: 4px;
+  line-height: 14px;
 }
 
 p.similar_cost {
-  font-size: 13px;
+  font-size: 16px;
 	color:rgb(253, 216, 114); 
-  line-height: 4px;
+  line-height: 14px;
 }
 
 p.similar_days {
-  font-size: 13px;
+  font-size: 16px;
 	color:white;
-  line-height: 4px;
+  line-height: 14px;
 }
 
 

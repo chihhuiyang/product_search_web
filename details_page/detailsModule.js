@@ -464,12 +464,21 @@
         $scope.reviewOrderButtonName = "Ascending";
         $scope.reviewSelection = true;
         if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
+          console.log("no similar items");
           $scope.b_containSimilar = false;
         } else {
           $scope.b_containSimilar = true;
           $scope.similar_items_arr = $scope.similar_items;
+
+          // update timeLeft value
+          for (var i = 0; i < $scope.similar_items.length; i++) {
+             var timeLeft_str = $scope.similar_items[i]['timeLeft'];
+             var a = timeLeft_str.indexOf("P");
+             var b = timeLeft_str.indexOf("D");
+             $scope.similar_items_arr[i]['timeLeft'] = timeLeft_str.substring(a+1, b);
+          }
         }
-        
+        // console.log("end");
       },
       function(response)
       {
