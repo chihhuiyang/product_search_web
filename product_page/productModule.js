@@ -61,13 +61,15 @@
       $rootScope.jsonData = [];
       $rootScope.jsonData[0] = $scope.$parent.jsonObj;
       $rootScope.currentPage = 1;
+      console.log($rootScope.jsonData[0]);
 
       // ebay search api
       if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'] == null) { // null searchResult
         // No Records have been found
         $scope.ifHasTable = false;
       } else {  // valid item
-        var count_items = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length;
+        var count_str = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['@count'];
+        count_items = parseInt(count_str);
         if (count_items == 0) {
           // No Records have been found
           $scope.ifHasTable = false;
@@ -77,12 +79,8 @@
           $scope.showNext = true;
           $scope.showPrevious = true;
 
-          console.log($rootScope.jsonData);
-
           $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
-
-         
-          
+        
           // short title
           for (var i = 0; i < $scope.rowData.length; i++) {
             $scope.rowData[i]['short_title'] = $scope.rowData[i]['title'][0];

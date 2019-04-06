@@ -39,15 +39,13 @@
 
     console.log($scope.sorted_localStorage);
 
-    $scope.showPrevious = true;
-    $scope.showNext = true;
     if ($scope.userStorage.length === 0) {
       $scope.b_containWishList = false;
     } else {
       $scope.b_containWishList = true;
     }
 
-    // save to wishItems
+    // save to root
     $rootScope.wishItems = [];
     for (var i = 0; i < $scope.sorted_localStorage.length; i++) {
       $rootScope.wishItems.push($scope.sorted_localStorage[i][2]);
@@ -61,109 +59,73 @@
     }
 
     $scope.wishData = [];
-    for (var i = 0; i < $rootScope.wishItems.length && i < 10; i++) {
+    for (var i = 0; i < $rootScope.wishItems.length; i++) {
       $scope.wishData[i] = $rootScope.wishItems[i];
     }
+    console.log($scope.wishData);
 
 
-    
+      // calculate total_shopping_price
+      var total_price = 0;
+      for (var i = 0; i < $scope.wishData.length; i++) {
+          var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
+          var price = parseFloat(price_str);
+          total_price += price;
+      }
+      $scope.total_shopping_price = total_price;
 
+
+    // save to root
     $rootScope.wishPacks = [];
-    $rootScope.favoriteCurrentPage = 1;
-    $scope.arrangePages = function() {
-      $rootScope.totalFavoritePage = ~~($rootScope.wishItems.length / 10) + 1;
-
-      for (var i = 0; i < $rootScope.totalFavoritePage; i++) {
-        $rootScope.wishPacks[i] = [];
-        for (var j = i * 10; j < 10 * (i+1); j++) {
-          if (typeof $rootScope.wishItems[j] !== 'undefined') {
-            $rootScope.wishPacks[i].push($rootScope.wishItems[j]);
-          }
-        }
+    $rootScope.wish_cur_page_no = 1;
+    $rootScope.count_total_wish_pages = 1;
+    $rootScope.wishPacks[0] = [];
+    for (var i = 0; i < $rootScope.wishItems.length; i++) {
+      if (typeof $rootScope.wishItems[i] !== 'undefined') {
+        $rootScope.wishPacks[0].push($rootScope.wishItems[i]);
       }
     }
 
-    $scope.arrangePages();
     console.log($rootScope.wishPacks);
-    $scope.numOfFavorite = ($rootScope.totalFavoritePage-1) * 10 + $rootScope.wishPacks[$rootScope.totalFavoritePage-1].length;
-    if ($rootScope.favoriteCurrentPage === 1) {
-      if ($scope.numOfFavorite <= 20) {
-        $scope.showPrevious = false;
-        $scope.showNext = false;
-      } else {
-        $scope.showPrevious = false;
-        $scope.showNext = true;
-      }
-    }
+    $scope.numOfFavorite = $rootScope.wishPacks[0].length;
 
-    $scope.getNextPage = function() {
-      if ($rootScope.favoriteCurrentPage === 1)
-      {
-        if ($scope.numOfFavorite <= 10)
-        {
-          $scope.showPrevious = false;
-          $scope.showNext = false;
-        }
-        else
-        {
-          $scope.showPrevious = true;
-          $scope.showNext = true;
-        }
-        $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage];
-        $rootScope.favoriteCurrentPage++;
-        if ($rootScope.favoriteCurrentPage === $rootScope.totalFavoritePage)
-        {
-          $scope.showPrevious = true;
-          $scope.showNext = false;
-        }
-      }
-      else
-      {
-        $scope.showPrevious = true;
-        $scope.showNext = true;
-        $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage];
-        $rootScope.favoriteCurrentPage++;
-        if ($rootScope.favoriteCurrentPage === $rootScope.totalFavoritePage)
-        {
-          $scope.showPrevious = true;
-          $scope.showNext = false;
-        }
-      }
-    }
-
-    $scope.getPreviousPage = function()
-    {
-      if ($rootScope.favoriteCurrentPage === 2)
-      {
-        $scope.showPrevious = false;
-        $scope.showNext = true;
-      }
-      else
-      {
-        $scope.showPrevious = true;
-        $scope.showNext = true;
-      }
-      $rootScope.favoriteCurrentPage--;
-      $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage-1];
-    }
 
     $scope.removeLocalStorage = function(index) {
-      var deleteIndex = ($rootScope.favoriteCurrentPage-1)*10 + index;
+      console.log("remove item: " + index);
+      var deleteIndex = index;
       var deleteKey = $rootScope.wishItems[deleteIndex]['itemId'][0];
       $rootScope.wishItems.splice(deleteIndex, 1);
-      $scope.arrangePages();
-      $scope.wishData = $rootScope.wishPacks[$rootScope.favoriteCurrentPage-1];
-
-      if (index === 0 && $rootScope.favoriteCurrentPage !== 1
-        && ($rootScope.wishPacks[[$rootScope.favoriteCurrentPage-1]].length === 0)) {
-        $scope.getPreviousPage();
+      
+      
+      $rootScope.count_total_wish_pages = 1;
+      $rootScope.wishPacks[0] = [];
+      for (var i = 0; i < $rootScope.wishItems.length; i++) {
+        if (typeof $rootScope.wishItems[i] !== 'undefined') {
+          $rootScope.wishPacks[0].push($rootScope.wishItems[i]);
+        }
       }
+
+      $scope.wishData = $rootScope.wishPacks[0]; 
+      console.log($scope.wishData);
+      console.log($rootScope.wishPacks[0]);
       if ($rootScope.wishItems.length === 0) {
         $scope.b_containWishList = false;
       } else {
         $scope.b_containWishList = true;
       }
 
+      // calculate total_shopping_price
+      var total_price = 0;
+      for (var i = 0; i < $scope.wishData.length; i++) {
+          var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
+          var price = parseFloat(price_str);
+          total_price += price;
+      }
+      $scope.total_shopping_price = total_price;
+
+
+
+      // update product page data
       if (typeof $rootScope.jsonData !== 'undefined') {
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           var items = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
@@ -177,19 +139,6 @@
         }
       }
 
-
-      $scope.showPrevious = false;
-      $scope.showNext = false;
-      // if ($rootScope.wishItems.length <= 40 && $rootScope.wishItems.length > 20 && $rootScope.favoriteCurrentPage !== 1)
-      // {
-      //   $scope.showPrevious = true;
-      //   $scope.showNext = false;
-      // }
-      // if ($rootScope.wishItems.length <= 20)
-      // {
-      //   $scope.showPrevious = false;
-      //   $scope.showNext = false;
-      // }
       $rootScope.detailWishIconClass = "material-icons md-18";
       $rootScope.shopping_cart = "add_shopping_cart";
       localStorage.removeItem(deleteKey);
@@ -199,7 +148,7 @@
       $rootScope.b_slide = true;
 
       //console.log($rootScope.wishItems);
-      var sendIndex = ($rootScope.favoriteCurrentPage-1)*20 + index;
+      var sendIndex = index;
       var myKey = $rootScope.wishItems[sendIndex]['itemId'][0];
       var parsedData = JSON.parse(localStorage.getItem(myKey));
       console.log(localStorage);
@@ -218,7 +167,6 @@
       $scope.favData[5] = parsedData[2]; // parsedData[2]: ebay search api for this itemId
 
       //console.log($scope.favData);
-      $rootScope.favoriteRowIndex = sendIndex;
       favoriteDataService.setData($scope.favData);
       $rootScope.b_clickDetail = false;
       $rootScope.b_clickWishDetail = true;
