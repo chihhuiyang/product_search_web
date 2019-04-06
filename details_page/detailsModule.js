@@ -470,12 +470,27 @@
           $scope.b_containSimilar = true;
           $scope.similar_items_arr = $scope.similar_items;
 
+          // display show more / show less button
+          if ($scope.similar_items.length > 5) {
+            $scope.similarItemOverFive = true;
+            $scope.txt_showMoreLess = "Show More";
+          } else {
+            $scope.similarItemOverFive = false;
+          }
+
+
           // update timeLeft value
           for (var i = 0; i < $scope.similar_items.length; i++) {
              var timeLeft_str = $scope.similar_items[i]['timeLeft'];
              var a = timeLeft_str.indexOf("P");
              var b = timeLeft_str.indexOf("D");
              $scope.similar_items_arr[i]['timeLeft'] = timeLeft_str.substring(a+1, b);
+             
+             if (i < 5) {
+              $scope.similar_items_arr[i]['showRow'] = true;
+             } else {
+              $scope.similar_items_arr[i]['showRow'] = false;
+             }
           }
         }
         // console.log("end");
@@ -488,6 +503,21 @@
       });
 
     };
+
+    $scope.showMoreLess = function() {
+
+      if ($scope.txt_showMoreLess == "Show More") {
+        $scope.txt_showMoreLess = "Show Less";
+      } else {
+        $scope.txt_showMoreLess = "Show More";
+      }
+      
+      for (var i = 0; i < $scope.similar_items_arr.length; i++) {
+        if (i >= 5) {
+          $scope.similar_items_arr[i]['showRow'] = !$scope.similar_items_arr[i]['showRow'];
+        }
+      }
+    }
 
 
     $scope.openFacebookWindow = function() {
@@ -521,6 +551,8 @@
         $location.path('/wish_page');
       }
     }
+
+
 
     $scope.addToFavorite = function() {
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
