@@ -287,88 +287,10 @@
       return new Array(params);
     };
 
-    $scope.getDefaultOrder = function() {
-      $scope.reviewOrderButtonName = "Default Order";
-      $scope.googleReviewsArr = $scope.googleReviews.slice(0);
-      $scope.yelpReviewsArr = $scope.yelpReviews.slice(0);
-    };
-
-    $scope.getHighestRatingOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Highest Rating";
-
-      var arrToSort1 = $scope.googleReviewsArr;
-      arrToSort1.sort(function(a,b)
-      {
-        return parseFloat(b.rating) - parseFloat(a.rating);
-      });
-      $scope.googleReviewsArr = arrToSort1;
-
-      var arrToSort2 = $scope.yelpReviewsArr;
-      arrToSort2.sort(function(a,b)
-      {
-        return parseFloat(b.rating) - parseFloat(a.rating);
-      });
-      $scope.yelpReviewsArr = arrToSort2;
-    };
-
-    $scope.getLowestRatingOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Lowest Rating";
-
-      var arrToSort1 = $scope.googleReviewsArr;
-      arrToSort1.sort(function(a,b)
-      {
-        return parseFloat(a.rating) - parseFloat(b.rating);
-      });
-      $scope.googleReviewsArr = arrToSort1;
-
-      var arrToSort2 = $scope.yelpReviewsArr;
-      arrToSort2.sort(function(a,b)
-      {
-        return parseFloat(a.rating) - parseFloat(b.rating);
-      });
-      $scope.yelpReviewsArr = arrToSort2;
-    };
-
-    $scope.getMostRecentOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Most Recent";
-
-      var arrToSort1 = $scope.googleReviewsArr;
-      arrToSort1.sort(function(a,b)
-      {
-        return parseFloat(b.time) - parseFloat(a.time);
-      });
-      $scope.googleReviewsArr = arrToSort1;
+ 
+  
 
 
-      var arrToSort2 = $scope.yelpReviewsArr;
-      arrToSort2.sort(function(a,b)
-      {
-        return +new Date(b.time_created) - +new Date(a.time_created);
-      });
-      $scope.yelpReviewsArr = arrToSort2;
-    };
-
-    $scope.getLeastRecentOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Lowest Recent";
-
-      var arrToSort1 = $scope.googleReviewsArr;
-      arrToSort1.sort(function(a,b)
-      {
-        return parseFloat(a.time) - parseFloat(b.time);
-      });
-      $scope.googleReviewsArr = arrToSort1;
-
-      var arrToSort2 = $scope.yelpReviewsArr;
-      arrToSort2.sort(function(a,b)
-      {
-        return +new Date(a.time_created) - +new Date(b.time_created);
-      });
-      $scope.yelpReviewsArr = arrToSort2;
-    };
 
 
     $scope.requestPhotoApi = function() {
@@ -436,12 +358,54 @@
         $scope.mySortMethod_option = "simi_defalt";
         $scope.mySortDirection_option = "simi_ascending";
 
-        
+
         if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
           $scope.b_containSimilar = false;
         } else {
           $scope.b_containSimilar = true;
           $scope.similar_items_arr = $scope.similar_items;
+
+          // display show more / show less button
+          if ($scope.similar_items.length > 5) {
+            $scope.similarItemOverFive = true;
+            $scope.txt_showMoreLess = "Show More";
+          } else {
+            $scope.similarItemOverFive = false;
+          }
+
+          // update timeLeft value
+          for (var i = 0; i < $scope.similar_items.length; i++) {
+            var timeLeft_str = $scope.similar_items[i]['timeLeft'];
+            var a = timeLeft_str.indexOf("P");
+            var b = timeLeft_str.indexOf("D");
+            $scope.similar_items_arr[i]['timeLeft'] = timeLeft_str.substring(a+1, b);
+          }
+
+          // show top 5 rows at first
+          for (var i = 0; i < $scope.similar_items.length; i++) {
+            if (i < 5) {
+             $scope.similar_items_arr[i]['showRow'] = true;
+            } else {
+             $scope.similar_items_arr[i]['showRow'] = false;
+            }
+          }    
+          
+          
+          // deep copy arr
+          $scope.similar_items_arr_default_order = [];
+          for (var i = 0; i < $scope.similar_items_arr.length; i++) {
+            $scope.similar_items_arr_default_order.push($scope.similar_items_arr[i]);
+          }
+          console.log($scope.similar_items_arr_default_order);
+
+          // deep copy arr
+          $scope.similar_items_arr_default_order_reverse = [];
+          for (var i = 0; i < $scope.similar_items_arr.length; i++) {
+            $scope.similar_items_arr_default_order_reverse.push($scope.similar_items_arr[i]);
+          }
+          $scope.similar_items_arr_default_order_reverse.reverse();
+          console.log($scope.similar_items_arr_default_order_reverse);
+       
         }
         
       },
@@ -455,6 +419,120 @@
     };
 
 
+    $scope.sort = function() {
+      // console.log("sort_start");
+
+
+      // console.log($scope.mySortDirection_option);
+      // console.log($scope.mySortMethod_option);
+
+      if ($scope.mySortDirection_option === "simi_ascending") {
+        console.log("^");
+        if ($scope.mySortMethod_option === "simi_defalt") {
+          // console.log("default+ascending");
+          $scope.similar_items_arr = $scope.similar_items_arr_default_order;
+        } else if ($scope.mySortMethod_option === "simi_name") {
+          // console.log("name+ascending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return (x.title).localeCompare(y.title);
+          });
+        } else if ($scope.mySortMethod_option === "simi_days") {
+          // console.log("days+ascending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return parseInt(x.timeLeft) - parseInt(y.timeLeft);
+          });
+        } else if ($scope.mySortMethod_option === "simi_price") {
+          // console.log("price+ascending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return parseFloat(x.buyItNowPrice.__value__) - parseFloat(y.buyItNowPrice.__value__);
+          });
+        } else if ($scope.mySortMethod_option === "simi_cost") {
+          // console.log("cost+ascending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return parseFloat(x.shippingCost.__value__) - parseFloat(y.shippingCost.__value__);
+          });
+        }
+      } else {  // $scope.mySortDirection_option == "simi_descending"
+        console.log("V");
+        if ($scope.mySortMethod_option === "simi_defalt") {
+          // console.log("default+descending");
+          $scope.similar_items_arr = $scope.similar_items_arr_default_order_reverse;
+
+        } else if ($scope.mySortMethod_option === "simi_name") {
+          // console.log("name+descending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return (y.title).localeCompare(x.title);
+          });
+        } else if ($scope.mySortMethod_option === "simi_days") {
+          // console.log("days+descending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return parseInt(y.timeLeft) - parseInt(x.timeLeft);
+          });
+        } else if ($scope.mySortMethod_option === "simi_price") {
+          // console.log("price+descending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return parseFloat(y.buyItNowPrice.__value__) - parseFloat(x.buyItNowPrice.__value__);
+          });
+        } else if ($scope.mySortMethod_option === "simi_cost") {
+          // console.log("cost+descending");
+          $scope.similar_items_arr.sort(function(x, y) {
+            return parseFloat(y.shippingCost.__value__) - parseFloat(x.shippingCost.__value__);
+          });
+        }
+      }
+
+
+      // update to sorted arr
+      if ($scope.txt_showMoreLess === "Show Less") {
+        // current is More
+        for (var i = 0; i < $scope.similar_items.length; i++) {
+          if (i < 5) {
+            $scope.similar_items_arr[i]['showRow'] = true;
+          } else {
+            $scope.similar_items_arr[i]['showRow'] = true;
+          }
+        }
+      } else {
+        // current is Less
+        for (var i = 0; i < $scope.similar_items.length; i++) {
+          if (i < 5) {
+            $scope.similar_items_arr[i]['showRow'] = true;
+          } else {
+            $scope.similar_items_arr[i]['showRow'] = false;
+          }
+        }
+      }
+
+      // console.log("sort end");
+    }
+
+
+
+    $scope.showMoreLess = function() {
+      if ($scope.txt_showMoreLess === "Show More") {
+        $scope.txt_showMoreLess = "Show Less";
+
+        for (var i = 0; i < $scope.similar_items_arr.length; i++) {
+          if (i >= 5) {
+            $scope.similar_items_arr[i]['showRow'] = true;
+          } else {
+            $scope.similar_items_arr[i]['showRow'] = true;
+          }
+        }
+      } else {
+        $scope.txt_showMoreLess = "Show More";
+
+        for (var i = 0; i < $scope.similar_items_arr.length; i++) {
+          if (i >= 5) {
+            $scope.similar_items_arr[i]['showRow'] = false;
+          } else {
+            $scope.similar_items_arr[i]['showRow'] = true;
+          }
+        }
+      } 
+    }
+
+    
 
     $scope.openFacebookWindow = function() {
       if ($scope.singleItemDetail.hasOwnProperty('ViewItemURLForNaturalSearch')) {

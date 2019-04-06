@@ -286,118 +286,9 @@
       return new Array(params);
     };
 
-    $scope.getDefaultOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Default Order";
-      if (typeof $scope.googleReviews !== 'undefined')
-      {
-        $scope.googleReviewsArr = $scope.googleReviews.slice(0);
-      }
-      if (typeof $scope.yelpReviews !== 'undefined')
-      {
-        $scope.yelpReviewsArr = $scope.yelpReviews.slice(0);
-      }
-    };
 
-    $scope.getHighestRatingOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Highest Rating";
 
-      if (typeof $scope.googleReviewsArr !== 'undefined')
-      {
-        var arrToSort1 = $scope.googleReviewsArr;
-        arrToSort1.sort(function(a,b)
-        {
-          return parseFloat(b.rating) - parseFloat(a.rating);
-        });
-        $scope.googleReviewsArr = arrToSort1;
-      }
 
-      if (typeof $scope.yelpReviewsArr !== 'undefined')
-      {
-        var arrToSort2 = $scope.yelpReviewsArr;
-        arrToSort2.sort(function(a,b)
-        {
-          return parseFloat(b.rating) - parseFloat(a.rating);
-        });
-        $scope.yelpReviewsArr = arrToSort2;
-      }
-    };
-
-    $scope.getLowestRatingOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Lowest Rating";
-
-      if (typeof $scope.googleReviewsArr !== 'undefined')
-      {
-        var arrToSort1 = $scope.googleReviewsArr;
-        arrToSort1.sort(function(a,b)
-        {
-          return parseFloat(a.rating) - parseFloat(b.rating);
-        });
-        $scope.googleReviewsArr = arrToSort1;
-      }
-
-      if (typeof $scope.yelpReviewsArr !== 'undefined')
-      {
-        var arrToSort2 = $scope.yelpReviewsArr;
-        arrToSort2.sort(function(a,b)
-        {
-          return parseFloat(a.rating) - parseFloat(b.rating);
-        });
-        $scope.yelpReviewsArr = arrToSort2;
-      }
-    };
-
-    $scope.getMostRecentOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Most Recent";
-
-      if (typeof $scope.googleReviewsArr !== 'undefined')
-      {
-        var arrToSort1 = $scope.googleReviewsArr;
-        arrToSort1.sort(function(a,b)
-        {
-          return parseFloat(b.time) - parseFloat(a.time);
-        });
-        $scope.googleReviewsArr = arrToSort1;
-      }
-
-      if (typeof $scope.yelpReviewsArr !== 'undefined')
-      {
-        var arrToSort2 = $scope.yelpReviewsArr;
-        arrToSort2.sort(function(a,b)
-        {
-          return +new Date(b.time_created) - +new Date(a.time_created);
-        });
-        $scope.yelpReviewsArr = arrToSort2;
-      }
-    };
-
-    $scope.getLeastRecentOrder = function()
-    {
-      $scope.reviewOrderButtonName = "Lowest Recent";
-
-      if (typeof $scope.googleReviewsArr !== 'undefined')
-      {
-        var arrToSort1 = $scope.googleReviewsArr;
-        arrToSort1.sort(function(a,b)
-        {
-          return parseFloat(a.time) - parseFloat(b.time);
-        });
-        $scope.googleReviewsArr = arrToSort1;
-      }
-
-      if (typeof $scope.yelpReviewsArr !== 'undefined')
-      {
-        var arrToSort2 = $scope.yelpReviewsArr;
-        arrToSort2.sort(function(a,b)
-        {
-          return +new Date(a.time_created) - +new Date(b.time_created);
-        });
-        $scope.yelpReviewsArr = arrToSort2;
-      }
-    };
 
 
     $scope.requestPhotoApi = function() {
@@ -515,6 +406,7 @@
           }
           $scope.similar_items_arr_default_order_reverse.reverse();
           console.log($scope.similar_items_arr_default_order_reverse);
+          
         }
         // console.log("end");
       },
