@@ -111,7 +111,7 @@
     var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
     for (var i = 0; i < items.length; i++) {
       if (items[i].itemId[0] == $scope.singleItemDetail.ItemID) {
-        console.log(items[i].itemId[0]);
+        // console.log(items[i].itemId[0]);
 
         // assign shipping tab
         if (items[i].shippingInfo[0].hasOwnProperty('shippingServiceCost')) {
@@ -191,9 +191,7 @@
       }
     }
 
-
-
-    console.log($scope.singleItemDetail);
+    // console.log($scope.singleItemDetail);
 
     $scope.myLocationOption = $scope.$parent.locationOption;
     if ($scope.myLocationOption === "option1") { // current location

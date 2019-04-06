@@ -38,21 +38,22 @@
       console.log($rootScope.currentPage);
       $rootScope.jsonData = resultsDataService.getData()[1];
       console.log($rootScope.jsonData);
-      for (var i = 0; i < $rootScope.jsonData.length; i++) {
-        console.log(i);
-        for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
-          if (typeof $rootScope.jsonData[i] !== 'undefined') {
-            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = false;
+
+        for (var j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
+          if (typeof $rootScope.jsonData[0] !== 'undefined') {
+            $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = false;
           }
         }
-      }
-      for (var i = 0; i < $rootScope.jsonData.length; i++) {
-        for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
-          if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
-            $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
+      
+
+        console.log($rootScope.savedKey);
+        for (var j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
+          if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
+            console.log("Picked: " + $rootScope.savedKey);
+            $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
           }
         }
-      }
+      
       $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
       $scope.showNext = true;
       $scope.showPrevious = true;
@@ -331,7 +332,7 @@
         console.log("single api response");
         $scope.passData = [];
         $scope.singleItemDetail = response.data.Item;
-        console.log($scope.singleItemDetail);
+        // console.log($scope.singleItemDetail);
         $scope.passData[0] = $scope.singleItemDetail;
 
         // pass keyword + itemId
@@ -345,16 +346,14 @@
 
 
 
-        console.log($rootScope.curRowData);
+        // console.log($rootScope.curRowData);
         resultsDataService.setData($scope.passData);
         $rootScope.currentIndex = index;
         console.log($scope.passData);
         $rootScope.b_clickDetail = false;
         $rootScope.showProgressBar = false;
         $rootScope.savedKey = $scope.singleItemDetail.ItemID;
-        console.log("before details_page (single api)");
         $location.path('/details_page');
-        console.log("after details_page (single api)");
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
             if (typeof $rootScope.jsonData[i] !== 'undefined') {
