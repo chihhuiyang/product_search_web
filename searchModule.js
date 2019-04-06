@@ -30,6 +30,18 @@
       $scope.b_clickWish = true;
     }
 
+
+    $scope.validateZipcode = function() {
+      // console.log($scope.myInputLocation);
+      var valid = (/^\d{5}(-\d{4})?$/).test($scope.myInputLocation);
+      if (valid) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+
     $scope.validateLocation = function() {
       if (document.getElementById('location_option1').checked) {
         document.getElementById('input_location').disabled = true;
@@ -48,7 +60,7 @@
           return true;
         }
       } else if ($scope.myLocation === 2) {
-        if ($scope.myForm.keyword.$invalid || $scope.myForm.inputLocation.$invalid) {
+        if ($scope.myForm.keyword.$invalid || $scope.myForm.inputLocation.$invalid || !$scope.validateZipcode()) {
           return true;
         }
       }
@@ -270,7 +282,7 @@
       {
         console.log("autocomplete api response");
         $scope.autocompleteObj = response.data.postalCodes[0];  // 5 zipcodes
-        console.log($scope.autocompleteObj);
+        // console.log($scope.autocompleteObj);
 
 
       },
