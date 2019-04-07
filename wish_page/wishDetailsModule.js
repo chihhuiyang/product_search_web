@@ -582,7 +582,7 @@
         console.log($scope);
         console.log($rootScope);
         if ($scope.myLocationOption === "option1") {
-          $scope.input_search_single_api_time_Data[4] = "90007";
+          $scope.input_search_single_api_time_Data[4] = "";
         } else {
           $scope.passData[4] = $scope.myInputLocation;
         }

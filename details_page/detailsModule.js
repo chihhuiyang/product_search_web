@@ -571,7 +571,9 @@
 
 
     $scope.addToFavorite = function() {
+      console.log("details - addToFavorite");
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
+        // console.log("update product icon : to yellow");
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
@@ -585,16 +587,18 @@
 
         $scope.input_search_single_api_time_Data[2] = $rootScope.curRowData;  // ebay search api for this itemId
         $scope.input_search_single_api_time_Data[3] = $scope.myLocationOption;
-        console.log($scope.myLocationOption);
+        
+
         if ($scope.myLocationOption === "option1") {
-          $scope.input_search_single_api_time_Data[4] = "90007";
+          $scope.input_search_single_api_time_Data[4] = "";
         } else {
           $scope.input_search_single_api_time_Data[4] = $scope.myInputLocation;
         }
         var timeStamp = Date.now();
         $scope.input_search_single_api_time_Data[5] = timeStamp;
         localStorage.setItem(myKey, JSON.stringify($scope.input_search_single_api_time_Data));
-      } else {
+      } else {  // current is yellow
+        // console.log("update product icon : to blank");
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
