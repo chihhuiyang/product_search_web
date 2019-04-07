@@ -25,13 +25,13 @@
 
     $scope.favData = favoriteDetailsDataService.getData();
     console.log($scope.favData);
-    console.log($rootScope);
+    // console.log($rootScope);
     $scope.storageKey = $scope.favData[0];
     $scope.myLocationOption = $scope.favData[1];
     $scope.singleItemDetail = $scope.favData[3];
     $scope.photo_arr = $scope.favData[4];  // keyword + itemId
     $scope.name = $scope.singleItemDetail.Title;
-    console.log(window.localStorage);
+    // console.log(window.localStorage);
 
     $scope.b_containPhoto = true;  // initail assign
     $scope.b_containSimilar = true;  // initail assign
@@ -123,7 +123,7 @@
      if ($scope.singleItemDetail.Seller.hasOwnProperty('FeedbackScore')) {
       $scope.showFeedbackScore = true;
       $scope.feedbackScore = $scope.singleItemDetail.Seller.FeedbackScore;
-
+      console.log("show FeedbackScore");
       // star color 
       var scores = $scope.feedbackScore;
       if (scores >= 0 && scores < 10000) {
@@ -132,9 +132,39 @@
           $scope.showFeedbackRatingStar = false;
         } else {
           $scope.showFeedbackRatingStar = true;
+          if (scores >= 10 && scores < 50) {
+            $scope.starColor = "yellow";
+          } else if (scores >= 50 && scores < 100) {
+            $scope.starColor = "blue";
+          } else if (scores >= 100 && scores < 500) {
+            $scope.starColor = "turquoise";
+          } else if (scores >= 500 && scores < 1000) {
+            $scope.starColor = "purple";
+          } else if (scores >= 1000 && scores < 5000) {
+            $scope.starColor = "red";
+          } else if (scores >= 5000 && scores < 10000) {
+            $scope.starColor = "green";
+          }
+          console.log($scope.starColor);
         }
-      } else {
+      } else {  // scores >= 10000
         $scope.overTop = true;
+
+        $scope.showFeedbackRatingStar = true;
+          if (scores >= 10000 && scores < 25000) {
+            $scope.starColor = "yellow";
+          } else if (scores >= 25000 && scores < 50000) {
+            $scope.starColor = "turquoise";
+          } else if (scores >= 50000 && scores < 100000) {
+            $scope.starColor = "purple";
+          } else if (scores >= 100000 && scores < 500000) {
+            $scope.starColor = "red";
+          } else if (scores >= 500000 && scores < 1000000) {
+            $scope.starColor = "green";
+          } else if (scores >= 1000000) {
+            $scope.starColor = "silver";
+          }
+          console.log($scope.starColor);
       }
 
     } else {
@@ -147,17 +177,14 @@
       $scope.showPopularity = false;
     }
     if ($scope.singleItemDetail.Seller.hasOwnProperty('FeedbackRatingStar')) {
-      // $scope.showFeedbackRatingStar = true; // 1~9
-      var color_str = $scope.singleItemDetail.Seller.FeedbackRatingStar;
-      color_str = color_str.toLowerCase();
-      $scope.starColor = color_str;
+      // implement in FeedbackScore
     } else {
       $scope.showFeedbackRatingStar = false;
     }
     if ($scope.singleItemDetail.Seller.hasOwnProperty('TopRatedSeller')) {
       $scope.showTopRated = true;
       var toprate = $scope.singleItemDetail.Seller.TopRatedSeller;
-      if (toprate == "true") {
+      if (toprate) {
         $scope.topRated = true;
       } else {
         $scope.topRated = false;
@@ -552,12 +579,11 @@
     {
       $rootScope.b_slide = true;
       $rootScope.moveToRight = false;
-      if ($location.path() == '/details_page')
-      {
+      if ($location.path() == '/details_page') {
+        console.log("To location: " + "/wishproduct_page_page");
         $location.path('/product_page');
-      }
-      else if ($location.path() == '/favoriteDetails_page')
-      {
+      } else if ($location.path() == '/favoriteDetails_page') {
+        console.log("To location: " + "/wish_page");
         $location.path('/wish_page');
       }
     }

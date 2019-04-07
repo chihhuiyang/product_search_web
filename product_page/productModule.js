@@ -218,6 +218,7 @@
         $rootScope.b_clickDetail = false;
         $rootScope.showProgressBar = false;
         $rootScope.savedKey = $scope.singleItemDetail.ItemID;
+        console.log("To location: " + "/details_page");
         $location.path('/details_page');
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
@@ -229,6 +230,7 @@
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
             if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
+              console.log("picked index : " + j);
               $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
             }
           }
@@ -246,6 +248,7 @@
     };
 
     $scope.redirect = function(myPath) {
+      console.log("To location: " + myPath);
       $location.path(myPath);
     };
 
@@ -344,7 +347,7 @@
 
     $scope.redirectDetailsPage = function() {
       $rootScope.b_slide = true;
-      console.log("redirectDetailsPage");
+      console.log("To location: " + "details_page");
       $location.path('/details_page');
     };
 

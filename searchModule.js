@@ -67,6 +67,7 @@
     };
 
     $scope.clearInputs = function() {
+      console.log("To location: " + "/");
       $location.path('/');
 
       $rootScope.b_slide = false;
@@ -88,6 +89,7 @@
     };
 
     $scope.getInputs = function(myPath) {
+      console.log("To location: " + "/");
       $location.path('/');
 
       $rootScope.b_slide = false;
@@ -159,6 +161,7 @@
             //console.log($scope.jsonObj);
             $rootScope.showProgressBar = false;
             $rootScope.b_slide = false;
+            console.log("To location: " + myPath);
             $location.path(myPath);
           },
           function(response)
@@ -226,6 +229,7 @@
           $scope.b_searchDone = true;
           $rootScope.b_animation = true;
           $rootScope.b_slide = false;
+          console.log("To location: " + myPath);
           $location.path(myPath);
         },
         function(response)
@@ -242,6 +246,7 @@
       if ($scope.b_clickSearch === true) {
         $scope.b_clickResults = true;
         $scope.b_clickWish = false;
+        console.log("To location: " + "/product_page");
         $location.path('/product_page');
       } else {
         if ($scope.b_clickWish !== true) {
@@ -258,10 +263,12 @@
       $scope.b_clickWish = true;
       $scope.b_clickResults = false;
       $rootScope.b_slide = false;
+      console.log("To location: " + "wish_page");
       $location.path('wish_page');
     }
 
     $scope.redirect = function(myPath) {
+      console.log("To location: " + myPath);
       $location.path(myPath);
     };
 

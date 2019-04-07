@@ -2,6 +2,7 @@
   <head>
   </head>
   <body>
+
     <center>
       <div class="detailsPage table-responsive">
         <h3 class="title">{{name}}</h3>
@@ -16,9 +17,9 @@
               <img ng-src="http://csci571.com/hw/hw8/Images/facebook.png" style="width:40px; height:40px"/>
             </button>
           </span>
-          <button type="button" class="btn btn-default btn-sm" style="width:40px; height:40px; background-color: ghostwhite" ng-click="addToFavorite()">
-              <i ng-class="detailWishIconClass">{{shopping_cart}}</i>
-            </button>
+          <button type="button" class="btn btn-default btn-sm" style="margin-right: 3px; width:40px; height:40px; background-color: ghostwhite" ng-click="addToFavorite()">
+            <i ng-class="detailWishIconClass">{{shopping_cart}}</i>
+          </button>
         </div>
 
         <div>
@@ -40,7 +41,7 @@
               <tr ng-if="showProductImg">
                 <th>Product Images</th>
                 <td>
-                  <a href="" data-toggle="modal" data-target="#myModal">View Product Images Here</a>
+                  <a class="" href="" data-toggle="modal" data-target="#myModal">View Product Images Here</a>
 
                   <!-- The Modal -->
                   <div class="modal" id="myModal">
@@ -55,52 +56,32 @@
                         
                         <!-- Modal body -->
                         <div class="modal-body">
-                          <div class="carousel_border">
-                            <div id="demo" class="carousel slide" data-interval="2000" data-ride="carousel">
 
+                            <!-- <a class="similar_name" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a> -->
 
-                              <div class="carousel-inner">
-
-                              
-<!-- 
-                                  <div class="carousel-item active">
-                                    <img src="https://i.ebayimg.com/images/g/qboAAOSwo4pYk8Qo/s-l1600.jpg" alt="Los Angeles" >
-                                  </div>
-                                  <div class="carousel-item">
-                                    <img src="http://csci571.com/hw/hw8/Images/facebook.png" alt="Chicago">
-                                  </div>
-                                  <div class="carousel-item">
-                                    <img src="https://i.frg.im/qpkKGTnn/1-coffee-machine-depot-usa-sanremo-renegade-bags.jpg" alt="New York">
-                                  </div> -->
-
-
-
-                                  <!-- <ol class="carousel-indicators">
-                                      <li data-target="#demo" data-ng-repeat="img in ProductImg" data-ng-class="{active : $first}" data-slide-to="{{$index}}"></li>
-                                  </ol>
-                                  <div class="carousel-inner" role="listbox">
-                                      <div class="item" data-ng-repeat="image in ProductImg" data-ng-class="{active : $first}">
-                                          <img data-ng-src="{{image}}" alt=" carousel {{$index}}" />
-                                      </div>
-                                  </div>               -->
-
-                          
-                                  <div class="carousel-item" ng-class="{active:!$index}" ng-repeat="x in ProductImg">
-                                    <img src="{{x}}" alt=" carousel {{$index}}">
-                                  </div>                               
-
+                              <div id="demo" class="carousel slide" data-ride="carousel" data-interval="false">
                                 
+                                <!-- The slideshow -->
+                                <div class="carousel_border">
+                                  <div class="carousel-inner">
+                                        <div class="carousel-item" ng-class="{active:!$index}" ng-repeat="x in ProductImg">
+                                          <a href="{{x}}" target="_blank">
+                                            <img src="{{x}}" alt=" carousel {{$index}}">
+                                          </a>
+                                        </div>
+                                  </div>
+                                </div>
+
+                                <!-- Left and right controls -->
+                                <a class="carousel-control-prev" data-target="#demo" data-slide="prev">
+                                  <span class="carousel-control-prev-icon"></span>
+                                </a>
+                                <a class="carousel-control-next" data-target="#demo" data-slide="next">
+                                  <span class="carousel-control-next-icon"></span>
+                                </a>
+
                               </div>
 
-
-                              <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                                <span class="carousel-control-prev-icon"></span>
-                              </a>
-                              <a class="carousel-control-next" href="#demo" data-slide="next">
-                                <span class="carousel-control-next-icon"></span>
-                              </a>
-                            </div>
-                          </div>
                         </div>
                         
                         <!-- Modal footer -->
@@ -214,6 +195,11 @@
           <!-- seller tab -->
           <div id="sellerTab" class="tab-pane fade">
             <table class="table table-dark table-striped">
+
+              <tr ng-if="showUserId">
+                <th colspan="2" style="text-align: center; font-size: 22px">{{user_id}}</th>
+              </tr>
+
               <tr ng-if="showFeedbackScore">
                 <th>Feedback Score</th>
                 <td>{{feedbackScore}}</td>
@@ -244,11 +230,11 @@
               </tr>
               <tr ng-if="showFeedbackRatingStar && overTop">
                 <th>Feedback Rating Star</th>
-                <td><i class="material-icons md-18" ng-style="{'color': starColor}">stars</i></td>
+                <td><i class="material-icons md-24 ratingStar" ng-style="{'color': starColor}">stars</i></td>
               </tr>
               <tr ng-if="showFeedbackRatingStar && !overTop">
                 <th>Feedback Rating Star</th>
-                <td><i class="material-icons md-18" ng-style="{'color': starColor}">star_border</i></td>
+                <td><i class="material-icons md-24 ratingStar" ng-style="{'color': starColor}">star_border</i></td>
               </tr>
 
               <tr ng-if="showTopRated && topRated">
@@ -265,7 +251,7 @@
               </tr>
               <tr ng-if="showBuyProductAt">
                 <th>Buy Product At</th>
-                <td><a href="{{buyProductAt_url}}" target="_blank">Store</a></td>
+                <td><a class="store" href="{{buyProductAt_url}}" target="_blank">Store</a></td>
                 <!-- <td><a href="{{buyProductAt_url}}" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Store</a></td> -->
 
               </tr>
