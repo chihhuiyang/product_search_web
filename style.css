@@ -37,6 +37,25 @@ input[type="text"]:disabled
   background-color: #222121 !important;
 }
 
+.page-link {
+  color: black;
+  border: 0;
+}
+
+a.page-link:hover {
+  color: black !important;
+  text-decoration: underline !important;
+  border: 0;
+}
+
+
+.page-item.active .page-link {
+  background-color: black !important;
+  color: white !important;
+  border-color: #DCDCDC !important;
+  border: 0;
+}
+
 .modal-title {
   color: black !important;
 }

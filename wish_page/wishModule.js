@@ -121,7 +121,7 @@
           var price = parseFloat(price_str);
           total_price += price;
       }
-      $scope.total_shopping_price = total_price;
+      $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
 
 
 

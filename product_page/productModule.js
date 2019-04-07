@@ -32,7 +32,7 @@
     var storageKey;
 
     if (typeof resultsDataService.getData() !== 'undefined' && resultsDataService.getData()[1][0] === $scope.$parent.jsonObj) {
-      // ebay search api
+      // after click some specific product
       $scope.ifHasTable = true;
       $rootScope.currentPage = resultsDataService.getData()[0];
       console.log($rootScope.currentPage);
@@ -55,16 +55,14 @@
         }
       
       $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
-      $scope.showNext = true;
-      $scope.showPrevious = true;
+
       
-    } else {
+    } else {  // before click some specific product [initial]
       $rootScope.jsonData = [];
       $rootScope.jsonData[0] = $scope.$parent.jsonObj;
       $rootScope.currentPage = 1;
       console.log($rootScope.jsonData[0]);
-
-      // ebay search api
+      
       if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'] == null) { // null searchResult
         // No Records have been found
         $scope.ifHasTable = false;
@@ -76,12 +74,57 @@
           $scope.ifHasTable = false;
         } else {
           $scope.ifHasTable = true;
-          // next, previous show all the time
-          $scope.showNext = true;
-          $scope.showPrevious = true;
 
           $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
         
+
+
+          // initial page active
+          $scope.b_activePage1 = true;
+          $scope.b_activePage2 = false;
+          $scope.b_activePage3 = false;
+          $scope.b_activePage4 = false;
+          $scope.b_activePage5 = false;
+
+
+          $scope.b_disablePrevious = true;
+          // count total pages & show pages
+          $scope.totalPruductPage = 1;
+          $scope.showPage1 = true;
+          $scope.showPage2 = false;
+          $scope.showPage3 = false;
+          $scope.showPage4 = false;
+          $scope.showPage5 = false;
+
+          if ($scope.rowData.length >= 10) {
+            $scope.totalPruductPage = 2;
+            $scope.showPage2 = true;
+          }
+          if ($scope.rowData.length >= 20) {
+            $scope.totalPruductPage = 3;
+            $scope.showPage3 = true;
+          }
+          if ($scope.rowData.length >= 30) {
+            $scope.totalPruductPage = 4;
+            $scope.showPage4 = true;
+          }
+          if ($scope.rowData.length >= 40) {
+            $scope.totalPruductPage = 5;
+            $scope.showPage5 = true;
+          }
+
+
+          // page 1 display
+          $scope.curPruductPage = 1;
+          for (var i = 0; i < $scope.rowData.length; i++) {
+            if (i < 10) {
+              $scope.rowData[i]['showProductRow'] = true;
+            } else {
+              $scope.rowData[i]['showProductRow'] = false;
+            }
+          }
+
+          
           // short title
           for (var i = 0; i < $scope.rowData.length; i++) {
             $scope.rowData[i]['short_title'] = $scope.rowData[i]['title'][0];
@@ -104,6 +147,7 @@
           }
 
 
+          // Wish List icon
           for (var i = 0; i < $scope.rowData.length; i++) {
             if ($scope.rowData[i]['ifSaved'] !== true) {
               $scope.rowData[i]['wishIconClass'] = "material-icons md-18";
@@ -128,185 +172,6 @@
 
     }
 
-    $scope.getNextPageData = function() {
-      if ($rootScope.currentPage === 1) {
-        if (typeof $scope.rowData2 === 'undefined') {
-          if ($rootScope.jsonData[0].hasOwnProperty('next_page_token')) {
-            console.log("jsonData[0]: ")
-            console.log($rootScope.jsonData[0]);
-            $rootScope.currentPage++;
-            $scope.showPrevious = true;
-            $scope.nextPageToken1 = $rootScope.jsonData[0].next_page_token;
-            var dataToPass = {
-              nextPageToken: $scope.nextPageToken1
-            }
-
-            $http({
-              method: 'GET',
-              url: "http://localhost:8081/?",
-              // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-              params: dataToPass
-            })
-            .then (function (response)
-            {
-              $rootScope.jsonData[1] = response.data;
-              if ($rootScope.jsonData[1].hasOwnProperty('next_page_token'))
-              {
-                $scope.showNext = true;
-              }
-              else
-              {
-                $scope.showNext = false;
-              }
-              console.log("jsonData[1]: ")
-              console.log($rootScope.jsonData[1]);
-              $scope.rowData = $rootScope.jsonData[1]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
-              for (var i = 0; i < $scope.rowData.length; i++)
-              {
-                if ($scope.rowData[i]['ifSaved'] !== true)
-                {
-                  $scope.rowData[i]['wishIconClass'] = "material-icons md-18";
-                  $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
-                }
-              }
-              for (var k = 0; k < $scope.userStorage.length; k++)
-              {
-                storageKey = $scope.userStorage.key(k);
-                for (var i = 0; i < $scope.rowData.length; i++)
-                {
-                  if ($scope.rowData[i]['itemId'][0] === storageKey)
-                  {
-                    $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
-                    $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
-                  }
-                }
-              }
-              $scope.rowData2 = $scope.rowData;
-              console.log($scope.rowData2);
-            },
-            function(response)
-            {
-              console.error("Request error!");
-            });
-          }
-          else
-          {
-            $scope.showNext = false;
-          }
-        }
-        else
-        {
-          $rootScope.currentPage++;
-          if ($rootScope.jsonData[1].hasOwnProperty('next_page_token'))
-          {
-            $scope.showNext = true;
-          }
-          else
-          {
-            $scope.showNext = false;
-          }
-          $scope.showPrevious = true;
-          $scope.rowData = $scope.rowData2;
-        }
-      }
-
-      else if ($rootScope.currentPage === 2)
-      {
-        if (typeof $scope.rowData3 === 'undefined')
-        {
-          if ($rootScope.jsonData[1].hasOwnProperty('next_page_token'))
-          {
-            $rootScope.currentPage++;
-            $scope.showNext = false;
-            $scope.showPrevious = true;
-            $scope.nextPageToken2 = $rootScope.jsonData[1].next_page_token;
-            var dataToPass = {
-              nextPageToken: $scope.nextPageToken2
-            }
-
-            $http({
-              method: 'GET',
-              url: "http://localhost:8081/?",
-              // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
-              params: dataToPass
-            })
-            .then (function (response)
-            {
-              $rootScope.jsonData[2] = response.data;
-              console.log("jsonData[2]: ")
-              console.log($rootScope.jsonData[2]);
-              $scope.rowData = $rootScope.jsonData[2]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
-              for (var i = 0; i < $scope.rowData.length; i++)
-              {
-                if ($scope.rowData[i]['ifSaved'] !== true)
-                {
-                  $scope.rowData[i]['wishIconClass'] = "material-icons md-18";
-                  $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
-                }
-              }
-              for (var k = 0; k < $scope.userStorage.length; k++)
-              {
-                storageKey = $scope.userStorage.key(k);
-                for (var i = 0; i < $scope.rowData.length; i++)
-                {
-                  if ($scope.rowData[i]['itemId'][0] === storageKey)
-                  {
-                    $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
-                    $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
-                  }
-                }
-              }
-              $scope.rowData3 = $scope.rowData;
-            },
-            function(response)
-            {
-              console.error("Request error!");
-            });
-          }
-          else
-          {
-            $scope.showNext = false;
-          }
-        }
-        else
-        {
-          $rootScope.currentPage++;
-          $scope.showNext = false;
-          $scope.showPrevious = true;
-          $scope.rowData = $scope.rowData3;
-        }
-      }
-
-      else
-      {
-        $scope.showNext = false;
-        $scope.showPrevious = true;
-      }
-    };
-
-    $scope.getPreviousPage = function()
-    {
-      if ($rootScope.currentPage === 2)
-      {
-        $rootScope.currentPage--;
-        $scope.showNext = true;
-        $scope.showPrevious = false;
-        $scope.rowData = $scope.rowData1;
-      }
-      else if ($rootScope.currentPage === 3)
-      {
-        $rootScope.currentPage--;
-        $scope.showNext = true;
-        $scope.showPrevious = true;
-        $scope.rowData = $scope.rowData2;
-
-      }
-      else
-      {
-        $scope.showNext = true;
-        $scope.showPrevious = false;
-      }
-    };
 
     $scope.requestDetails = function(index) {
       $rootScope.b_slide = true;
@@ -385,14 +250,14 @@
     };
 
     $scope.saveToLocalStorage = function(index) {
-      console.log("local_storage");
+      console.log("saveToLocalStorage");
       // ebay search api
       if ($scope.rowData[index]['wishIconClass'] === "material-icons md-18") {
         $scope.rowData[index]['wishIconClass'] = "material-icons md-18 yellow";
         $scope.rowData[index]['shopping_cart'] = "remove_shopping_cart";
         
         $scope.rowData[index]['ifSaved'] = true;
-        // if ($rootScope.currentPage === 1)
+        
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = true;
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18 yellow";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "remove_shopping_cart";
@@ -404,7 +269,7 @@
         var input_single_Data = {
           itemId_single: $scope.myPlaceId
         }
-        console.log(input_single_Data);
+        console.log($scope.myPlaceId);
         $http({
           method: 'GET',
           url: "http://localhost:8081/?",
@@ -413,14 +278,14 @@
         .then (function (response) {
           console.log("single api response");
           $scope.jsonObj = response.data;
-          console.log($scope.jsonObj);
+          // console.log($scope.jsonObj);
           $rootScope.showProgressBar = false;
           $rootScope.b_slide = false;
 
 
           $scope.passData = [];
           $scope.singleItemDetail = response.data.Item;
-          console.log($scope.singleItemDetail);
+          // console.log($scope.singleItemDetail);
           $scope.passData[0] = $scope.singleItemDetail;
 
           // pass keyword + itemId
@@ -488,7 +353,155 @@
 
     $scope.changeAnimation = function() {
 
-    }
+    };
+
+    $scope.page1 = function() {
+      console.log("page 1");
+      // update page
+      $scope.curPruductPage = 1;
+
+      // active
+      $scope.b_activePage1 = true;
+      $scope.b_activePage2 = false;
+      $scope.b_activePage3 = false;
+      $scope.b_activePage4 = false;
+      $scope.b_activePage5 = false;
+
+      // disable & dispaly
+      $scope.b_disablePrevious = true;
+      for (var i = 0; i < $scope.rowData.length; i++) {
+        if (i < 10) {
+          $scope.rowData[i]['showProductRow'] = true;
+        } else {
+          $scope.rowData[i]['showProductRow'] = false;
+        }
+      }
+    };
+
+    $scope.page2 = function() {
+      console.log("page 2");
+      // update page
+      $scope.curPruductPage = 2;
+
+      // active
+      $scope.b_activePage1 = false;
+      $scope.b_activePage2 = true;
+      $scope.b_activePage3 = false;
+      $scope.b_activePage4 = false;
+      $scope.b_activePage5 = false;     
+
+      // disable & dispaly
+      $scope.b_disablePrevious = false;
+      $scope.b_disableNext = false;
+      for (var i = 0; i < $scope.rowData.length; i++) {
+        if (i >= 10 && i < 20) {
+          $scope.rowData[i]['showProductRow'] = true;
+        } else {
+          $scope.rowData[i]['showProductRow'] = false;
+        }
+      }
+    };
+
+    $scope.page3 = function() {
+      console.log("page 3");
+
+      // update page
+      $scope.curPruductPage = 3;      
+
+      // active
+      $scope.b_activePage1 = false;
+      $scope.b_activePage2 = false;
+      $scope.b_activePage3 = true;
+      $scope.b_activePage4 = false;
+      $scope.b_activePage5 = false;
+
+      // disable & dispaly
+      $scope.b_disablePrevious = false;
+      $scope.b_disableNext = false;
+      for (var i = 0; i < $scope.rowData.length; i++) {
+        if (i >= 20 && i < 30) {
+          $scope.rowData[i]['showProductRow'] = true;
+        } else {
+          $scope.rowData[i]['showProductRow'] = false;
+        }
+      }
+    };
+
+    $scope.page4 = function() {
+      console.log("page 4");
+
+      // update page
+      $scope.curPruductPage = 4;      
+
+      // active
+      $scope.b_activePage1 = false;
+      $scope.b_activePage2 = false;
+      $scope.b_activePage3 = false;
+      $scope.b_activePage4 = true;
+      $scope.b_activePage5 = false;
+
+      // disable & dispaly
+      $scope.b_disablePrevious = false;
+      $scope.b_disableNext = false;
+      for (var i = 0; i < $scope.rowData.length; i++) {
+        if (i >= 30 && i < 40) {
+          $scope.rowData[i]['showProductRow'] = true;
+        } else {
+          $scope.rowData[i]['showProductRow'] = false;
+        }
+      }
+    };
+
+    $scope.page5 = function() {
+      console.log("page 5");
+
+      // update page
+      $scope.curPruductPage = 5;
+
+      // active
+      $scope.b_activePage1 = false;
+      $scope.b_activePage2 = false;
+      $scope.b_activePage3 = false;
+      $scope.b_activePage4 = false;
+      $scope.b_activePage5 = true;
+
+      // disable & dispaly
+      $scope.b_disableNext = true;
+      for (var i = 0; i < $scope.rowData.length; i++) {
+        if (i >= 40 && i < 50) {
+          $scope.rowData[i]['showProductRow'] = true;
+        } else {
+          $scope.rowData[i]['showProductRow'] = false;
+        }
+      }
+    };
+
+
+    $scope.goPreviousPage = function() {
+      if ($scope.curPruductPage === 2) {
+        $scope.page1();
+      } else if ($scope.curPruductPage === 3) {
+        $scope.page2();
+      } else if ($scope.curPruductPage === 4) {
+        $scope.page3();
+      } else if ($scope.curPruductPage === 5) {
+        $scope.page4();
+      }
+    };
+
+
+    $scope.goNextPage = function() {
+      if ($scope.curPruductPage === 1) {
+        $scope.page2();
+      } else if ($scope.curPruductPage === 2) {
+        $scope.page3();
+      } else if ($scope.curPruductPage === 3) {
+        $scope.page4();
+      } else if ($scope.curPruductPage === 4) {
+        $scope.page5();
+      }  
+    };
+
 
   }]);
 })(angular);
