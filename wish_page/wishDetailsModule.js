@@ -563,6 +563,7 @@
     }
 
     $scope.addToFavorite = function() {
+      console.log("addToFavorite()");
       console.log($rootScope.detailWishIconClass);
 
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
@@ -574,9 +575,12 @@
         $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
         $scope.input_search_single_api_time_Data[1][1] = $scope.singleItemDetail.ItemID;
 
+
         $scope.passData[2] = $rootScope.tempFavoriteRow;
         $scope.passData[3] = $scope.myLocationOption;
-        //console.log($scope.myLocationOption);
+
+        console.log($scope);
+        console.log($rootScope);
         if ($scope.myLocationOption === "option1") {
           $scope.input_search_single_api_time_Data[4] = "90007";
         } else {
@@ -586,7 +590,7 @@
         $scope.passData[5] = timeStamp;
         console.log($scope.passData);
         localStorage.setItem($scope.storageKey, JSON.stringify($scope.passData));
-      } else {
+      } else {  // yellow
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
         localStorage.removeItem($scope.singleItemDetail.ItemID);

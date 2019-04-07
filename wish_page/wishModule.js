@@ -18,8 +18,8 @@
   });
 
   wishModule.controller('wishController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q) {
-    console.log($rootScope);
-    console.log($scope);
+    // console.log($rootScope);
+    // console.log($scope);
 
     $rootScope.moveToRight = true;
     $scope.userStorage = window.localStorage;
@@ -62,7 +62,7 @@
     for (var i = 0; i < $rootScope.wishItems.length; i++) {
       $scope.wishData[i] = $rootScope.wishItems[i];
     }
-    console.log($scope.wishData);
+    // console.log($scope.wishData);
 
 
       // calculate total_shopping_price
@@ -72,8 +72,7 @@
           var price = parseFloat(price_str);
           total_price += price;
       }
-      $scope.total_shopping_price = total_price;
-
+      $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
 
     // save to root
     $rootScope.wishPacks = [];
@@ -86,14 +85,14 @@
       }
     }
 
-    console.log($rootScope.wishPacks);
+    // console.log($rootScope.wishPacks);
     $scope.numOfFavorite = $rootScope.wishPacks[0].length;
 
 
     $scope.removeLocalStorage = function(index) {
-      console.log("remove item: " + index);
       var deleteIndex = index;
       var deleteKey = $rootScope.wishItems[deleteIndex]['itemId'][0];
+      console.log("remove item: " + deleteKey);
       $rootScope.wishItems.splice(deleteIndex, 1);
       
       
@@ -107,7 +106,7 @@
 
       $scope.wishData = $rootScope.wishPacks[0]; 
       console.log($scope.wishData);
-      console.log($rootScope.wishPacks[0]);
+      // console.log($rootScope.wishPacks[0]);
       if ($rootScope.wishItems.length === 0) {
         $scope.b_containWishList = false;
       } else {
@@ -130,7 +129,9 @@
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           var items = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
           for (var j = 0; j < items.length; j++) {
-            if (items[j]['itemId'][0] === $scope.sorted_localStorage[deleteIndex][6]) {
+            if (items[j]['itemId'][0] === deleteKey) {
+            // if (items[j]['itemId'][0] === $scope.sorted_localStorage[deleteIndex][6]) {
+              console.log("update product page data.  itenmId: " + items[j]['itemId'][0]);
               items[j]['ifSaved'] = false;
               items[j]['wishIconClass'] = "material-icons md-18";
               items[j]['shopping_cart'] = "add_shopping_cart";

@@ -253,17 +253,15 @@
       console.log("saveToLocalStorage");
       // ebay search api
       if ($scope.rowData[index]['wishIconClass'] === "material-icons md-18") {
+        $scope.rowData[index]['ifSaved'] = true;
         $scope.rowData[index]['wishIconClass'] = "material-icons md-18 yellow";
         $scope.rowData[index]['shopping_cart'] = "remove_shopping_cart";
         
-        $scope.rowData[index]['ifSaved'] = true;
-        
+        // pass to root
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = true;
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18 yellow";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "remove_shopping_cart";
         
-
-
         // ebay single item api -------------------------------
         $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
         var input_single_Data = {
@@ -300,9 +298,8 @@
 
 
           if ($scope.myLocationOption === "option1") {
-            $scope.passData[4] = "90007";
-          }
-          else {
+            $scope.passData[4] =  $scope.$parent.currentZipcode;
+          } else {
             $scope.myInputLocation = $scope.$parent.myInputLocation;
             $scope.passData[4] = $scope.myInputLocation;
           }
