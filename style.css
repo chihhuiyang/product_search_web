@@ -243,6 +243,16 @@ td.name_link:hover {
   color: red;
 }
 
+md-autocomplete {
+  /* border: 1px solid red; */
+  border-radius: 5px;
+}
+
+#inpute_location_autocomplete.ng-invalid.ng-touched {
+  border: 1px solid red;
+  border-radius: 5px;
+}
+
 #input_keyword.ng-invalid.ng-touched, #input_location.ng-invalid.ng-touched
 {
   border: 1px solid red;

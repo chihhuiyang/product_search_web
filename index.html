@@ -135,12 +135,13 @@
                 <input type="text" id="input_location" name="inputLocation" class="form-control" ng-model="myInputLocation" ng-required="true" ng-click="validateLocation(); autoComplete();" placeholder="Enter a location" disabled>
 
                   <!-- Autocomplete -->
-                  <div ng-controller="DemoCtrl as ctrl"  ng-cloak>
+                  <div ng-controller="DemoCtrl as ctrl"  ng-cloak >
                       <!-- <md-content class="md-padding"> -->
                         <form name="autocompleteForm" ng-submit="$event.preventDefault()">
                           <md-autocomplete required 
                               md-input-name="autocomplete"
-          
+                              md-input-id="inpute_location_autocomplete"
+
                               md-clear-button="false"
                               ng-disabled="ctrl.isDisabled"
                               md-no-cache="true"
@@ -161,12 +162,16 @@
                                 <div ng-message="required">This field is required</div>
                               </div> -->
                           </md-autocomplete>
+
+                          <p class="error" id="locationError">Please enter a location.</p>             
+
                           <br/>
                         
                         </form>
                       <!-- </md-content> -->
                     </div>
                   
+
 
 
                 <p class="error" id="locationError" ng-show="myForm.inputLocation.$invalid && myForm.inputLocation.$touched">Please enter a location.</p>             
