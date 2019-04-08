@@ -6,7 +6,8 @@
     'productSearchModel.productModule',
     'productSearchModel.detailsModule',
     'productSearchModel.wishModule',
-    'productSearchModel.wishDetailsModule'
+    'productSearchModel.wishDetailsModule',
+    'productSearchModel.autocomplete'
   ]);
 
   searchApp.config(['$qProvider', function ($qProvider) {
