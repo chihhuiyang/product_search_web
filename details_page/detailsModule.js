@@ -296,36 +296,7 @@
       $scope.showItemSpecifics = false;
     }
 
-
-
-
-    $scope.b_disableKeywordLocation = function() {
-      $scope.mapForm.mapInputLocation.$setPristine();
-      $scope.mapForm.mapInputLocation.$setUntouched();
-      if ($scope.mapForm.mapInputLocation.$invalid) {
-        return true;
-      }
-    };
-
-    $scope.autoComplete = function()
-    {
-      var input = document.getElementById('mapInputLocation');
-      var options = {types: ['address']};
-      $scope.autocompleteObj = new google.maps.places.Autocomplete(input, options);
-    };
-
-
-
-    $scope.setArray = function(params)
-    {
-      return new Array(params);
-    };
-
-
-
-
-
-
+    
     $scope.requestPhotoApi = function() {
       // photo tab
       // google custom search api -----------------------------------

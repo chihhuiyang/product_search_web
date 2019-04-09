@@ -20,12 +20,13 @@
 
     $scope.isAutocompleteDisabled = true;
     $scope.noCache = true;
-
-    // list of `state` value/display objects
-    $scope.states        = loadAll();
-    // $scope.querySearch   = querySearch;
     $scope.querySearch = function(query) {
-      $http.get("http://localhost:8081/?postalcode_startsWith=" + query) 
+      console.log('Text changed to :' + query);
+      if (query === "" || typeof query === "undefined") {
+        return [];
+      }
+
+      return $http.get("http://localhost:8081/?postalcode_startsWith=" + query) 
       .then(function(response) {
             console.log("autocomplete api response");
             $scope.autocompleteObj = response.data.postalCodes;  // 5 zipcodes
@@ -34,74 +35,22 @@
             for (var i = 0; i < $scope.autocompleteObj.length; i++) {
               // console.log($scope.autocompleteObj[i].postalCode);
               $scope.recommend_zipcode[i] = $scope.autocompleteObj[i].postalCode;
-            }            
+            }       
+            console.log($scope.recommend_zipcode);     
+            return $scope.recommend_zipcode;
       },
       function(response)
       {
-        console.error("Request error!");
-        $scope.recommend_zipcode = [];
+        console.error("autocomplete API error!");
+        return [];
       });
-      console.log($scope.recommend_zipcode);
-      return $scope.recommend_zipcode;
     }
+
     $scope.selectedItemChange = selectedItemChange;
-    $scope.searchTextChange   = searchTextChange;
-
-
-    // function querySearch (query) {
-  
-    //   console.log(query);
-    //   // console.log($scope);
-    //   var empty = [];
-    //   if (query === "" || typeof query === "undefined") {
-    //     return empty;
-    //   }
-    //   console.log("output list");     
-    //   console.log($scope.myInputLocation);
-
-    //   return $scope.autoComplete();
-    // }
-
-    function searchTextChange(text) {
-      console.log('Text changed to ' + text);
-      $scope.myInputLocation = $scope.searchText;
-
-      console.log("searchTextChange end");
-    }
 
     function selectedItemChange(item) {
-      console.log('Item changed to ' + JSON.stringify(item));
+      console.log('Item changed to :' + JSON.stringify(item));
     }
-
-    /**
-     * Build `states` list of key/value pairs
-     */
-    function loadAll() {
-      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-              Wisconsin, Wyoming';
-
-      return allStates.split(/, +/g).map(function (state) {
-        return {
-          value: state.toLowerCase(),
-          display: state
-        };
-      });
-    }
-
-
-
-
-
-
-
-
-
-
 
 
     $rootScope.b_slide = false;
@@ -366,34 +315,6 @@
       $location.path(myPath);
     };
 
-    $scope.autoComplete = function() {
-           // call zip code autocomplete api -------------------------------
-           $scope.recommend_zipcode = [];
-           var input_Data = {
-            postalcode_startsWith: $scope.myInputLocation
-          }
-          console.log(input_Data);
-          $http({
-            method: 'GET',
-            url: "http://localhost:8081/?",
-            params: input_Data
-          })
-          .then (function (response)
-          {
-            console.log("autocomplete api response");
-            $scope.autocompleteObj = response.data.postalCodes;  // 5 zipcodes
-            // console.log($scope.autocompleteObj);
-            for (var i = 0; i < $scope.autocompleteObj.length; i++) {
-              // console.log($scope.autocompleteObj[i].postalCode);
-              $scope.recommend_zipcode[i] = $scope.autocompleteObj[i].postalCode;
-            }
-            console.log($scope.recommend_zipcode);
-            return $scope.recommend_zipcode;
-          });
-          console.log($scope.recommend_zipcode);
-          // return $scope.recommend_zipcode;
-
-    };
 
     $scope.cleanAnimation = function() {
       $rootScope.b_slide = false;
