@@ -50,7 +50,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.min.js"></script>
   <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="autocomplete.js"></script>
   <script src="searchModule.js"></script>
   <script src="product_page/productModule.js"></script>
   <script src="details_page/detailsModule.js"></script>
@@ -147,6 +146,7 @@
                 ng-disabled="isAutocompleteDisabled"
                 md-no-cache="noCache"
                 md-selected-item="selectedItem"
+                md-search-text-change="searchTextChange(searchText)"
                 md-search-text="searchText"
                 md-selected-item-change="selectedItemChange(item)"
                 md-items="item in querySearch(searchText)"

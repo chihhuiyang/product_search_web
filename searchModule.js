@@ -21,6 +21,7 @@
     $scope.isAutocompleteDisabled = true;
     $scope.noCache = true;
     $scope.querySearch = function(query) {
+      $scope.myInputLocation = query;
       console.log('Text changed to :' + query);
       if (query === "" || typeof query === "undefined") {
         return [];
@@ -50,6 +51,7 @@
 
     function selectedItemChange(item) {
       console.log('Item changed to :' + JSON.stringify(item));
+      $scope.myInputLocation = item;
     }
 
 
@@ -71,11 +73,13 @@
 
 
     $scope.validateZipcode = function() {
-      // console.log($scope.myInputLocation);
+      console.log($scope.myInputLocation);
       var valid = (/^\d{5}$/).test($scope.myInputLocation);
       if (valid) {
+        console.log(true);
         return true;
       } else {
+        console.log(false);
         return false;
       }
     };
@@ -90,24 +94,36 @@
         $scope.searchText = "";
         $scope.myForm.inpute_location_autocomplete.$setPristine();
         $scope.myForm.inpute_location_autocomplete.$setUntouched();
-        console.log($scope);
+        // console.log($scope);
       } else if ($scope.myLocation === 1) {
         console.log("current is location 2");
         $scope.isAutocompleteDisabled = false;
-        console.log($scope);
+        // console.log($scope);
       }
     };
 
     $scope.b_disableKeywordLocation = function() {
       if ($scope.myLocation === 1) {
+        // console.log("current is location 1");
         if ($scope.myForm.keyword.$invalid) {
           return true;
         }
       } else if ($scope.myLocation === 2) {
-        if ($scope.myForm.keyword.$invalid || $scope.myForm.inpute_location_autocomplete.$invalid || !$scope.validateZipcode()) {
+        // console.log("current is location 2");
+        if ($scope.myForm.keyword.$invalid) {
+          // console.log("keyword invalid");
+          return true;
+        }
+        if ($scope.myForm.inpute_location_autocomplete.$invalid) {
+          // console.log("inpute_location_autocomplete invalid");
+          return true;
+        }
+        if (!$scope.validateZipcode()) {
+          // console.log("zip code invalid");
           return true;
         }
       }
+      return false;
     };
 
     $scope.clearInputs = function() {

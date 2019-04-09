@@ -300,7 +300,7 @@
       // google custom search api -----------------------------------
       // if ($scope.b_containPhoto == false) { // avoid re-call api
         var inputData = {
-          keyword_photo: $scope.passData[1][0]
+          keyword_photo: $scope.favData[4][0]
         }
         console.log(inputData);
         $http({
