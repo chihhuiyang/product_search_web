@@ -59,14 +59,15 @@
     $rootScope.b_slide = false;
     $rootScope.b_animation = false;
     $rootScope.b_clickWishDetail = false;
+    $rootScope.b_clickDetail = true;
+    $rootScope.b_clickWishDetail = true;
+    $rootScope.wishListItems = [];
+    
     $scope.myCategory = "default";
     $scope.b_clickSearch = false;
     $scope.b_clickResults = true;
-    $rootScope.tempFavoriteRow = [];
-
     $scope.b_searchDone = true;
-    $rootScope.b_clickDetail = true;
-    $rootScope.b_clickWishDetail = true;
+
     if ($location.path() === '/wish_page') {
       $scope.b_clickResults = false;
       $scope.b_clickWish = true;
@@ -151,7 +152,7 @@
       $scope.searchText = "";
     };
 
-    $scope.getInputs = function(myPath) {
+    $scope.getInputs = function(path) {
       console.log("To location: " + "/");
       $location.path('/');
 
@@ -224,8 +225,8 @@
             //console.log($scope.jsonObj);
             $rootScope.showProgressBar = false;
             $rootScope.b_slide = false;
-            console.log("To location: " + myPath);
-            $location.path(myPath);
+            console.log("To location: " + path);
+            $location.path(path);
           },
           function(response)
           {
@@ -289,8 +290,8 @@
           $scope.b_searchDone = true;
           $rootScope.b_animation = true;
           $rootScope.b_slide = false;
-          console.log("To location: " + myPath);
-          $location.path(myPath);
+          console.log("To location: " + path);
+          $location.path(path);
         },
         function(response)
         {
@@ -327,9 +328,9 @@
       $location.path('wish_page');
     }
 
-    $scope.redirect = function(myPath) {
-      console.log("To location: " + myPath);
-      $location.path(myPath);
+    $scope.redirect = function(path) {
+      console.log("To location: " + path);
+      $location.path(path);
     };
 
 

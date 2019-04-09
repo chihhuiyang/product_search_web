@@ -8,34 +8,33 @@
     });
   }]);
 
-  wishDetailsModule.service('favoriteDetailsDataService', function(favoriteDataService) {
+  wishDetailsModule.service('wishDetailDataService', function(wishDataService) {
     this.setData = function() {
-      favoriteDataService.setData('newVal');
+      wishDataService.setData('newVal');
     };
     this.getData = function() {
-      return favoriteDataService.getData();
+      return wishDataService.getData();
     };
   });
 
-  wishDetailsModule.controller('wishDetailsController', ['$scope', '$http', '$rootScope', 'favoriteDetailsDataService', '$location', function($scope, $http, $rootScope, favoriteDetailsDataService, $location) {
+  wishDetailsModule.controller('wishDetailsController', ['$scope', '$http', '$rootScope', 'wishDetailDataService', '$location', function($scope, $http, $rootScope, wishDetailDataService, $location) {
     $rootScope.b_slide = true;
-    $rootScope.moveToRight = false;
+    $rootScope.b_moveToRight = false;
     $rootScope.detailWishIconClass = "material-icons md-18";
     $rootScope.shopping_cart = "add_shopping_cart";
 
-    $scope.favData = favoriteDetailsDataService.getData();
-    console.log($scope.favData);
+    $scope.wishData = wishDetailDataService.getData();
+    console.log($scope.wishData);
     // console.log($rootScope);
-    $scope.storageKey = $scope.favData[0];
-    $scope.myLocationOption = $scope.favData[1];
-    $scope.singleItemDetail = $scope.favData[3];
-    $scope.photo_arr = $scope.favData[4];  // keyword + itemId
+    $scope.storageKey = $scope.wishData[0];
+    $scope.myLocationOption = $scope.wishData[1];
+    $scope.singleItemDetail = $scope.wishData[3];
+    $scope.photo_arr = $scope.wishData[4];  // keyword + itemId
     $scope.name = $scope.singleItemDetail.Title;
     // console.log(window.localStorage);
 
     $scope.b_containPhoto = true;  // initail assign
     $scope.b_containSimilar = true;  // initail assign
-
 
     $scope.currentStorage = window.localStorage;
     for (var i = 0; i < $scope.currentStorage.length; i++) {
@@ -48,15 +47,15 @@
 
     for (var i = 0; i < $rootScope.wishItems.length; i++)  {
       if ($rootScope.wishItems[i]['itemId'][0] === $scope.singleItemDetail.ItemID) {
-        $rootScope.tempFavoriteRow = $rootScope.wishItems[i];
+        $rootScope.wishListItems = $rootScope.wishItems[i];
       }
     }
 
 
     if ($scope.myLocationOption === "option1") {  // current location
-
-    } else { // TODO : zip code location
-      $scope.myInputLocation = $scope.favData[2];
+      $scope.myInputLocation = "";
+    } else { // zip code location
+      $scope.myInputLocation = $scope.wishData[2];
     }
 
 
@@ -300,7 +299,7 @@
       // google custom search api -----------------------------------
       // if ($scope.b_containPhoto == false) { // avoid re-call api
         var inputData = {
-          keyword_photo: $scope.favData[4][0]
+          keyword_photo: $scope.wishData[4][0]
         }
         console.log(inputData);
         $http({
@@ -535,25 +534,9 @@
     }
 
     
-
-    $scope.openFacebookWindow = function() {
-      if ($scope.singleItemDetail.hasOwnProperty('ViewItemURLForNaturalSearch')) {
-        var placeUrl = $scope.singleItemDetail.ViewItemURLForNaturalSearch;
-      } else {
-        var placeUrl = "http://www.google.com/";
-      }
-
-      var fb_text = "Buy " + $scope.singleItemDetail.Title;;
-      fb_text += " at $" + $scope.singleItemDetail.CurrentPrice.Value;
-      fb_text += " from LINK below.";
-      var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + placeUrl + "&quote=" + fb_text;
-      $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
-    };
-
-    $scope.backToList = function()
-    {
+    $scope.backToList = function() {
       $rootScope.b_slide = true;
-      $rootScope.moveToRight = false;
+      $rootScope.b_moveToRight = false;
       if ($location.path() == '/details_page') {
         console.log("To location: " + "/wishproduct_page_page");
         $location.path('/product_page');
@@ -563,8 +546,26 @@
       }
     }
 
-    $scope.addToFavorite = function() {
-      console.log("addToFavorite()");
+
+    $scope.openFacebookWindow = function() {
+      if ($scope.singleItemDetail.hasOwnProperty('ViewItemURLForNaturalSearch')) {
+        var dest_url = $scope.singleItemDetail.ViewItemURLForNaturalSearch;
+      } else {
+        var dest_url = "http://www.google.com/";
+      }
+
+      var fb_text = "Buy " + $scope.singleItemDetail.Title;;
+      fb_text += " at $" + $scope.singleItemDetail.CurrentPrice.Value;
+      fb_text += " from LINK below.";
+      var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + dest_url + "&quote=" + fb_text;
+      $scope.facebookWindow = window.open(fb_url, "Share a link on Facebook");
+    };
+
+
+  
+
+    $scope.addToWishList = function() {
+      console.log("add to wish list");
       console.log($rootScope.detailWishIconClass);
 
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
@@ -576,12 +577,11 @@
         $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
         $scope.input_search_single_api_time_Data[1][1] = $scope.singleItemDetail.ItemID;
 
-
-        $scope.passData[2] = $rootScope.tempFavoriteRow;
+        $scope.passData[2] = $rootScope.wishListItems;
         $scope.passData[3] = $scope.myLocationOption;
 
-        console.log($scope);
-        console.log($rootScope);
+        // console.log($scope);
+        // console.log($rootScope);
         if ($scope.myLocationOption === "option1") {
           $scope.input_search_single_api_time_Data[4] = "";
         } else {
@@ -589,7 +589,7 @@
         }
         var timeStamp = Date.now();
         $scope.passData[5] = timeStamp;
-        console.log($scope.passData);
+        // console.log($scope.passData);
         localStorage.setItem($scope.storageKey, JSON.stringify($scope.passData));
       } else {  // yellow
         $rootScope.detailWishIconClass = "material-icons md-18";

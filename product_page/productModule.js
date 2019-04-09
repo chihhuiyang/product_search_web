@@ -21,7 +21,7 @@
 
   productModule.controller('productController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q) {
     $rootScope.b_slide = false;
-    $rootScope.moveToRight = true;
+    $rootScope.b_moveToRight = true;
     $scope.myLocationOption = $scope.$parent.locationOption;
     $scope.showResultsTable = $scope.$parent.showTable;
     $scope.userStorage = window.localStorage;
@@ -54,7 +54,7 @@
           }
         }
       
-      $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+      $scope.fiftyData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
 
       
     } else {  // before click some specific product [initial]
@@ -75,7 +75,7 @@
         } else {
           $scope.ifHasTable = true;
 
-          $scope.rowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+          $scope.fiftyData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
         
 
 
@@ -96,19 +96,19 @@
           $scope.showPage4 = false;
           $scope.showPage5 = false;
 
-          if ($scope.rowData.length >= 10) {
+          if ($scope.fiftyData.length >= 10) {
             $scope.totalPruductPage = 2;
             $scope.showPage2 = true;
           }
-          if ($scope.rowData.length >= 20) {
+          if ($scope.fiftyData.length >= 20) {
             $scope.totalPruductPage = 3;
             $scope.showPage3 = true;
           }
-          if ($scope.rowData.length >= 30) {
+          if ($scope.fiftyData.length >= 30) {
             $scope.totalPruductPage = 4;
             $scope.showPage4 = true;
           }
-          if ($scope.rowData.length >= 40) {
+          if ($scope.fiftyData.length >= 40) {
             $scope.totalPruductPage = 5;
             $scope.showPage5 = true;
           }
@@ -116,56 +116,56 @@
 
           // page 1 display
           $scope.curPruductPage = 1;
-          for (var i = 0; i < $scope.rowData.length; i++) {
+          for (var i = 0; i < $scope.fiftyData.length; i++) {
             if (i < 10) {
-              $scope.rowData[i]['showProductRow'] = true;
+              $scope.fiftyData[i]['showProductRow'] = true;
             } else {
-              $scope.rowData[i]['showProductRow'] = false;
+              $scope.fiftyData[i]['showProductRow'] = false;
             }
           }
 
           
           // short title
-          for (var i = 0; i < $scope.rowData.length; i++) {
-            $scope.rowData[i]['short_title'] = $scope.rowData[i]['title'][0];
-            var title_str = $scope.rowData[i]['title'][0];
+          for (var i = 0; i < $scope.fiftyData.length; i++) {
+            $scope.fiftyData[i]['short_title'] = $scope.fiftyData[i]['title'][0];
+            var title_str = $scope.fiftyData[i]['title'][0];
             if (title_str.length > 35) {
-              $scope.rowData[i]['short_title'] = title_str.substring(0,35) + "...";
+              $scope.fiftyData[i]['short_title'] = title_str.substring(0,35) + "...";
             }
           }
 
 
           // free shipping
-          for (var i = 0; i < $scope.rowData.length; i++) {
-            $scope.rowData[i]['shipCost'] = $scope.rowData[i].shippingInfo[0]['shippingServiceCost'][0]['__value__'];
-            var ship_cost = parseFloat($scope.rowData[i]['shipCost']);
+          for (var i = 0; i < $scope.fiftyData.length; i++) {
+            $scope.fiftyData[i]['shipCost'] = $scope.fiftyData[i].shippingInfo[0]['shippingServiceCost'][0]['__value__'];
+            var ship_cost = parseFloat($scope.fiftyData[i]['shipCost']);
             if (ship_cost == 0.0) {
-              $scope.rowData[i]['shipCost'] = "Free Shipping";
+              $scope.fiftyData[i]['shipCost'] = "Free Shipping";
             } else {
-              $scope.rowData[i]['shipCost'] = "$" + $scope.rowData[i]['shipCost'];
+              $scope.fiftyData[i]['shipCost'] = "$" + $scope.fiftyData[i]['shipCost'];
             }
           }
 
 
           // Wish List icon
-          for (var i = 0; i < $scope.rowData.length; i++) {
-            if ($scope.rowData[i]['ifSaved'] !== true) {
-              $scope.rowData[i]['wishIconClass'] = "material-icons md-18";
-              $scope.rowData[i]['shopping_cart'] = "add_shopping_cart";
+          for (var i = 0; i < $scope.fiftyData.length; i++) {
+            if ($scope.fiftyData[i]['ifSaved'] !== true) {
+              $scope.fiftyData[i]['wishIconClass'] = "material-icons md-18";
+              $scope.fiftyData[i]['shopping_cart'] = "add_shopping_cart";
             }
           }
           for (var k = 0; k < $scope.userStorage.length; k++) {
             storageKey = $scope.userStorage.key(k);
-            for (var i = 0; i < $scope.rowData.length; i++) {
-              if ($scope.rowData[i]['itemId'][0] === storageKey) {
-                $scope.rowData[i]['wishIconClass'] = "material-icons md-18 yellow";
-                $scope.rowData[i]['shopping_cart'] = "remove_shopping_cart";
+            for (var i = 0; i < $scope.fiftyData.length; i++) {
+              if ($scope.fiftyData[i]['itemId'][0] === storageKey) {
+                $scope.fiftyData[i]['wishIconClass'] = "material-icons md-18 yellow";
+                $scope.fiftyData[i]['shopping_cart'] = "remove_shopping_cart";
               }
             }
           }
-          console.log($scope.rowData);
+          console.log($scope.fiftyData);
 
-          $scope.rowData1 = $scope.rowData;
+          $scope.fiftyData1 = $scope.fiftyData;
 
         }
       }
@@ -175,16 +175,16 @@
 
     $scope.requestDetails = function(index) {
       $rootScope.b_slide = true;
-      $rootScope.moveToRight = true;
+      $rootScope.b_moveToRight = true;
       $rootScope.b_clickWishDetail = false;
       $rootScope.showProgressBar = true;
       console.log($rootScope.currentPage);
-      $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
-      console.log($scope.myPlaceId);
+      $scope.curItemId = $scope.fiftyData[index]['itemId'][0];
+      console.log($scope.curItemId);
 
       // ebay single item api -------------------------------
       var input_single_Data = {
-        itemId_single: $scope.myPlaceId
+        itemId_single: $scope.curItemId
       }
       console.log(input_single_Data);
       $http({
@@ -203,15 +203,15 @@
         // pass keyword + itemId
         $scope.passData[1] = [];
         $scope.passData[1][0] = $scope.myKeywordData;
-        $scope.passData[1][1] = $scope.myPlaceId;
+        $scope.passData[1][1] = $scope.curItemId;
 
-        $rootScope.curRowData = $scope.rowData[index];
+        $rootScope.curfiftyData = $scope.fiftyData[index];
         $scope.passData[2] = $rootScope.currentPage;
         $scope.passData[3] = $rootScope.jsonData;
 
 
 
-        // console.log($rootScope.curRowData);
+        // console.log($rootScope.curfiftyData);
         resultsDataService.setData($scope.passData);
         $rootScope.currentIndex = index;
         console.log($scope.passData);
@@ -247,18 +247,18 @@
 
     };
 
-    $scope.redirect = function(myPath) {
-      console.log("To location: " + myPath);
-      $location.path(myPath);
+    $scope.redirect = function(path) {
+      console.log("To location: " + path);
+      $location.path(path);
     };
 
     $scope.saveToLocalStorage = function(index) {
       console.log("saveToLocalStorage");
       // ebay search api
-      if ($scope.rowData[index]['wishIconClass'] === "material-icons md-18") {
-        $scope.rowData[index]['ifSaved'] = true;
-        $scope.rowData[index]['wishIconClass'] = "material-icons md-18 yellow";
-        $scope.rowData[index]['shopping_cart'] = "remove_shopping_cart";
+      if ($scope.fiftyData[index]['wishIconClass'] === "material-icons md-18") {
+        $scope.fiftyData[index]['ifSaved'] = true;
+        $scope.fiftyData[index]['wishIconClass'] = "material-icons md-18 yellow";
+        $scope.fiftyData[index]['shopping_cart'] = "remove_shopping_cart";
         
         // pass to root
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = true;
@@ -266,11 +266,11 @@
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "remove_shopping_cart";
         
         // ebay single item api -------------------------------
-        $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
+        $scope.curItemId = $scope.fiftyData[index]['itemId'][0];
         var input_single_Data = {
-          itemId_single: $scope.myPlaceId
+          itemId_single: $scope.curItemId
         }
-        console.log($scope.myPlaceId);
+        console.log($scope.curItemId);
         $http({
           method: 'GET',
           url: "http://localhost:8081/?",
@@ -283,7 +283,6 @@
           $rootScope.showProgressBar = false;
           $rootScope.b_slide = false;
 
-
           $scope.passData = [];
           $scope.singleItemDetail = response.data.Item;
           // console.log($scope.singleItemDetail);
@@ -293,10 +292,8 @@
           $scope.myKeywordData = $scope.$parent.myKeyword;
           $scope.passData[1] = [];
           $scope.passData[1][0] = $scope.myKeywordData;
-          $scope.passData[1][1] = $scope.myPlaceId;
-
-          
-          $scope.passData[2] = $scope.rowData[index]; // ebay search api for this itemId
+          $scope.passData[1][1] = $scope.curItemId;         
+          $scope.passData[2] = $scope.fiftyData[index]; // ebay search api for this itemId
           $scope.passData[3] = $scope.myLocationOption;
 
 
@@ -311,13 +308,11 @@
           $scope.passData[5] = timeStamp;
           console.log($scope.passData);
           if(typeof(Storage) !== "undefined") {
-            var key = $scope.myPlaceId;
+            var key = $scope.curItemId;
             localStorage.setItem(key, JSON.stringify($scope.passData));
           } else {
             console.log("Sorry, your browser does not support web storage...");
           }
-
-
         },
         function(response)
         {
@@ -328,18 +323,18 @@
 
 
       } else {
-        $scope.rowData[index]['wishIconClass'] = "material-icons md-18";
-        $scope.rowData[index]['shopping_cart'] = "add_shopping_cart";
+        $scope.fiftyData[index]['wishIconClass'] = "material-icons md-18";
+        $scope.fiftyData[index]['shopping_cart'] = "add_shopping_cart";
 
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['ifSaved'] = false;
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['wishIconClass'] = "material-icons md-18";
         $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][index]['shopping_cart'] = "add_shopping_cart";
        
 
-        $scope.myPlaceId = $scope.rowData[index]['itemId'][0];
+        $scope.curItemId = $scope.fiftyData[index]['itemId'][0];
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
-        localStorage.removeItem($scope.myPlaceId);
+        localStorage.removeItem($scope.curItemId);
       }
 
 
@@ -369,11 +364,11 @@
 
       // disable & dispaly
       $scope.b_disablePrevious = true;
-      for (var i = 0; i < $scope.rowData.length; i++) {
+      for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i < 10) {
-          $scope.rowData[i]['showProductRow'] = true;
+          $scope.fiftyData[i]['showProductRow'] = true;
         } else {
-          $scope.rowData[i]['showProductRow'] = false;
+          $scope.fiftyData[i]['showProductRow'] = false;
         }
       }
     };
@@ -393,11 +388,11 @@
       // disable & dispaly
       $scope.b_disablePrevious = false;
       $scope.b_disableNext = false;
-      for (var i = 0; i < $scope.rowData.length; i++) {
+      for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i >= 10 && i < 20) {
-          $scope.rowData[i]['showProductRow'] = true;
+          $scope.fiftyData[i]['showProductRow'] = true;
         } else {
-          $scope.rowData[i]['showProductRow'] = false;
+          $scope.fiftyData[i]['showProductRow'] = false;
         }
       }
     };
@@ -418,11 +413,11 @@
       // disable & dispaly
       $scope.b_disablePrevious = false;
       $scope.b_disableNext = false;
-      for (var i = 0; i < $scope.rowData.length; i++) {
+      for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i >= 20 && i < 30) {
-          $scope.rowData[i]['showProductRow'] = true;
+          $scope.fiftyData[i]['showProductRow'] = true;
         } else {
-          $scope.rowData[i]['showProductRow'] = false;
+          $scope.fiftyData[i]['showProductRow'] = false;
         }
       }
     };
@@ -443,11 +438,11 @@
       // disable & dispaly
       $scope.b_disablePrevious = false;
       $scope.b_disableNext = false;
-      for (var i = 0; i < $scope.rowData.length; i++) {
+      for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i >= 30 && i < 40) {
-          $scope.rowData[i]['showProductRow'] = true;
+          $scope.fiftyData[i]['showProductRow'] = true;
         } else {
-          $scope.rowData[i]['showProductRow'] = false;
+          $scope.fiftyData[i]['showProductRow'] = false;
         }
       }
     };
@@ -467,11 +462,11 @@
 
       // disable & dispaly
       $scope.b_disableNext = true;
-      for (var i = 0; i < $scope.rowData.length; i++) {
+      for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i >= 40 && i < 50) {
-          $scope.rowData[i]['showProductRow'] = true;
+          $scope.fiftyData[i]['showProductRow'] = true;
         } else {
-          $scope.rowData[i]['showProductRow'] = false;
+          $scope.fiftyData[i]['showProductRow'] = false;
         }
       }
     };

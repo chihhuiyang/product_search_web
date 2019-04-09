@@ -8,7 +8,7 @@
     });
   }]);
 
-  wishModule.service('favoriteDataService', function() {
+  wishModule.service('wishDataService', function() {
     this.setData = function(val) {
       this.myData = val;
     };
@@ -17,11 +17,11 @@
     };
   });
 
-  wishModule.controller('wishController', ['$scope', '$http', '$rootScope', '$location', 'favoriteDataService', '$q', function($scope, $http, $rootScope, $location, favoriteDataService, $q) {
+  wishModule.controller('wishController', ['$scope', '$http', '$rootScope', '$location', 'wishDataService', '$q', function($scope, $http, $rootScope, $location, wishDataService, $q) {
     // console.log($rootScope);
     // console.log($scope);
 
-    $rootScope.moveToRight = true;
+    $rootScope.b_moveToRight = true;
     $scope.userStorage = window.localStorage;
     $scope.sorted_localStorage = [];
     var copy_key;
@@ -37,7 +37,7 @@
       return x[5] - y[5]; // sort by time
     })
 
-    console.log($scope.sorted_localStorage);
+    // console.log($scope.sorted_localStorage);
 
     if ($scope.userStorage.length === 0) {
       $scope.b_containWishList = false;
@@ -64,15 +64,14 @@
     }
     // console.log($scope.wishData);
 
-
-      // calculate total_shopping_price
-      var total_price = 0;
-      for (var i = 0; i < $scope.wishData.length; i++) {
-          var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
-          var price = parseFloat(price_str);
-          total_price += price;
-      }
-      $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
+    // calculate total_shopping_price
+    var total_price = 0;
+    for (var i = 0; i < $scope.wishData.length; i++) {
+        var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
+        var price = parseFloat(price_str);
+        total_price += price;
+    }
+    $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
 
     // save to root
     $rootScope.wishPacks = [];
@@ -86,15 +85,13 @@
     }
 
     // console.log($rootScope.wishPacks);
-    $scope.numOfFavorite = $rootScope.wishPacks[0].length;
 
 
     $scope.removeLocalStorage = function(index) {
-      var deleteIndex = index;
-      var deleteKey = $rootScope.wishItems[deleteIndex]['itemId'][0];
-      console.log("remove item: " + deleteKey);
-      $rootScope.wishItems.splice(deleteIndex, 1);
-      
+      var deleteIdx = index;
+      var deleteItemId = $rootScope.wishItems[deleteIdx]['itemId'][0];
+      console.log("remove item: " + deleteItemId);
+      $rootScope.wishItems.splice(deleteIdx, 1);
       
       $rootScope.count_total_wish_pages = 1;
       $rootScope.wishPacks[0] = [];
@@ -122,15 +119,13 @@
       }
       $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
 
-
-
       // update product page data
       if (typeof $rootScope.jsonData !== 'undefined') {
         for (var i = 0; i < $rootScope.jsonData.length; i++) {
           var items = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
           for (var j = 0; j < items.length; j++) {
-            if (items[j]['itemId'][0] === deleteKey) {
-            // if (items[j]['itemId'][0] === $scope.sorted_localStorage[deleteIndex][6]) {
+            if (items[j]['itemId'][0] === deleteItemId) {
+            // if (items[j]['itemId'][0] === $scope.sorted_localStorage[deleteIdx][6]) {
               console.log("update product page data.  itenmId: " + items[j]['itemId'][0]);
               items[j]['ifSaved'] = false;
               items[j]['wishIconClass'] = "material-icons md-18";
@@ -142,58 +137,50 @@
 
       $rootScope.detailWishIconClass = "material-icons md-18";
       $rootScope.shopping_cart = "add_shopping_cart";
-      localStorage.removeItem(deleteKey);
+      localStorage.removeItem(deleteItemId);
     }
 
-    $scope.requestWishDetail = function(index) {
+    $scope.requestWishDetail = function(idx) {
       $rootScope.b_slide = true;
 
       //console.log($rootScope.wishItems);
-      var sendIndex = index;
-      var myKey = $rootScope.wishItems[sendIndex]['itemId'][0];
-      var parsedData = JSON.parse(localStorage.getItem(myKey));
+      var itemId = $rootScope.wishItems[idx]['itemId'][0];
+      var fromLocalData = JSON.parse(localStorage.getItem(itemId));
       // console.log(localStorage);
-      console.log(myKey);
-      console.log(parsedData);    // parsedData[2]: ebay search api for this item
-      var myLocationOption = parsedData[3];
-      var locationInfo = parsedData[4];
-      $scope.favData = [];
-      $scope.favData[0] = myKey;
-      $scope.favData[1] = myLocationOption;
-      $scope.favData[2] = locationInfo;
-      $scope.favData[3] = JSON.parse(localStorage.getItem(myKey))[0];
-      $scope.favData[4] = JSON.parse(localStorage.getItem(myKey))[1];
+      console.log(itemId);
+      console.log(fromLocalData);    // fromLocalData[2]: ebay search api for this item
+      $scope.wishData = [];
+      $scope.wishData[0] = itemId;
+      $scope.wishData[1] = fromLocalData[3];
+      $scope.wishData[2] = fromLocalData[4];
+      $scope.wishData[3] = JSON.parse(localStorage.getItem(itemId))[0];
+      $scope.wishData[4] = JSON.parse(localStorage.getItem(itemId))[1];
+      $scope.wishData[5] = fromLocalData[2]; // fromLocalData[2]: ebay search api for this itemId
 
-      
-      $scope.favData[5] = parsedData[2]; // parsedData[2]: ebay search api for this itemId
-
-      //console.log($scope.favData);
-      favoriteDataService.setData($scope.favData);
+      //console.log($scope.wishData);
+      wishDataService.setData($scope.wishData);
       $rootScope.b_clickDetail = false;
       $rootScope.b_clickWishDetail = true;
       for (var i = 0; i < $rootScope.wishItems.length; i++) {
         $rootScope.wishItems[i]['b_picked'] = false;
       }
-      $rootScope.wishItems[sendIndex]['b_picked'] = true;
-      $rootScope.savedKey = $rootScope.wishItems[sendIndex]['itemId'][0];
+      $rootScope.wishItems[idx]['b_picked'] = true;
+      $rootScope.savedKey = $rootScope.wishItems[idx]['itemId'][0];
     }
 
-    $scope.redirect = function(myPath) {
-      console.log("redirect to:" + myPath);
-      $location.path(myPath);
+    $scope.redirect = function(path) {
+      console.log("redirect to:" + path);
+      $location.path(path);
     };
 
-    $scope.redirectFavoriteDetailsPage = function() {
-      console.log("redirectFavoriteDetailsPage");
+    $scope.redirectToWishDetailPage = function() {
+      console.log("redirect to Wish Detail Page");
       $rootScope.b_slide = true;
-      $rootScope.moveToRight = true;
-      if ($location.path() === '/wish_page' && $rootScope.b_clickWishDetail === true)
-      {
+      $rootScope.b_moveToRight = true;
+      if ($location.path() === '/wish_page' && $rootScope.b_clickWishDetail === true) {
         console.log("wishDetails_page");
         $location.path('/wishDetails_page');
-      }
-      else
-      {
+      } else {
         console.log("details_page");
         $location.path('/details_page');
       }

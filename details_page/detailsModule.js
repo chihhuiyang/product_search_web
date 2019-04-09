@@ -20,7 +20,7 @@
   detailsModule.controller('detailsController', ['$scope', '$http', '$rootScope', 'detailsDataService', '$location', function($scope, $http, $rootScope, detailsDataService, $location) {
     
 
-    $rootScope.moveToRight = false;
+    $rootScope.b_moveToRight = false;
     $rootScope.detailWishIconClass = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].wishIconClass;
     $rootScope.shopping_cart = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].shopping_cart;
     if (typeof $rootScope.passData === 'undefined' || (detailsDataService.getData().length === 4 && detailsDataService.getData() !== $rootScope.passData))
@@ -40,8 +40,8 @@
     $scope.b_containSimilar = true;  // initail assign
 
 
-    $scope.passedPage = $rootScope.passData[2];
-    $scope.passedJsonObj = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
+    $scope.transferPage = $rootScope.passData[2];
+    $scope.firstApiJson = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
     $scope.name = $scope.singleItemDetail.Title;
 
     // assign seller tab
@@ -145,7 +145,7 @@
     }
 
     // shipping
-    var items = $scope.passedJsonObj[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
+    var items = $scope.firstApiJson[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
     for (var i = 0; i < items.length; i++) {
       if (items[i].itemId[0] == $scope.singleItemDetail.ItemID) {
         // console.log(items[i].itemId[0]);
@@ -232,8 +232,8 @@
 
     $scope.myLocationOption = $scope.$parent.locationOption;
     if ($scope.myLocationOption === "option1") { // current location
-
-    } else { // TODO : zip code location
+      $scope.myInputLocation = "";
+    } else { // zip code location
       $scope.myInputLocation = $scope.$parent.myInputLocation;
     }
 
@@ -541,41 +541,40 @@
     }
 
 
-
-    $scope.openFacebookWindow = function() {
-      if ($scope.singleItemDetail.hasOwnProperty('ViewItemURLForNaturalSearch')) {
-        var placeUrl = $scope.singleItemDetail.ViewItemURLForNaturalSearch;
-      } else {
-        var placeUrl = "http://www.google.com/";
-      }
-
-      var fb_text = "Buy " + $scope.singleItemDetail.Title;;
-      fb_text += " at $" + $scope.singleItemDetail.CurrentPrice.Value;
-      fb_text += " from LINK below.";
-      var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + placeUrl + "&quote=" + fb_text;
-      $scope.tweetWindow = window.open(fb_url, "Share a link on Facebook");
-    };
-
-    $scope.backToList = function()
-    {
+    $scope.backToList = function() {
       $rootScope.b_slide = true;
-      $rootScope.moveToRight = false;
+      $rootScope.b_moveToRight = false;
       if ($location.path() === '/details_page') {
-        $scope.rePassData = [];
-        $scope.rePassData[0] = $scope.passedPage;
-        $scope.rePassData[1] = $scope.passedJsonObj;
-        detailsDataService.setData($scope.rePassData);
+        $scope.transferDataToProductPage = [];
+        $scope.transferDataToProductPage[0] = $scope.transferPage;
+        $scope.transferDataToProductPage[1] = $scope.firstApiJson;
+        detailsDataService.setData($scope.transferDataToProductPage);
         window.history.back();
-      }else if ($location.path() === '/wishDetails_page') {
+      } else if ($location.path() === '/wishDetails_page') {
         console.log("To location: " + "/wish_page");
         $location.path('/wish_page');
       }
     }
 
 
+    $scope.openFacebookWindow = function() {
+      if ($scope.singleItemDetail.hasOwnProperty('ViewItemURLForNaturalSearch')) {
+        var dest_url = $scope.singleItemDetail.ViewItemURLForNaturalSearch;
+      } else {
+        var dest_url = "http://www.google.com/";
+      }
 
-    $scope.addToFavorite = function() {
-      console.log("details - addToFavorite");
+      var fb_text = "Buy " + $scope.singleItemDetail.Title;;
+      fb_text += " at $" + $scope.singleItemDetail.CurrentPrice.Value;
+      fb_text += " from LINK below.";
+      var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + dest_url + "&quote=" + fb_text;
+      $scope.facebookWindow = window.open(fb_url, "Share a link on Facebook");
+    };
+
+
+
+    $scope.addToWishList = function() {
+      console.log("details - add to wish list");
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
         // console.log("update product icon : to yellow");
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
@@ -588,10 +587,8 @@
         $scope.input_search_single_api_time_Data[1] = [];
         $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
         $scope.input_search_single_api_time_Data[1][1] = $scope.passedItemId;
-
         $scope.input_search_single_api_time_Data[2] = $rootScope.curRowData;  // ebay search api for this itemId
         $scope.input_search_single_api_time_Data[3] = $scope.myLocationOption;
-        
 
         if ($scope.myLocationOption === "option1") {
           $scope.input_search_single_api_time_Data[4] = "";
