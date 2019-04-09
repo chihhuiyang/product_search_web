@@ -56,7 +56,7 @@
     }
 
 
-    $rootScope.b_slide = false;
+    $rootScope.b_flip = false;
     $rootScope.b_animation = false;
     $rootScope.b_clickWishDetail = false;
     $rootScope.b_clickDetail = true;
@@ -132,7 +132,7 @@
       console.log("To location: " + "/");
       $location.path('/');
 
-      $rootScope.b_slide = false;
+      $rootScope.b_flip = false;
       $rootScope.b_clickDetail = true;
       $rootScope.b_clickWishDetail = true;
 
@@ -156,7 +156,7 @@
       console.log("To location: " + "/");
       $location.path('/');
 
-      $rootScope.b_slide = false;
+      $rootScope.b_flip = false;
       $rootScope.showProgressBar = true;
       $rootScope.b_clickDetail = true;
       $rootScope.b_clickWishDetail = true;
@@ -224,7 +224,7 @@
             $scope.jsonObj = response.data;
             //console.log($scope.jsonObj);
             $rootScope.showProgressBar = false;
-            $rootScope.b_slide = false;
+            $rootScope.b_flip = false;
             console.log("To location: " + path);
             $location.path(path);
           },
@@ -289,7 +289,7 @@
           $rootScope.showProgressBar = false;
           $scope.b_searchDone = true;
           $rootScope.b_animation = true;
-          $rootScope.b_slide = false;
+          $rootScope.b_flip = false;
           console.log("To location: " + path);
           $location.path(path);
         },
@@ -303,7 +303,7 @@
     };
 
     $scope.clickSearchButton = function() {
-      $rootScope.b_slide = false;
+      $rootScope.b_flip = false;
       if ($scope.b_clickSearch === true) {
         $scope.b_clickResults = true;
         $scope.b_clickWish = false;
@@ -323,7 +323,7 @@
     $scope.clickWishButton = function() {
       $scope.b_clickWish = true;
       $scope.b_clickResults = false;
-      $rootScope.b_slide = false;
+      $rootScope.b_flip = false;
       console.log("To location: " + "wish_page");
       $location.path('wish_page');
     }
@@ -335,7 +335,7 @@
 
 
     $scope.cleanAnimation = function() {
-      $rootScope.b_slide = false;
+      $rootScope.b_flip = false;
     }
 
   }]);

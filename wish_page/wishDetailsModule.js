@@ -18,8 +18,8 @@
   });
 
   wishDetailsModule.controller('wishDetailsController', ['$scope', '$http', '$rootScope', 'wishDetailDataService', '$location', function($scope, $http, $rootScope, wishDetailDataService, $location) {
-    $rootScope.b_slide = true;
-    $rootScope.b_moveToRight = false;
+    $rootScope.b_flip = true;
+    $rootScope.b_rightMotion = false;
     $rootScope.detailWishIconClass = "material-icons md-18";
     $rootScope.shopping_cart = "add_shopping_cart";
 
@@ -535,8 +535,8 @@
 
     
     $scope.backToList = function() {
-      $rootScope.b_slide = true;
-      $rootScope.b_moveToRight = false;
+      $rootScope.b_flip = true;
+      $rootScope.b_rightMotion = false;
       if ($location.path() == '/details_page') {
         console.log("To location: " + "/wishproduct_page_page");
         $location.path('/product_page');

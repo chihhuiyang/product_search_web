@@ -21,7 +21,7 @@
     // console.log($rootScope);
     // console.log($scope);
 
-    $rootScope.b_moveToRight = true;
+    $rootScope.b_rightMotion = true;
     $scope.userStorage = window.localStorage;
     $scope.sorted_localStorage = [];
     var copy_key;
@@ -141,7 +141,7 @@
     }
 
     $scope.requestWishDetail = function(idx) {
-      $rootScope.b_slide = true;
+      $rootScope.b_flip = true;
 
       //console.log($rootScope.wishItems);
       var itemId = $rootScope.wishItems[idx]['itemId'][0];
@@ -175,8 +175,8 @@
 
     $scope.redirectToWishDetailPage = function() {
       console.log("redirect to Wish Detail Page");
-      $rootScope.b_slide = true;
-      $rootScope.b_moveToRight = true;
+      $rootScope.b_flip = true;
+      $rootScope.b_rightMotion = true;
       if ($location.path() === '/wish_page' && $rootScope.b_clickWishDetail === true) {
         console.log("wishDetails_page");
         $location.path('/wishDetails_page');
@@ -187,7 +187,7 @@
     }
 
     $scope.addAnimation = function() {
-      $rootScope.b_slide = true;
+      $rootScope.b_flip = true;
     }
   }]);
 })(angular);

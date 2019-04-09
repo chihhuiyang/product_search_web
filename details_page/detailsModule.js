@@ -20,7 +20,7 @@
   detailsModule.controller('detailsController', ['$scope', '$http', '$rootScope', 'detailsDataService', '$location', function($scope, $http, $rootScope, detailsDataService, $location) {
     
 
-    $rootScope.b_moveToRight = false;
+    $rootScope.b_rightMotion = false;
     $rootScope.detailWishIconClass = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].wishIconClass;
     $rootScope.shopping_cart = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].shopping_cart;
     if (typeof $rootScope.passData === 'undefined' || (detailsDataService.getData().length === 4 && detailsDataService.getData() !== $rootScope.passData))
@@ -542,8 +542,8 @@
 
 
     $scope.backToList = function() {
-      $rootScope.b_slide = true;
-      $rootScope.b_moveToRight = false;
+      $rootScope.b_flip = true;
+      $rootScope.b_rightMotion = false;
       if ($location.path() === '/details_page') {
         $scope.transferDataToProductPage = [];
         $scope.transferDataToProductPage[0] = $scope.transferPage;

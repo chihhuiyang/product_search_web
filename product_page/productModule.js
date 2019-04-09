@@ -20,8 +20,8 @@
   });
 
   productModule.controller('productController', ['$scope', '$http', '$rootScope', '$location', 'resultsDataService', '$q', function($scope, $http, $rootScope, $location, resultsDataService, $q) {
-    $rootScope.b_slide = false;
-    $rootScope.b_moveToRight = true;
+    $rootScope.b_flip = false;
+    $rootScope.b_rightMotion = true;
     $scope.myLocationOption = $scope.$parent.locationOption;
     $scope.showResultsTable = $scope.$parent.showTable;
     $scope.userStorage = window.localStorage;
@@ -230,8 +230,8 @@
 
 
     $scope.requestDetails = function(index) {
-      $rootScope.b_slide = true;
-      $rootScope.b_moveToRight = true;
+      $rootScope.b_flip = true;
+      $rootScope.b_rightMotion = true;
       $rootScope.b_clickWishDetail = false;
       $rootScope.showProgressBar = true;
       console.log($rootScope.currentPage);
@@ -337,7 +337,7 @@
           $scope.jsonObj = response.data;
           // console.log($scope.jsonObj);
           $rootScope.showProgressBar = false;
-          $rootScope.b_slide = false;
+          $rootScope.b_flip = false;
 
           $scope.passData = [];
           $scope.singleItemDetail = response.data.Item;
@@ -397,7 +397,7 @@
     };
 
     $scope.redirectDetailsPage = function() {
-      $rootScope.b_slide = true;
+      $rootScope.b_flip = true;
       console.log("To location: " + "details_page");
       $location.path('/details_page');
     };
@@ -421,6 +421,7 @@
 
       // disable & dispaly
       $scope.b_disablePrevious = true;
+      $scope.b_disableNext = false;
       for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i < 10) {
           $scope.fiftyData[i]['showProductRow'] = true;
@@ -522,7 +523,9 @@
       $scope.b_activePage5 = true;
 
       // disable & dispaly
+      $scope.b_disablePrevious = false;
       $scope.b_disableNext = true;
+
       for (var i = 0; i < $scope.fiftyData.length; i++) {
         if (i >= 40 && i < 50) {
           $scope.fiftyData[i]['showProductRow'] = true;
