@@ -2,7 +2,7 @@
 (function(angular) {
   var wishDetailsModule = angular.module('productSearchModel.wishDetailsModule', ['ngRoute', 'ngAnimate']);
   wishDetailsModule.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/favoriteDetails_page', {
+    $routeProvider.when('/wishDetails_page', {
       templateUrl: 'details_page/detailsPage.html',
       controller: 'wishDetailsController'
     });
@@ -65,7 +65,7 @@
     if ($scope.singleItemDetail.hasOwnProperty('PictureURL')) {
       $scope.showProductImg = true;
       $scope.ProductImg = $scope.singleItemDetail.PictureURL;
-      console.log($scope.ProductImg);
+      // console.log($scope.ProductImg);
     } else {
       $scope.showProductImg = false;
     }
@@ -211,10 +211,10 @@
       $scope.showBuyProductAt = false;
     }
 
-
+    // console.log($rootScope);
     // shipping
     var items = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
-    console.log(items);
+    // console.log(items);
     for (var i = 0; i < items.length; i++) {
       if (items[i].itemId[0] == $scope.singleItemDetail.ItemID) {
         console.log(items[i].itemId[0]);
@@ -557,7 +557,7 @@
       if ($location.path() == '/details_page') {
         console.log("To location: " + "/wishproduct_page_page");
         $location.path('/product_page');
-      } else if ($location.path() == '/favoriteDetails_page') {
+      } else if ($location.path() == '/wishDetails_page') {
         console.log("To location: " + "/wish_page");
         $location.path('/wish_page');
       }

@@ -145,14 +145,14 @@
       localStorage.removeItem(deleteKey);
     }
 
-    $scope.sendKey = function(index) {
+    $scope.requestWishDetail = function(index) {
       $rootScope.b_slide = true;
 
       //console.log($rootScope.wishItems);
       var sendIndex = index;
       var myKey = $rootScope.wishItems[sendIndex]['itemId'][0];
       var parsedData = JSON.parse(localStorage.getItem(myKey));
-      console.log(localStorage);
+      // console.log(localStorage);
       console.log(myKey);
       console.log(parsedData);    // parsedData[2]: ebay search api for this item
       var myLocationOption = parsedData[3];
@@ -189,8 +189,8 @@
       $rootScope.moveToRight = true;
       if ($location.path() === '/wish_page' && $rootScope.b_clickWishDetail === true)
       {
-        console.log("favoriteDetails_page");
-        $location.path('/favoriteDetails_page');
+        console.log("wishDetails_page");
+        $location.path('/wishDetails_page');
       }
       else
       {

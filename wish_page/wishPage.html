@@ -24,11 +24,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="x in wishData track by $index" >  <!-- ng-class="{highlightRow: x.b_picked}" -->
+                <tr ng-repeat="x in wishData track by $index"> 
                   <td><b>{{$index + 1}}</b></td>
                   <td><img src='{{x.galleryURL[0]}}' height='100px' width='100px'/></td>
-                  <!-- <td class="name_link" ng-click="sendKey($index); redirect('/favoriteDetails_page')">{{x.title[0]}}</td> -->
-                  <td class="text-nowrap title" ng-click="sendKey($index); redirect('/favoriteDetails_page')" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
+                  <td class="text-nowrap title" ng-click="requestWishDetail($index); redirect('/wishDetails_page')" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
 
                   <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>
                   <td class="text-nowrap">{{x.shipCost}}</td>

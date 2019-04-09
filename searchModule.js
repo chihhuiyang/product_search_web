@@ -7,7 +7,8 @@
     'productSearchModel.detailsModule',
     'productSearchModel.wishModule',
     'productSearchModel.wishDetailsModule',
-    'ngMaterial','ngMessages'
+    'ngMaterial',
+    'ngMessages'
   ]);
 
   searchApp.config(['$qProvider', function ($qProvider) {

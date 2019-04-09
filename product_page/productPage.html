@@ -29,7 +29,6 @@
                   <tr ng-repeat="x in rowData track by $index" ng-class="{highlightRow: x.b_picked}" ng-if="x.showProductRow">
                     <td><b>{{$index + 1}}</b></td>
                     <td><img src='{{x.galleryURL[0]}}' height='100px' width='100px'/></td>
-                    <!-- <td class="name_link" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td> -->
                     <td class="text-nowrap title" ng-click="requestDetails($index);" data-toggle="tooltip" data-placement="bottom" title="{{x.title[0]}}">{{x.short_title}}</td>
 
                     <td>${{x.sellingStatus[0]['currentPrice'][0]['__value__']}}</td>

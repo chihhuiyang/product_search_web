@@ -296,7 +296,7 @@
       $scope.showItemSpecifics = false;
     }
 
-    
+
     $scope.requestPhotoApi = function() {
       // photo tab
       // google custom search api -----------------------------------
@@ -560,16 +560,13 @@
     {
       $rootScope.b_slide = true;
       $rootScope.moveToRight = false;
-      if ($location.path() === '/details_page')
-      {
+      if ($location.path() === '/details_page') {
         $scope.rePassData = [];
         $scope.rePassData[0] = $scope.passedPage;
         $scope.rePassData[1] = $scope.passedJsonObj;
         detailsDataService.setData($scope.rePassData);
         window.history.back();
-      }
-      else if ($location.path() === '/favoriteDetails_page')
-      {
+      }else if ($location.path() === '/wishDetails_page') {
         console.log("To location: " + "/wish_page");
         $location.path('/wish_page');
       }

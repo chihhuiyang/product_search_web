@@ -56,8 +56,6 @@
   <script src="wish_page/wishModule.js"></script>
   <script src="wish_page/wishDetailsModule.js"></script>
 
-
-
 </head>
 
 
@@ -131,36 +129,29 @@
                 Current Location<br>
                 <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateLocation()">
                 Other. Please specify zip code:<br>
-                <!-- <input type="text" id="input_location" name="inputLocation" class="form-control" ng-model="myInputLocation" ng-required="true" ng-click="validateLocation(); autoComplete();" placeholder="Enter a location" disabled> -->
 
+                <!-- autocomplete API -->
+                <md-autocomplete required 
+                  md-input-name="inpute_location_autocomplete"
+                  md-input-id="inpute_location_autocomplete"
 
-
-
-
-
-              <md-autocomplete required 
-                md-input-name="inpute_location_autocomplete"
-                md-input-id="inpute_location_autocomplete"
-
-                md-clear-button="false"
-                ng-disabled="isAutocompleteDisabled"
-                md-no-cache="noCache"
-                md-selected-item="selectedItem"
-                md-search-text-change="searchTextChange(searchText)"
-                md-search-text="searchText"
-                md-selected-item-change="selectedItemChange(item)"
-                md-items="item in querySearch(searchText)"
-                md-item-text="item"
-                md-input-minlength="1"
-                placeholder="zip code">
-                <md-item-template>
-                  <span md-highlight-text="searchText">{{item}}</span>
-                </md-item-template>
-              </md-autocomplete>
-              <p class="error" id="locationError" ng-show="myForm.inpute_location_autocomplete.$invalid && myForm.inpute_location_autocomplete.$touched">Please enter a location.</p>             
+                  md-clear-button="false"
+                  ng-disabled="isAutocompleteDisabled"
+                  md-no-cache="noCache"
+                  md-selected-item="selectedItem"
+                  md-search-text-change="searchTextChange(searchText)"
+                  md-search-text="searchText"
+                  md-selected-item-change="selectedItemChange(item)"
+                  md-items="item in querySearch(searchText)"
+                  md-item-text="item"
+                  md-input-minlength="1"
+                  placeholder="zip code">
+                  <md-item-template>
+                    <span md-highlight-text="searchText">{{item}}</span>
+                  </md-item-template>
+                </md-autocomplete>
+                <p class="error" id="locationError" ng-show="myForm.inpute_location_autocomplete.$invalid && myForm.inpute_location_autocomplete.$touched">Please enter a location.</p>             
         
-
-
 
             </div>           
           </div>
