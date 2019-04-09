@@ -4,10 +4,14 @@
       .module('productSearchModel.autocomplete', ['ngMaterial','ngMessages'])
       .controller('DemoCtrl', DemoCtrl);
 
-  function DemoCtrl ($timeout, $q, $log) {
+  function DemoCtrl ($timeout, $q, $log, $scope, $rootScope) {
+
+    console.log("autocomplete JS");
+    $scope.dddd = true;
+    console.log($scope);
     var self = this;
 
-    self.isDisabled = false;
+    // self.isDisabled = true;
     self.noCache = true;
 
     // list of `state` value/display objects
@@ -15,12 +19,6 @@
     self.querySearch   = querySearch;
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange   = searchTextChange;
-
-    self.newState = newState;
-
-    function newState(state) {
-      alert("Sorry! You'll need to create a Constitution for " + state + " first!");
-    }
 
     // ******************************
     // Internal methods
@@ -81,6 +79,10 @@
       };
 
     }
+
+
+
+    
   }
 })();
 

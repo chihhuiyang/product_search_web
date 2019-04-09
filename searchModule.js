@@ -7,14 +7,103 @@
     'productSearchModel.detailsModule',
     'productSearchModel.wishModule',
     'productSearchModel.wishDetailsModule',
-    'productSearchModel.autocomplete'
+    'ngMaterial','ngMessages'
   ]);
 
   searchApp.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
   }]);
 
-  searchApp.controller('searchController', ['$scope', '$http', '$log', '$location', '$rootScope', function($scope, $http, $log, $location, $rootScope) {
+  searchApp.controller('searchController', ['$scope', '$http', '$log', '$location', '$rootScope', '$q',  function($scope, $http, $log, $location, $rootScope, $q) {
+ 
+    console.log($scope);
+
+    $scope.isAutocompleteDisabled = true;
+    $scope.noCache = true;
+
+    // list of `state` value/display objects
+    $scope.states        = loadAll();
+    // $scope.querySearch   = querySearch;
+    $scope.querySearch = function(query) {
+      $http.get("http://localhost:8081/?postalcode_startsWith=" + query) 
+      .then(function(response) {
+            console.log("autocomplete api response");
+            $scope.autocompleteObj = response.data.postalCodes;  // 5 zipcodes
+            // console.log($scope.autocompleteObj);
+            $scope.recommend_zipcode = [];
+            for (var i = 0; i < $scope.autocompleteObj.length; i++) {
+              // console.log($scope.autocompleteObj[i].postalCode);
+              $scope.recommend_zipcode[i] = $scope.autocompleteObj[i].postalCode;
+            }            
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        $scope.recommend_zipcode = [];
+      });
+      console.log($scope.recommend_zipcode);
+      return $scope.recommend_zipcode;
+    }
+    $scope.selectedItemChange = selectedItemChange;
+    $scope.searchTextChange   = searchTextChange;
+
+
+    // function querySearch (query) {
+  
+    //   console.log(query);
+    //   // console.log($scope);
+    //   var empty = [];
+    //   if (query === "" || typeof query === "undefined") {
+    //     return empty;
+    //   }
+    //   console.log("output list");     
+    //   console.log($scope.myInputLocation);
+
+    //   return $scope.autoComplete();
+    // }
+
+    function searchTextChange(text) {
+      console.log('Text changed to ' + text);
+      $scope.myInputLocation = $scope.searchText;
+
+      console.log("searchTextChange end");
+    }
+
+    function selectedItemChange(item) {
+      console.log('Item changed to ' + JSON.stringify(item));
+    }
+
+    /**
+     * Build `states` list of key/value pairs
+     */
+    function loadAll() {
+      var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
+              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
+              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
+              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
+              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
+              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
+              Wisconsin, Wyoming';
+
+      return allStates.split(/, +/g).map(function (state) {
+        return {
+          value: state.toLowerCase(),
+          display: state
+        };
+      });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     $rootScope.b_slide = false;
     $rootScope.b_animation = false;
     $rootScope.b_clickWishDetail = false;
@@ -34,7 +123,7 @@
 
     $scope.validateZipcode = function() {
       // console.log($scope.myInputLocation);
-      var valid = (/^\d{5}(-\d{4})?$/).test($scope.myInputLocation);
+      var valid = (/^\d{5}$/).test($scope.myInputLocation);
       if (valid) {
         return true;
       } else {
@@ -44,24 +133,29 @@
 
 
     $scope.validateLocation = function() {
-      if (document.getElementById('location_option1').checked) {
-        document.getElementById('input_location').disabled = true;
+      if ($scope.myLocation === 2) {
+        console.log("current is location 1");
         $scope.myInputLocation = "";
-      }
-      if (document.getElementById('location_option2').checked) {
-        document.getElementById('input_location').disabled = false;
+        $scope.isAutocompleteDisabled = true;
+        $scope.selectedItem = null;
+        $scope.searchText = "";
+        $scope.myForm.inpute_location_autocomplete.$setPristine();
+        $scope.myForm.inpute_location_autocomplete.$setUntouched();
+        console.log($scope);
+      } else if ($scope.myLocation === 1) {
+        console.log("current is location 2");
+        $scope.isAutocompleteDisabled = false;
+        console.log($scope);
       }
     };
 
     $scope.b_disableKeywordLocation = function() {
       if ($scope.myLocation === 1) {
-        $scope.myForm.inputLocation.$setPristine();
-        $scope.myForm.inputLocation.$setUntouched();
         if ($scope.myForm.keyword.$invalid) {
           return true;
         }
       } else if ($scope.myLocation === 2) {
-        if ($scope.myForm.keyword.$invalid || $scope.myForm.inputLocation.$invalid || !$scope.validateZipcode()) {
+        if ($scope.myForm.keyword.$invalid || $scope.myForm.inpute_location_autocomplete.$invalid || !$scope.validateZipcode()) {
           return true;
         }
       }
@@ -86,7 +180,9 @@
       $scope.myInputLocation = "";
       $scope.myCategory = "default";
       $scope.showTable = false;
-      document.getElementById('input_location').disabled = true;
+
+      $scope.selectedItem = null;
+      $scope.searchText = "";
     };
 
     $scope.getInputs = function(myPath) {
@@ -179,10 +275,7 @@
       } else if ($scope.myLocation === 2) {
         $scope.locationOption = "option2";
         
-        // autocomplete 
-        if (typeof $scope.autocompleteObj !== 'undefined') {
-          console.log($scope.autocompleteObj);
-        }
+
         var url_params = "http://localhost:8081/?"
         // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
         url_params += "category=" + $scope.myCategory + "&distance=" + $scope.myDistance +
@@ -274,31 +367,31 @@
     };
 
     $scope.autoComplete = function() {
-      var input = document.getElementById('input_location');
-
-      // autocomplete api -------------------------------
-      var input_Data = {
-        postalcode_startsWith: input
-      }
-      console.log(input_Data);
-      $http({
-        method: 'GET',
-        url: "http://localhost:8081/?",
-        params: input_Data
-      })
-      .then (function (response)
-      {
-        console.log("autocomplete api response");
-        $scope.autocompleteObj = response.data.postalCodes[0];  // 5 zipcodes
-        // console.log($scope.autocompleteObj);
-
-
-      },
-      function(response)
-      {
-        console.error("autocomplete request error!!!");
-      });
-
+           // call zip code autocomplete api -------------------------------
+           $scope.recommend_zipcode = [];
+           var input_Data = {
+            postalcode_startsWith: $scope.myInputLocation
+          }
+          console.log(input_Data);
+          $http({
+            method: 'GET',
+            url: "http://localhost:8081/?",
+            params: input_Data
+          })
+          .then (function (response)
+          {
+            console.log("autocomplete api response");
+            $scope.autocompleteObj = response.data.postalCodes;  // 5 zipcodes
+            // console.log($scope.autocompleteObj);
+            for (var i = 0; i < $scope.autocompleteObj.length; i++) {
+              // console.log($scope.autocompleteObj[i].postalCode);
+              $scope.recommend_zipcode[i] = $scope.autocompleteObj[i].postalCode;
+            }
+            console.log($scope.recommend_zipcode);
+            return $scope.recommend_zipcode;
+          });
+          console.log($scope.recommend_zipcode);
+          // return $scope.recommend_zipcode;
 
     };
 
