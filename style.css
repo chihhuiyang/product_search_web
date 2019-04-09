@@ -1,9 +1,6 @@
-.md-virtual-repeat-container.md-autocomplete-suggestions-container.my-cool-class {
-  height: inherit;
-  max-height: 600px !important;
-}
 
-.positionRelative{
+/* popularity */
+.pop_positionRelative{
   position: relative;
 }
 
@@ -14,19 +11,11 @@
   font-size: 15px;
 }
 
-
-input[type="text"]:disabled
-{
-  background-color:#eaeaf2;
-}
-
-.input-box
-{
+.input_area {
   padding: 10px;
 }
 
-#mainContainer
-{
+#main_container {
   color: white;
   max-width: 1200px !important;
   padding-top: 10px !important;
@@ -48,7 +37,6 @@ a.page-link:hover {
   border: 0;
 }
 
-
 .page-item.active .page-link {
   background-color: black !important;
   color: white !important;
@@ -60,35 +48,34 @@ a.page-link:hover {
   color: black !important;
 }
 
-  /* Make the image fully responsive */
-  .carousel-inner img {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .carousel-control-prev-icon {
-  	background-color: black;
-  }
-  
-  .carousel-control-next-icon {
-  	background-color: black;
-  }
-  
-  .carousel_border {
-  	border: 9px solid black;
-    border-radius: 5px;
-  }
-  
-  .carousel-inner {
-    border: 4px solid white;
-  }
+/* fully responsive */
+.carousel-inner img {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-control-prev-icon {
+  background-color: black;
+}
+
+.carousel-control-next-icon {
+  background-color: black;
+}
+
+.carousel_border {
+  border: 9px solid black;
+  border-radius: 5px;
+}
+
+.carousel-inner {
+  border: 4px solid white;
+}
 
 .table {
   max-width: 1150px;
 }
 
-.row
-{
+.row {
   max-width: 1150px !important;
 }
 
@@ -96,11 +83,9 @@ a.page-link:hover {
   background-color: #c7c7c7;
 }
 
-
 .table-striped > tbody > tr:nth-child(odd).highlightRow > td {
   background-color: #c7c7c7;
 }
-
 
 table.hoverTable tr:hover td {
   background-color: #424246;
@@ -122,7 +107,7 @@ i.material-icons {
 }
 
 .material-icons.yellow {
-  color: rgba(179, 153, 41, 0.884); 
+  color: rgba(153, 129, 22, 0.884); 
 }
 
 .material-icons.ratingStar {
@@ -133,6 +118,7 @@ td.text-nowrap.title {
   font-size: 16px;
   color:rgb(38, 123, 235);
 }
+
 td.text-nowrap.title:hover {
   color:rgb(38, 123, 235);
   text-decoration: underline;
@@ -147,16 +133,9 @@ td.name_link:hover {
   text-decoration: underline;
 } */
 
-.title
-{
+.product_name {
   font-size: 22px;
-  padding-bottom: 10px;
-}
-
-.labels
-{
-  color: white;
-  font-weight: 500;
+  padding-bottom: 8px;
 }
 
 .nav-item .active {
@@ -164,81 +143,13 @@ td.name_link:hover {
   color: white !important;
 }
 
-.btn-primary, .btn-primary:visited
-{
-  color: black !important;
-  background-color: white !important;
-  border-color: #c1c1c1 !important;
-}
-
-.btn-primary:hover:enabled, .btn-primary:active:enabled
-{
-  color: black !important;
-  background-color: #c6c6c6 !important;
-  border-color: #c1c1c1 !important;
-}
-
-.btn-info.moreless {
-  background-color: white;
-  color: black;
-  border: 0;
-}
-
-.btn-info, .btn-info:visited
-{
-  color: black !important;
-  background-color: white !important;
-  border-color: #c1c1c1;
-}
-
-.btn-info:hover, .btn-info:active
-{
-  color: black !important;
-  background-color: #c6c6c6 !important;
-  border-color: #c1c1c1 !important;
-}
-
-.btn-outline-primary, .btn-outline-primary:hover {
-    background-color: white;
-    color: black;
-    border: 0;
-}
-
-.btn-outline-primary.changeToActive
-{
+.btn.changeToActive {
   background-color: black;
   color: white;
   border: 0;
 }
 
-.btn-extra:active, .btn-extra:focus
-{
-  color: white !important;
-  background-color: #176aef !important;
-}
-
-.star
-{
-  color: #d61111;
-}
-
-#input_location
-{
-  margin-left: 0px;
-}
-
-#locationError
-{
-  margin-left: 16px;
-}
-
-.test
-{
-  background-color: red;
-}
-
-.error
-{
+.input_error {
   font-size: 14px;
   color: red;
 }
@@ -253,160 +164,73 @@ md-autocomplete {
   border-radius: 5px;
 }
 
-#input_keyword.ng-invalid.ng-touched, #input_location.ng-invalid.ng-touched
-{
+#input_keyword.ng-invalid.ng-touched, #input_location.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
-.detailsPage
-{
+.detailsPage {
   max-width: 1150px !important;
 }
 
-.resultsTable
-{
+.resultsTable {
   max-width: 1150px !important;
 }
 
-.similarTable
-{
+.similarTable {
   max-width: 1150px !important;
-}
-
-
-.btn-page
-{
-  background-color: white !important;
-  border-style: solid !important;
-  border-color: #c1c1c1 !important;
-  border-radius: 5px;
-}
-
-.divider
-{
-  width:8px;
-  height:auto;
-  display:inline-block;
 }
 
 a {
   color: #176aef;
 }
 
-.star-ratings-css
-{
-  unicode-bidi: bidi-override;
-  color: white;
-  font-size: 15px;
-  height: 16px;
-  width: 150px;
-  margin: -20 auto;
-  position: relative;
-  padding: 0;
-  display: inline-block;
-}
-
-.star-ratings-css-top
-{
-  color: #e7711b;
-  padding: 0;
-  position: absolute;
-  z-index: 1;
-  display: inline-block;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-}
-
-.boldText
-{
-  font-weight: bold;
-}
-
-img.googlePhoto {
-	border:8px solid #080808;
-}
-
-.img_row
-{
+.img_row {
   display: flex;
   flex-wrap: wrap;
   padding: 0 4px;
 }
 
-/* Create 3 equal columns that sits next to each other */
-.img_column
-{
+/* 3 columns */
+.img_col {
   flex: 33%;
   max-width: 33%;
   padding: 0 4px;
 }
 
-.img_column img
-{
+.img_col img {
   margin-top: 8px;
   vertical-align: middle;
 }
 
-/* Responsive layout - makes a two column-layout instead of 3 columns */
-@media screen and (max-width: 1000px)
-{
-  .img_column
-  {
+img.eightPhoto {
+  border: 8px solid #0e0d0d;
+}
+
+/* 2 columns */
+@media screen and (max-width: 1000px) {
+  .img_col {
     flex: 50%;
     max-width: 50%;
   }
 }
 
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 500px)
-{
-  .img_column
-  {
+/* 1 column */
+@media screen and (max-width: 500px) {
+  .img_col {
     flex: 100%;
     max-width: 100%;
   }
 }
 
-.noRecords
-{
+.no_record {
   max-width: 1150px;
-  background-color: #fff2c1;
+  background-color: #f8e9b2;
   text-align: left;
+  color: #8f700c;
   padding-top: 8px;
   padding-bottom: 8px;
-  padding-left:8px;
+  padding-left:10px;
 }
-
-.zeroPadding
-{
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
-.reviewTimeBox
-{
-  padding-left: 2px;
-}
-
-.reviewBorder
-{
-  border-color: #dbdbdb;
-}
-
-#reviewButton
-{
-  color: white;
-  background-color: #7f8187 !important;
-  border-color: #7f8187 !important;
-}
-
-#photosTab, #infoTab, #mapTab, #reviewsTab
-{
-  clear: both;
-}
-
-
 
 .simiBlock{
   border: 10px solid rgb(255, 255, 255) !important;
@@ -445,43 +269,24 @@ p.similar_days {
 }
 
 
-#googleMap
-{
-  height: 400px;
-}
-
-#routeDetails
-{
-  height: 400px;
-}
-
-#streetView
-{
-  height: 400px;
-}
-
-#googleViewButton:hover
-{
-  background-color: none !important;
-}
-
-.failedSearch
-{
+.search_fail {
   max-width: 1150px;
-  background-color: #f2b8bc;
+  background-color: #f19fa5;
   text-align: left;
+  color: #700108;
   padding-top: 8px;
   padding-bottom: 8px;
-  padding-left:8px;
+  padding-left:10px;
 }
 
 
-
+/* not sure */
 
 .fade-in-out
 {
   transition: 0.8s linear all;
   opacity: 1;
+  padding-left:10px;
 }
 
 .fade-in-out.ng-hide
@@ -493,6 +298,7 @@ p.similar_days {
 {
   float: right;
 }
+
 
 .slide
 {

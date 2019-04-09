@@ -68,10 +68,10 @@
     var total_price = 0;
     for (var i = 0; i < $scope.wishData.length; i++) {
         var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
-        var price = parseFloat(price_str);
+        var price = parseInt(price_str * 100);
         total_price += price;
     }
-    $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
+    $scope.total_shopping_price = total_price / 100; // prevent precision error
 
     // save to root
     $rootScope.wishPacks = [];
@@ -113,11 +113,11 @@
       // calculate total_shopping_price
       var total_price = 0;
       for (var i = 0; i < $scope.wishData.length; i++) {
-          var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
-          var price = parseFloat(price_str);
-          total_price += price;
-      }
-      $scope.total_shopping_price = parseFloat(total_price.toFixed(2)); // prevent precision error
+        var price_str = $scope.wishData[i]['sellingStatus'][0]['currentPrice'][0]['__value__'];
+        var price = parseInt(price_str * 100);
+        total_price += price;
+    }
+    $scope.total_shopping_price = total_price / 100; // prevent precision error
 
       // update product page data
       if (typeof $rootScope.jsonData !== 'undefined') {

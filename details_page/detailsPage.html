@@ -5,7 +5,7 @@
 
     <center>
       <div class="detailsPage table-responsive">
-        <h3 class="title">{{name}}</h3>
+        <h3 class="product_name">{{name}}</h3>
         <button type="button" class="btn btn-default btn-sm" style="float:left" ng-click="backToList()">
           <i class="material-icons md-18">chevron_left</i>List
         </button>
@@ -28,7 +28,7 @@
             <li class="nav-item" ng-click="requestPhotoApi()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
-            <li class="nav-item" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#reviewsTab">Similar Products</a></li>
+            <li class="nav-item" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Similar Products</a></li>
             
           </ul>
         </div>
@@ -123,25 +123,25 @@
           <!-- photos tab -->
           <div id="photosTab" class="tab-pane fade">
             <div class="img_row" ng-if="b_containPhoto">
-              <div class="img_column">
-                <a ng-if="photo_arr[0] !== undefined" ng-href="{{photo_arr[0]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[0]}}" style="width:100%"/></a>
-                <a ng-if="photo_arr[3] !== undefined" ng-href="{{photo_arr[3]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[3]}}" style="width:100%"/></a>
-                <a ng-if="photo_arr[6] !== undefined" ng-href="{{photo_arr[6]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[6]}}" style="width:100%"/></a>
+              <div class="img_col">
+                <a ng-if="photo_arr[0] !== undefined" ng-href="{{photo_arr[0]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[0]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[3] !== undefined" ng-href="{{photo_arr[3]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[3]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[6] !== undefined" ng-href="{{photo_arr[6]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[6]}}" style="width:100%"/></a>
               </div>
-              <div class="img_column">
-                <a ng-if="photo_arr[1] !== undefined" ng-href="{{photo_arr[1]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[1]}}" style="width:100%"/></a>
-                <a ng-if="photo_arr[4] !== undefined" ng-href="{{photo_arr[4]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[4]}}" style="width:100%"/></a>
-                <a ng-if="photo_arr[7] !== undefined" ng-href="{{photo_arr[7]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[7]}}" style="width:100%"/></a>                
+              <div class="img_col">
+                <a ng-if="photo_arr[1] !== undefined" ng-href="{{photo_arr[1]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[1]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[4] !== undefined" ng-href="{{photo_arr[4]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[4]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[7] !== undefined" ng-href="{{photo_arr[7]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[7]}}" style="width:100%"/></a>                
               </div>
-              <div class="img_column">
-                <a ng-if="photo_arr[2] !== undefined" ng-href="{{photo_arr[2]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[2]}}" style="width:100%"/></a>
-                <a ng-if="photo_arr[5] !== undefined" ng-href="{{photo_arr[5]}}" target="_blank"><img class="googlePhoto" ng-src="{{photo_arr[5]}}" style="width:100%"/></a>
+              <div class="img_col">
+                <a ng-if="photo_arr[2] !== undefined" ng-href="{{photo_arr[2]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[2]}}" style="width:100%"/></a>
+                <a ng-if="photo_arr[5] !== undefined" ng-href="{{photo_arr[5]}}" target="_blank"><img class="eightPhoto" ng-src="{{photo_arr[5]}}" style="width:100%"/></a>
               </div>
 
             </div>
             <div ng-if="!b_containPhoto">
               <br>
-              <p class="noRecords"><font color="#af9233">  No records.</font></p>
+              <p class="no_record">  No records. </p>
             </div>
           </div>
 
@@ -206,7 +206,7 @@
                 <td>
 
                   <!-- seller popularity -->
-                  <div class="positionRelative">
+                  <div class="pop_positionRelative">
                     <round-progress
                     max="100"
                     current="popularity"
@@ -254,11 +254,10 @@
           </div>
 
           <!-- similar tab -->
-          <div id="reviewsTab" class="tab-pane fade">
+          <div id="simiTab" class="tab-pane fade">
 
-            <!-- button -->
-            <div class="reviewButtonsArea" align="left" style="margin-top:15px">
-
+            <!-- 2 buttons -->
+            <div class="simiButtonsArea" align="left" style="margin-top:15px">
               <!-- form-option version -->
               <form class="form-inline">
                 <select class="form-control col-md-2" id="simi_sort_method_option" ng-model="mySortMethod_option" ng-change="sort()">
@@ -273,9 +272,9 @@
                   <option value="simi_ascending">Ascending</option>
                   <option value="simi_descending">Descending</option>
                 </select>
-              </form>
-            
+              </form>     
             </div>
+
             <br>
 
             <!-- similar table -->
@@ -301,7 +300,7 @@
             <!-- no similar -->
             <div ng-if="!b_containSimilar">
               <br>
-              <p class="noRecords"><font color="#af9233">  No records.</font></p>
+              <p class="no_record">  No records. </p>
             </div>
 
             <br><br><br>

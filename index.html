@@ -63,16 +63,16 @@
 <body ng-app="productSearchModel" ng-controller="searchController">
 
 
-  <div class="input-box">
-    <div class="container" id="mainContainer">
+  <div class="input_area">
+    <div class="container" id="main_container">
       <div class="col-md-8 offset-md-2">
-        <h3 class="title"><center>Product Search</center></h3>
+        <h3 class="product_name"><center>Product Search</center></h3>
         <form class="form-horizontal" id="myForm" name="myForm" method="GET" onsubmit="return false;">
           <div class="form-group row">
             <label for="input_keyword" class="col-md-3 col-form-label">Keyword<font color="red">*</font></label>
             <div class="col-md-9">
               <input type="text" id="input_keyword" name="keyword" class="form-control" placeholder="Enter Product Name (eg. iPhone 8)" ng-model="myKeyword" ng-style="newKeywordStyle" ng-required="true">
-              <p class="error" ng-show="myForm.keyword.$invalid && myForm.keyword.$touched">Please enter a keyword.</p>
+              <p class="input_error" ng-show="myForm.keyword.$invalid && myForm.keyword.$touched">Please enter a keyword.</p>
             </div>
           </div>
 
@@ -150,7 +150,7 @@
                     <span md-highlight-text="searchText">{{item}}</span>
                   </md-item-template>
                 </md-autocomplete>
-                <p class="error" id="locationError" ng-show="myForm.inpute_location_autocomplete.$invalid && myForm.inpute_location_autocomplete.$touched">Please enter a location.</p>             
+                <p class="input_error" id="locationError" ng-show="myForm.inpute_location_autocomplete.$invalid && myForm.inpute_location_autocomplete.$touched">Please enter a location.</p>             
         
 
             </div>           
@@ -158,9 +158,9 @@
 
           <div class="form-group row">
             <div class="col-md-12">
-              <button type="submit" id="searchButton" class="btn btn-primary" name="search" ng-disabled="b_disableKeywordLocation()" ng-click="cleanAnimation();getInputs('/product_page')">
+              <button type="submit" id="searchButton" class="btn btn-light" name="search" ng-disabled="b_disableKeywordLocation()" ng-click="cleanAnimation();getInputs('/product_page')">
                 <i class="material-icons md-18">search</i>Search</button>
-              <button type="button" id="clearButton" class="btn btn-info" name="clear" ng-click="cleanAnimation();clearInputs()"> 
+              <button type="button" id="clearButton" class="btn btn-light" name="clear" ng-click="cleanAnimation();clearInputs()"> 
                 <i class="material-icons md-18">clear_all</i>Clear</button>
             </div>
           </div>
@@ -173,8 +173,8 @@
     <div class="form-group">
       <div class="col-md-12">
         <center>
-          <button type="button" id="resultsButton" class="btn btn-outline-primary btn-md" name="results" ng-class="{'changeToActive':b_clickResults}" ng-click="cleanAnimation();clickSearchButton()" autofocus>Results</button>
-          <button type="button" id="favoritesButton" class="btn btn-outline-primary btn-md" name="favorites" ng-class="{'changeToActive':b_clickWish}" ng-click="cleanAnimation();clickWishButton()">Wish List</button>
+          <button type="button" id="resultsButton" class="btn btn-md" name="results" ng-class="{'changeToActive':b_clickResults}" ng-click="cleanAnimation();clickSearchButton()" autofocus>Results</button>
+          <button type="button" id="favoritesButton" class="btn btn-md" name="favorites" ng-class="{'changeToActive':b_clickWish}" ng-click="cleanAnimation();clickWishButton()">Wish List</button>
         </center>
       </div>
     </div>
@@ -187,7 +187,7 @@
 
   <div ng-if="!b_searchDone" align="center">
     <br><br>
-    <p class="failedSearch"><font color="#96000a"> Failed to get search results.</font></p>
+    <p class="search_fail"> Failed to get search results.</p>
     <br><br><br>
   </div>
 
