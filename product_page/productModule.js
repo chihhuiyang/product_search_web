@@ -56,6 +56,61 @@
       
       $scope.fiftyData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
 
+          
+      // count total pages & show pages
+      $scope.totalPruductPage = 1;
+      $scope.showPage1 = true;
+      $scope.showPage2 = false;
+      $scope.showPage3 = false;
+      $scope.showPage4 = false;
+      $scope.showPage5 = false;
+
+      if ($scope.fiftyData.length >= 10) {
+        $scope.totalPruductPage = 2;
+        $scope.showPage2 = true;
+      }
+      if ($scope.fiftyData.length >= 20) {
+        $scope.totalPruductPage = 3;
+        $scope.showPage3 = true;
+      }
+      if ($scope.fiftyData.length >= 30) {
+        $scope.totalPruductPage = 4;
+        $scope.showPage4 = true;
+      }
+      if ($scope.fiftyData.length >= 40) {
+        $scope.totalPruductPage = 5;
+        $scope.showPage5 = true;
+      }
+
+      // disable previous or next
+      if ($rootScope.curPruductPage === 1) {
+        $scope.b_disablePrevious = true;
+      } else if ($rootScope.curPruductPage === $scope.totalPruductPage) {
+        $scope.b_disableNext = true;
+      }
+
+      // return to product page 
+      $scope.b_activePage1 = false;
+      $scope.b_activePage2 = false;
+      $scope.b_activePage3 = false;
+      $scope.b_activePage4 = false;
+      $scope.b_activePage5 = false;
+      if ($rootScope.curPruductPage == 1) {
+        $scope.b_activePage1 = true;
+      } else if ($rootScope.curPruductPage == 2) {
+        $scope.b_activePage2 = true;
+      } else if ($rootScope.curPruductPage == 3) {
+        $scope.b_activePage3 = true;
+      } else if ($rootScope.curPruductPage == 4) {
+        $scope.b_activePage4 = true;
+      } else if ($rootScope.curPruductPage == 5) {
+        $scope.b_activePage5 = true;
+      } 
+
+
+      
+      console.log($rootScope);
+      console.log($scope);
       
     } else {  // before click some specific product [initial]
       $rootScope.jsonData = [];
@@ -116,6 +171,7 @@
 
           // page 1 display
           $scope.curPruductPage = 1;
+          $rootScope.curPruductPage = 1;
           for (var i = 0; i < $scope.fiftyData.length; i++) {
             if (i < 10) {
               $scope.fiftyData[i]['showProductRow'] = true;
@@ -354,6 +410,7 @@
       console.log("page 1");
       // update page
       $scope.curPruductPage = 1;
+      $rootScope.curPruductPage = 1;
 
       // active
       $scope.b_activePage1 = true;
@@ -377,6 +434,7 @@
       console.log("page 2");
       // update page
       $scope.curPruductPage = 2;
+      $rootScope.curPruductPage = 2;
 
       // active
       $scope.b_activePage1 = false;
@@ -401,7 +459,8 @@
       console.log("page 3");
 
       // update page
-      $scope.curPruductPage = 3;      
+      $scope.curPruductPage = 3; 
+      $rootScope.curPruductPage = 3;     
 
       // active
       $scope.b_activePage1 = false;
@@ -427,6 +486,7 @@
 
       // update page
       $scope.curPruductPage = 4;      
+      $rootScope.curPruductPage = 4;
 
       // active
       $scope.b_activePage1 = false;
@@ -452,6 +512,7 @@
 
       // update page
       $scope.curPruductPage = 5;
+      $rootScope.curPruductPage = 5;
 
       // active
       $scope.b_activePage1 = false;
@@ -473,26 +534,26 @@
 
 
     $scope.goPreviousPage = function() {
-      if ($scope.curPruductPage === 2) {
+      if ($rootScope.curPruductPage === 2) {
         $scope.page1();
-      } else if ($scope.curPruductPage === 3) {
+      } else if ($rootScope.curPruductPage === 3) {
         $scope.page2();
-      } else if ($scope.curPruductPage === 4) {
+      } else if ($rootScope.curPruductPage === 4) {
         $scope.page3();
-      } else if ($scope.curPruductPage === 5) {
+      } else if ($rootScope.curPruductPage === 5) {
         $scope.page4();
       }
     };
 
 
     $scope.goNextPage = function() {
-      if ($scope.curPruductPage === 1) {
+      if ($rootScope.curPruductPage === 1) {
         $scope.page2();
-      } else if ($scope.curPruductPage === 2) {
+      } else if ($rootScope.curPruductPage === 2) {
         $scope.page3();
-      } else if ($scope.curPruductPage === 3) {
+      } else if ($rootScope.curPruductPage === 3) {
         $scope.page4();
-      } else if ($scope.curPruductPage === 4) {
+      } else if ($rootScope.curPruductPage === 4) {
         $scope.page5();
       }  
     };
