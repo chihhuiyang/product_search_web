@@ -1,4 +1,8 @@
 
+.tooltip {
+  font-size: 12px;
+}
+
 /* popularity */
 .pop_positionRelative{
   position: relative;
@@ -114,12 +118,12 @@ i.material-icons {
   font-size: 36px;
 }
 
-td.text-nowrap.title {
+a.text-nowrap.title {
   font-size: 16px;
   color:rgb(38, 123, 235);
 }
 
-td.text-nowrap.title:hover {
+a.text-nowrap.title:hover {
   color:rgb(38, 123, 235);
   text-decoration: underline;
 } 

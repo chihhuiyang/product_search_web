@@ -35,12 +35,21 @@
   <script src="wish_page/wishModule.js"></script>
   <script src="wish_page/wishDetailsModule.js"></script>
 
+  <script>
+    $(document).ready(function () {
+      $("body").tooltip({   
+        selector: "[data-toggle='tooltip']",
+        container: "body",
+        placement: "bottom"
+      })
+    });
+  </script>
+
 </head>
 
 
 
 <body ng-app="productSearchModel" ng-controller="searchController">
-
 
   <div class="input_area">
     <div class="container" id="main_container">
