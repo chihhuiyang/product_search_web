@@ -278,22 +278,20 @@
         $rootScope.savedKey = $scope.singleItemDetail.ItemID;
         console.log("To location: " + "/details_page");
         $location.path('/details_page');
-        for (var i = 0; i < $rootScope.jsonData.length; i++) {
+
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
-            if (typeof $rootScope.jsonData[i] !== 'undefined') {
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = false;
+            if (typeof $rootScope.jsonData[0] !== 'undefined') {
+              $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = false;
             }
           }
-        }
-        for (var i = 0; i < $rootScope.jsonData.length; i++) {
+        
           for (j = 0; j < $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'].length; j++) {
-            if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
+            if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
               console.log("picked index : " + j);
-              $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
-              $rootScope.curRowData = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j];
+              $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
+              $rootScope.curRowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j];
             }
           }
-        }
 
         
 
