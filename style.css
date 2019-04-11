@@ -272,7 +272,21 @@ img.eightPhoto {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left:10px;
-  width:"100%" !important;
+  margin-left:10px;
+  margin-right:10px;
+  /* width:"95%" !important; */
+}
+
+.search_fail {
+  max-width: 1150px;
+  background-color: #f19fa5;
+  text-align: left;
+  color: #700108;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left:10px;
+  margin-left:10px;
+  margin-right:10px;
 }
 
 .similarTable {
@@ -298,12 +312,13 @@ img.eightPhoto {
 } */
 
 .similar_img {
+  margin-left: 25px;
   /* background-color: purple; */
   /* border: 10px solid rgb(255, 0, 0) !important; */
 }
 
 .simi_description {
-  /* background-color: rgb(59, 59, 59); */
+  /* background-color: rgb(136, 124, 124); */
 }
 
 
@@ -314,9 +329,10 @@ p {
 
 a.similar_name_a {
   /* display:inline-block; */
+  word-wrap: break-word;
   font-size: 16px;
   color: rgb(70, 156, 167);
-  /* line-height: 12px !important; */
+  line-height: 26px !important;
   /* height: 2em; */
   /* margin-bottom: 5px; */
 }
@@ -329,12 +345,14 @@ p.similar_name:hover {
 */
 
 ul.similar_name {
+  margin-left: -30px;
   margin-top: 10px;
   text-align: left !important;
   line-height: 12px !important;
 }
 
 ul.similar_price {
+  margin-left: -30px;
   text-align: left !important;
   font-size: 16px;
 	color:rgb(160, 223, 160);
@@ -342,6 +360,7 @@ ul.similar_price {
 }
 
 ul.similar_cost {
+  margin-left: -30px;
   text-align: left !important;
   font-size: 16px;
 	color:rgb(253, 216, 114); 
@@ -349,21 +368,14 @@ ul.similar_cost {
 }
 
 ul.similar_days {
+  margin-left: -30px;
   text-align: left !important;
   font-size: 16px;
 	color:white;
   line-height: 12px;
 }
 
-.search_fail {
-  max-width: 1150px;
-  background-color: #f19fa5;
-  text-align: left;
-  color: #700108;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left:10px;
-}
+
 
 
 /* not sure */

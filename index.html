@@ -177,9 +177,8 @@
     </div>
   </div>
 
-  <div ng-if="!b_searchDone" align="center">
-    <p class="search_fail"> Failed to get search results.</p>
-    <br>
+  <div ng-if="!b_searchDone" align="center" class="search_fail">
+    Failed to get search results.
   </div>
 
   <div ng-view ng-class="{'flip': b_flip, 'rightMotion': b_rightMotion}" ng-if="b_searchDone"></div>
