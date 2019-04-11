@@ -6,18 +6,16 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "angular-animate": "^1.6.9",
-    "body-parser": "^1.18.2",
     "bootstrap": "^4.3.1",
+    "angular-animate": "^1.7.6",
     "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "https": "^1.0.0",
-    "install": "^0.11.0",
-    "moment": "^2.21.0",
-    "promise": "^8.0.1",
+    "body-parser": "^1.18.3",
     "querystring": "^0.2.0",
+    "https": "^1.0.0",
     "request": "^2.85.0",
-    "star-rating-tag": "^0.2.1",
-    "url": "^0.11.0"
+    "promise": "^8.0.1",
+    "express": "^4.16.3",
+    "url": "^0.11.0", 
+    "install": "^0.11.0" 
   }
 }

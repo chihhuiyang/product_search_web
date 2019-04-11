@@ -245,7 +245,8 @@
       console.log(input_single_Data);
       $http({
         method: 'GET',
-        url: "http://localhost:8081/?",
+        // url: "http://localhost:8081/?",
+        url: "http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?",
         params: input_single_Data
       })
       .then (function (response)
@@ -329,7 +330,8 @@
         console.log($scope.curItemId);
         $http({
           method: 'GET',
-          url: "http://localhost:8081/?",
+          // url: "http://localhost:8081/?",
+          url: "http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?",
           params: input_single_Data
         })
         .then (function (response) {

@@ -161,8 +161,8 @@
     <div class="form-group">
       <div class="col-md-12">
         <center>
-          <button type="button" id="resultsButton" class="btn btn-md" name="results" ng-class="{'changeToActive':b_clickResults}" ng-click="cleanAnimation();clickSearchButton()" autofocus>Results</button>
-          <button type="button" id="favoritesButton" class="btn btn-md" name="favorites" ng-class="{'changeToActive':b_clickWish}" ng-click="cleanAnimation();clickWishButton()">Wish List</button>
+          <button type="button" id="resultsButton" class="btn btn-light btn-md" name="results" ng-class="{'changeToActive':b_clickResults, 'changeToInactive':!b_clickResults}" ng-click="cleanAnimation();clickSearchButton()" autofocus>Results</button>
+          <button type="button" id="wishButton" class="btn btn-light btn-md" name="wish" ng-class="{'changeToActive':b_clickWish, 'changeToInactive':!b_clickWish}" ng-click="cleanAnimation();clickWishButton()">Wish List</button>
         </center>
       </div>
     </div>

@@ -28,7 +28,9 @@
         return [];
       }
 
-      return $http.get("http://localhost:8081/?postalcode_startsWith=" + query) 
+      // return $http.get("http://localhost:8081/?postalcode_startsWith=" + query)
+      return $http.get("http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?postalcode_startsWith=" + query)
+
       .then(function(response) {
             console.log("autocomplete api response");
             $scope.autocompleteObj = response.data.postalCodes;  // 5 zipcodes
@@ -181,8 +183,8 @@
         {
           $scope.currentZipcode = response.data.zip;
 
-          var url_params = "http://localhost:8081/?"
-          // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
+          // var url_params = "http://localhost:8081/?"
+          var url_params = "http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?"
           url_params += "category=" + $scope.myCategory + "&distance=" + $scope.myDistance +
           "&keyword=" + $scope.myKeyword + "&zipcode=" + $scope.currentZipcode;
 
@@ -243,8 +245,8 @@
         $scope.locationOption = "option2";
         
 
-        var url_params = "http://localhost:8081/?"
-        // var url_params = "http://hw8-nodejs.us-east-2.elasticbeanstalk.com/?"
+        // var url_params = "http://localhost:8081/?"
+        var url_params = "http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?"
         url_params += "category=" + $scope.myCategory + "&distance=" + $scope.myDistance +
         "&keyword=" + $scope.myKeyword + "&location=" + $scope.myInputLocation;
 

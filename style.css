@@ -3,6 +3,10 @@
   font-size: 12px;
 }
 
+.tooltip-inner {
+  background-color: #525257
+}
+
 /* popularity */
 .pop_positionRelative{
   position: relative;
@@ -92,7 +96,7 @@ a.page-link:hover {
 }
 
 table.hoverTable tr:hover td {
-  background-color: #424246;
+  background-color: #353538;
 }
 
 a.viewProductImg {
@@ -151,6 +155,13 @@ td.name_link:hover {
   background-color: black;
   color: white;
   border: 0;
+}
+
+
+.btn.changeToInactive:hover {
+  border-color: white;
+  background-color: white;
+  color: black;
 }
 
 .input_error {
