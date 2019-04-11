@@ -1,3 +1,20 @@
+li.mobile_device_500px_related {
+  display: none;
+}
+
+ul.nav {
+	margin-right: 5px;
+}
+
+.nav-link {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.nav-item .active {
+  background-color: rgb(41, 39, 39) !important;
+  color: white !important;
+}
 
 /* 2 columns */
 @media screen and (max-width: 1000px) {
@@ -12,6 +29,14 @@
   .img_col {
     flex: 100% !important;
     max-width: 100% !important;
+  }
+
+  li.desktop_similar_products {
+    display: none !important;
+  }
+
+  li.mobile_device_500px_related {
+    display: block !important;
   }
 
   #main_container {
@@ -29,10 +54,6 @@
     max-width: 100%;
   }
 
-  .nav-link {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
 
   #simi_sort_direction_option {
     margin-left:0px !important;
@@ -191,10 +212,7 @@ td.name_link:hover {
   padding-bottom: 8px;
 }
 
-.nav-item .active {
-  background-color: rgb(41, 39, 39) !important;
-  color: white !important;
-}
+
 
 .btn.changeToActive {
   background-color: black;
@@ -317,11 +335,9 @@ img.eightPhoto {
   /* border: 10px solid rgb(255, 0, 0) !important; */
 }
 
-.simi_description {
-  /* background-color: rgb(136, 124, 124); */
-}
-
-
+/* .simi_description {
+  background-color: rgb(136, 124, 124);
+} */
 
 p {
   display:inline-block;

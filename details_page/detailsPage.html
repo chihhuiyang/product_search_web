@@ -26,8 +26,9 @@
             <li class="nav-item" ng-click="requestPhotoApi()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
-            <li class="nav-item" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Related</a></li>
-            
+            <li class="nav-item desktop_similar_products" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Similar Products</a></li>
+            <li class="nav-item mobile_device_500px_related" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Related</a></li>
+
           </ul>
         </div>
 
@@ -276,26 +277,9 @@
 
             <!-- similar table -->
             <div class="similarTable col-md-8 table-responsive">
-              <!-- <table class="table table-dark similarTable"> -->
-
-                  <!-- <tr class="simiBlock" ng-repeat="x in similar_items_arr track by $index" ng-if="x.showRow">
-                    <td class="similar_img" style="width: 150px;"><img src='{{x.imageURL}}' height='150px' width='150px'/></td>
-                    <td>
-	                    <a class="similar_name" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a>
-                    	<p class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</p>
-                      <p class="similar_cost">Shipping Cost: ${{x.shippingCost.__value__}}</p>
-                      <p class="similar_days">Days Left: {{x.timeLeft}}</p>
-                    </td>  
-                  </tr> -->
-
                     <div class="simiBlock row" ng-repeat="x in similar_items_arr track by $index" ng-if="x.showRow">
                       <div class="similar_img col-xs-12"><img src='{{x.imageURL}}' height='150px' width='150px' align="left"/></div>
                       <div class="simi_description col-md-9 col-xs-12">
-
-                          <!-- <p class="similar_name"></p><a class="similar_name_a" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a></p><br>
-                          <p class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</p><br>
-                          <p class="similar_cost">Shipping Cost: ${{x.shippingCost.__value__}}</p><br>
-                          <p class="similar_days">Days Left: {{x.timeLeft}}</p><br>                        <p class="similar_name"></p><a class="similar_name_a" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a></p><br> -->
                         
                         <ul class="similar_name"></p><a class="similar_name_a" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a></ul>
                         <ul class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</ul>
@@ -304,9 +288,6 @@
 
                       </div>  
                     </div>
-
-
-              <!-- </table> -->
             </div>
 
             <!-- show more / show less -->

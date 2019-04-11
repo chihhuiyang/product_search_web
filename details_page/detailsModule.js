@@ -605,7 +605,6 @@
     };
 
 
-
     $scope.addToWishList = function() {
       console.log("details - add to wish list");
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
