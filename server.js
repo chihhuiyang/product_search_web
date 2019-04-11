@@ -230,12 +230,14 @@ server_app.get("/", function(req, res){
   } else if (typeof input_data.keyword_photo !== 'undefined') {  // google custom search photo api ----------------------    
     var customSearchData = {
       q: input_data.keyword_photo,
-      cx: "005587525834822268829:faorxop51ku",
+      // cx: "005587525834822268829:faorxop51ku",
+      cx: "016602558717099423026:agpnkyapbzm",
       imgSize: "huge",
       imgType: "news",
       num: 8,
       searchType: "image",
-      key: "AIzaSyB4UvDoBlxH6MIOneoSpgai6cT9Z9swChE"
+      // key: "AIzaSyB4UvDoBlxH6MIOneoSpgai6cT9Z9swChE"
+      key: "AIzaSyCc1GkOKNOO1NdZy0Ny31ptf1gW1dFOCmE"
     }
     var client_custom_Content = queryString.stringify(customSearchData);
     var google_custom_search_api = 'https://www.googleapis.com/customsearch/v1?' + client_custom_Content;

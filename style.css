@@ -19,8 +19,8 @@ ul.nav {
 /* 2 columns */
 @media screen and (max-width: 1000px) {
   .img_col {
-    flex: 50%;
-    max-width: 50%;
+    flex: 50% !important;
+    max-width: 50% !important;
   }
 }
 
@@ -318,9 +318,9 @@ img.eightPhoto {
   /* background-color: pink; */
   background-color: #202020;
   padding-left: 10px;
-  padding-top: 10px;
+  padding-top: 20px;
   padding-right:10px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   border: 10px solid rgb(255, 255, 255) !important;
 }
 

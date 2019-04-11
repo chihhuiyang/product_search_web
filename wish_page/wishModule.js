@@ -18,8 +18,8 @@
   });
 
   wishModule.controller('wishController', ['$scope', '$http', '$rootScope', '$location', 'wishDataService', '$q', function($scope, $http, $rootScope, $location, wishDataService, $q) {
-    // console.log($rootScope);
-    // console.log($scope);
+    console.log($rootScope);
+    console.log($scope);
 
     $rootScope.b_rightMotion = true;
     $scope.userStorage = window.localStorage;
@@ -50,6 +50,8 @@
     for (var i = 0; i < $scope.sorted_localStorage.length; i++) {
       $rootScope.wishItems.push($scope.sorted_localStorage[i][2]);
     }
+    console.log($scope.sorted_localStorage);
+    console.log($rootScope.wishItems);
     for (var i = 0; i < $rootScope.wishItems.length; i++) {
       $rootScope.wishItems[i]['b_picked'] = false;
       if ($rootScope.wishItems[i]['itemId'][0] === $rootScope.savedKey) {

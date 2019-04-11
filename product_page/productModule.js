@@ -51,6 +51,7 @@
           if ($rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
             console.log("Picked: " + $rootScope.savedKey);
             $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
+            $rootScope.curRowData = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j];
           }
         }
       
@@ -289,9 +290,12 @@
             if ($rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['itemId'][0] === $rootScope.savedKey) {
               console.log("picked index : " + j);
               $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j]['b_picked'] = true;
+              $rootScope.curRowData = $rootScope.jsonData[i]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][j];
             }
           }
         }
+
+        
 
       },
       function(response) 

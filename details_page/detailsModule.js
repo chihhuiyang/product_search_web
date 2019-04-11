@@ -33,6 +33,7 @@
     // keyword + itemId
     $scope.passedKeyword = $rootScope.passData[1][0];
     $scope.passedItemId = $rootScope.passData[1][1];
+    $scope.passedTitle = $scope.singleItemDetail.Title;
     console.log($scope.passedKeyword);
     console.log($scope.passedItemId);
 
@@ -43,7 +44,8 @@
       // photo tab
       // google custom search api -----------------------------------
       // var inputData = {
-      //   keyword_photo: $scope.passedKeyword
+      //   //  keyword_photo: $scope.passedKeyword
+      //   keyword_photo: $scope.passedTitle
       // }
       // console.log(inputData);
       // $http({
@@ -572,7 +574,8 @@
 
     $scope.requestPhotoApi = function() {
         var inputData = {
-          keyword_photo: $scope.passedKeyword
+          // keyword_photo: $scope.passedKeyword
+          keyword_photo: $scope.passedTitle
         }
         console.log(inputData);
         $http({
@@ -619,6 +622,7 @@
         $scope.input_search_single_api_time_Data[1] = [];
         $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
         $scope.input_search_single_api_time_Data[1][1] = $scope.passedItemId;
+        
         $scope.input_search_single_api_time_Data[2] = $rootScope.curRowData;  // ebay search api for this itemId
         $scope.input_search_single_api_time_Data[3] = $scope.myLocationOption;
 

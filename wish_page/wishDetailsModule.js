@@ -36,39 +36,41 @@
     $scope.b_containPhoto = true;  // initail assign
     $scope.b_containSimilar = true;  // initail assign
 
+
       // photo tab
       // google custom search api -----------------------------------
-      var inputData = {
-        keyword_photo: $scope.wishData[4][0]
-      }
-      console.log(inputData);
-      $http({
-        method: 'GET',
-        url: "http://localhost:8081/?",
-        // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
-        params: inputData
-      })
-      .then (function (response) {
-        console.log("photo api response");
-        $scope.photo_items = response.data.items;
-        console.log($scope.photo_items);
-        $scope.b_containPhoto = false;
-        if (typeof $scope.photo_items !== 'undefined') {
-          $scope.photo_arr = [];
-          for (var i = 0; i < $scope.photo_items.length; i++) {
-            var photo_url = $scope.photo_items[i].link;
-            $scope.photo_arr[i] = photo_url;
-            $scope.b_containPhoto = true;
-          }
-          console.log($scope.photo_arr);
-        }
-      },
-      function(response)
-      {
-        console.error("google photo api request error!!!");
-        $rootScope.showProgressBar = false;
-        $scope.b_containPhoto = false;
-      });
+      // var inputData = {
+      //   // keyword_photo: $scope.wishData[4][0]
+      //   keyword_photo: $scope.name
+      // }
+      // console.log(inputData);
+      // $http({
+      //   method: 'GET',
+      //   url: "http://localhost:8081/?",
+      //   // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+      //   params: inputData
+      // })
+      // .then (function (response) {
+      //   console.log("photo api response");
+      //   $scope.photo_items = response.data.items;
+      //   console.log($scope.photo_items);
+      //   $scope.b_containPhoto = false;
+      //   if (typeof $scope.photo_items !== 'undefined') {
+      //     $scope.photo_arr = [];
+      //     for (var i = 0; i < $scope.photo_items.length; i++) {
+      //       var photo_url = $scope.photo_items[i].link;
+      //       $scope.photo_arr[i] = photo_url;
+      //       $scope.b_containPhoto = true;
+      //     }
+      //     console.log($scope.photo_arr);
+      //   }
+      // },
+      // function(response)
+      // {
+      //   console.error("google photo api request error!!!");
+      //   $rootScope.showProgressBar = false;
+      //   $scope.b_containPhoto = false;
+      // });
 
 
 
@@ -568,26 +570,26 @@
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
-        $scope.passData = [];
-        $scope.passData[0] = $scope.singleItemDetail;
+        $scope.input_search_single_api_time_Data = [];
+        $scope.input_search_single_api_time_Data[0] = $scope.singleItemDetail;
         $scope.input_search_single_api_time_Data[1] = [];
         $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
         $scope.input_search_single_api_time_Data[1][1] = $scope.singleItemDetail.ItemID;
 
-        $scope.passData[2] = $rootScope.wishListItems;
-        $scope.passData[3] = $scope.myLocationOption;
+        $scope.input_search_single_api_time_Data[2] = $rootScope.wishListItems;
+        $scope.input_search_single_api_time_Data[3] = $scope.myLocationOption;
 
         // console.log($scope);
         // console.log($rootScope);
         if ($scope.myLocationOption === "option1") {
           $scope.input_search_single_api_time_Data[4] = "";
         } else {
-          $scope.passData[4] = $scope.myInputLocation;
+          $scope.input_search_single_api_time_Data[4] = $scope.myInputLocation;
         }
         var timeStamp = Date.now();
-        $scope.passData[5] = timeStamp;
-        // console.log($scope.passData);
-        localStorage.setItem($scope.storageKey, JSON.stringify($scope.passData));
+        $scope.input_search_single_api_time_Data[5] = timeStamp;
+        // console.log($scope.input_search_single_api_time_Data);
+        localStorage.setItem($scope.storageKey, JSON.stringify($scope.input_search_single_api_time_Data));
       } else {  // yellow
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
