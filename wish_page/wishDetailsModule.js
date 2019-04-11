@@ -36,6 +36,42 @@
     $scope.b_containPhoto = true;  // initail assign
     $scope.b_containSimilar = true;  // initail assign
 
+      // photo tab
+      // google custom search api -----------------------------------
+      var inputData = {
+        keyword_photo: $scope.wishData[4][0]
+      }
+      console.log(inputData);
+      $http({
+        method: 'GET',
+        url: "http://localhost:8081/?",
+        // url: 'http://hw8-result.us-east-2.elasticbeanstalk.com/',
+        params: inputData
+      })
+      .then (function (response) {
+        console.log("photo api response");
+        $scope.photo_items = response.data.items;
+        console.log($scope.photo_items);
+        $scope.b_containPhoto = false;
+        if (typeof $scope.photo_items !== 'undefined') {
+          $scope.photo_arr = [];
+          for (var i = 0; i < $scope.photo_items.length; i++) {
+            var photo_url = $scope.photo_items[i].link;
+            $scope.photo_arr[i] = photo_url;
+            $scope.b_containPhoto = true;
+          }
+          console.log($scope.photo_arr);
+        }
+      },
+      function(response)
+      {
+        console.error("Request error!");
+        $rootScope.showProgressBar = false;
+        $scope.b_containPhoto = false;
+      });
+
+
+
     $scope.currentStorage = window.localStorage;
     for (var i = 0; i < $scope.currentStorage.length; i++) {
       var currentKey = $scope.currentStorage.key(i);
