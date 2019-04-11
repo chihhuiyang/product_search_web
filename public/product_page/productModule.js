@@ -296,7 +296,7 @@
       },
       function(response) 
       {
-        console.error("single api request error!!!");
+        console.error("single Response error!!!");
         $rootScope.showProgressBar = false;
         $scope.b_searchDone = false;
       });
@@ -374,7 +374,7 @@
         },
         function(response)
         {
-          console.error("saveToLocalStorage: single api request error!!!");
+          console.error("saveToLocalStorage: single api Request error!");
           $rootScope.showProgressBar = false;
           $scope.b_searchDone = false;
         });

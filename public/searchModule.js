@@ -90,8 +90,7 @@
 
 
     $scope.validateLocation = function() {
-      if (document.getElementById('location_option1').checked) {
-      // if ($scope.myLocation === 2) {
+      if ($scope.myLocation === 2) {
         console.log("current is location 1");
         $scope.myInputLocation = "";
         $scope.isAutocompleteDisabled = true;
@@ -100,8 +99,7 @@
         $scope.myForm.inpute_location_autocomplete.$setPristine();
         $scope.myForm.inpute_location_autocomplete.$setUntouched();
         // console.log($scope);
-      // } else if ($scope.myLocation === 1) {
-      } else if (document.getElementById('location_option2').checked) {
+      } else if ($scope.myLocation === 1) {
         console.log("current is location 2");
         $scope.isAutocompleteDisabled = false;
         // console.log($scope);

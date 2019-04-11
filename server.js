@@ -1,46 +1,40 @@
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var queryString = require('querystring');
-var https = require('https');
 var request = require('request');
-var promise = require('promise');
 var express = require("express");
 var url = require("url");
-var serverApp = express();
-var router = express.Router();
+var server_app = express();
 
 
-serverApp.all('*', function(req, res, next)
-{
+server_app.use(bodyParser.json());
+server_app.use(cors());
+
+server_app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   next();
 });
 
-serverApp.use(cors());
-serverApp.get('/products/:id', function (req, res, next)
-{
-  res.json({msg: 'This is CORS-enabled for all origins!'})
-})
-serverApp.use(bodyParser.json());
-serverApp.use(bodyParser.urlencoded({ extended: false }));
+server_app.use(express.static('public'));
+server_app.use(express.static('files'));
+server_app.use('/static', express.static('public'))
 
-serverApp.get("/", function(req, res){
+server_app.use(bodyParser.urlencoded({ extended: false }));
+
+server_app.get("/", function(req, res){
   EBY_APP_ID = "ChihHuiY-search-PRD-716e2f5cf-2d4bc969";
 
-  API_KEY = "AIzaSyC9HBExGTftsTmeBjHXLucUi5NH2QXCQkY";
-  var clientInput = url.parse(req.url, true).query;
-  console.log(clientInput);
+  var input_data = url.parse(req.url, true).query;
+  console.log(input_data);
 
   // ebay API request
-  myDistance = clientInput.distance;
-
-
+  myDistance = input_data.distance;
 
   // ebay search api ----------------------
-  if (typeof clientInput.keyword !== 'undefined') {
-    if (typeof clientInput.location === 'undefined') { // current location
+  if (typeof input_data.keyword !== 'undefined') {
+    if (typeof input_data.location === 'undefined') { // current location
       var clientData = {
         "OPERATION-NAME": "findItemsAdvanced",
         "SERVICE-VERSION": "1.0.0",
@@ -48,8 +42,8 @@ serverApp.get("/", function(req, res){
         "RESPONSE-DATA-FORMAT": "JSON",
         "REST-PAYLOAD": "",
         "paginationInput.entriesPerPage": 50,
-        keywords: clientInput.keyword,
-        buyerPostalCode: clientInput.zipcode,
+        keywords: input_data.keyword,
+        buyerPostalCode: input_data.zipcode,
         "itemFilter(0).name": "MaxDistance",
         "itemFilter(0).value": myDistance,
         "itemFilter(1).name": "HideDuplicateItems",
@@ -58,47 +52,47 @@ serverApp.get("/", function(req, res){
       var clientContent = queryString.stringify(clientData);
       var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
 
-      if (clientInput.category != "default") {
-        ebay_search_api_url += "&categoryId=" + clientInput.category;
+      if (input_data.category != "default") {
+        ebay_search_api_url += "&categoryId=" + input_data.category;
       }
       var i = 2;
-      if (clientInput.free_shipping == "true") {
+      if (input_data.free_shipping == "true") {
         ebay_search_api_url += "&itemFilter(" + i + ").name=" + "FreeShippingOnly";
         ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
         i++;
       }
-      if (clientInput.local_pickup == "true") {
+      if (input_data.local_pickup == "true") {
         ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
         ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
         i++;
       }
-      if (clientInput.local_pickup == "true") {
+      if (input_data.local_pickup == "true") {
         ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
         ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
         i++;
       }
       var j = 0;
-      if (clientInput.new_condition == "true") {
+      if (input_data.new_condition == "true") {
         j++;
       }
-      if (clientInput.used == "true") {
+      if (input_data.used == "true") {
         j++;
       }
-      if (clientInput.unspecified == "true") {
+      if (input_data.unspecified == "true") {
         j++;
       }
       if (j > 0) {
         ebay_search_api_url += "&itemFilter(" + i + ").name=Condition";
         var k = 0;
-        if (clientInput.new_condition == "true") {
+        if (input_data.new_condition == "true") {
           ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=New";
           k++;
         }
-        if (clientInput.used == "true") {
+        if (input_data.used == "true") {
           ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Used";
           k++;
         }
-        if (clientInput.unspecified == "true") {
+        if (input_data.unspecified == "true") {
           ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Unspecified";
           k++;
         }
@@ -124,8 +118,8 @@ serverApp.get("/", function(req, res){
         "RESPONSE-DATA-FORMAT": "JSON",
         "REST-PAYLOAD": "",
         "paginationInput.entriesPerPage": 50,
-        keywords: clientInput.keyword,
-        buyerPostalCode: clientInput.location,
+        keywords: input_data.keyword,
+        buyerPostalCode: input_data.location,
         "itemFilter(0).name": "MaxDistance",
         "itemFilter(0).value": myDistance,
         "itemFilter(1).name": "HideDuplicateItems",
@@ -134,47 +128,47 @@ serverApp.get("/", function(req, res){
       var clientContent = queryString.stringify(clientData);
       var ebay_search_api_url = 'http://svcs.ebay.com/services/search/FindingService/v1?' + clientContent;
 
-      if (clientInput.category != "default") {
-        ebay_search_api_url += "&categoryId=" + clientInput.category;
+      if (input_data.category != "default") {
+        ebay_search_api_url += "&categoryId=" + input_data.category;
       }
       var i = 2;
-      if (clientInput.free_shipping == "true") {
+      if (input_data.free_shipping == "true") {
         ebay_search_api_url += "&itemFilter(" + i + ").name=" + "FreeShippingOnly";
         ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
         i++;
       }
-      if (clientInput.local_pickup == "true") {
+      if (input_data.local_pickup == "true") {
         ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
         ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
         i++;
       }
-      if (clientInput.local_pickup == "true") {
+      if (input_data.local_pickup == "true") {
         ebay_search_api_url += "&itemFilter(" + i + ").name=" + "LocalPickupOnly";
         ebay_search_api_url += "&itemFilter(" + i + ").value=" + "true";
         i++;
       }
       var j = 0;
-      if (clientInput.new_condition == "true") {
+      if (input_data.new_condition == "true") {
         j++;
       }
-      if (clientInput.used == "true") {
+      if (input_data.used == "true") {
         j++;
       }
-      if (clientInput.unspecified == "true") {
+      if (input_data.unspecified == "true") {
         j++;
       }
       if (j > 0) {
         ebay_search_api_url += "&itemFilter(" + i + ").name=Condition";
         var k = 0;
-        if (clientInput.new_condition == "true") {
+        if (input_data.new_condition == "true") {
           ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=New";
           k++;
         }
-        if (clientInput.used == "true") {
+        if (input_data.used == "true") {
           ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Used";
           k++;
         }
-        if (clientInput.unspecified == "true") {
+        if (input_data.unspecified == "true") {
           ebay_search_api_url += "&itemFilter(" + i + ").value(" + k + ")=Unspecified";
           k++;
         }
@@ -192,14 +186,14 @@ serverApp.get("/", function(req, res){
       });
 
     }
-  } else if (typeof clientInput.itemId_single !== 'undefined') {  // ebay single item api -------------------    
+  } else if (typeof input_data.itemId_single !== 'undefined') {  // ebay single item api -------------------    
     var clientData = {
       callname: "GetSingleItem",
       responseencoding: "JSON",
       appid: EBY_APP_ID,
       siteid: 0,
       version: 967,
-      ItemID: clientInput.itemId_single,
+      ItemID: input_data.itemId_single,
       IncludeSelector: "Description,Details,ItemSpecifics"
     }
     var clientContent = queryString.stringify(clientData);
@@ -212,7 +206,7 @@ serverApp.get("/", function(req, res){
       console.log(ebay_single_api_result);
       res.send(ebay_single_api_result);
     });
-  } else if (typeof clientInput.itemId_similar !== 'undefined') { // ebay similar api -------------------
+  } else if (typeof input_data.itemId_similar !== 'undefined') { // ebay similar api -------------------
     var similarData = {
       "OPERATION-NAME": "getSimilarItems",
       "SERVICE-NAME": "MerchandisingService",
@@ -220,7 +214,7 @@ serverApp.get("/", function(req, res){
       "CONSUMER-ID": EBY_APP_ID,
       "RESPONSE-DATA-FORMAT": "JSON",
       "REST-PAYLOAD": "",
-      itemId: clientInput.itemId_similar,
+      itemId: input_data.itemId_similar,
       maxResults: 20
     }
     var similarContent = queryString.stringify(similarData);
@@ -233,9 +227,9 @@ serverApp.get("/", function(req, res){
       console.log(ebay_similar_api_result);
       res.send(ebay_similar_api_result);
     });
-  } else if (typeof clientInput.keyword_photo !== 'undefined') {  // google custom search photo api ----------------------    
+  } else if (typeof input_data.keyword_photo !== 'undefined') {  // google custom search photo api ----------------------    
     var customSearchData = {
-      q: clientInput.keyword_photo,
+      q: input_data.keyword_photo,
       cx: "005587525834822268829:faorxop51ku",
       imgSize: "huge",
       imgType: "news",
@@ -257,9 +251,9 @@ serverApp.get("/", function(req, res){
 
 
   // autocomplete api -------------------------------
-  if (typeof clientInput.postalcode_startsWith !== 'undefined') {
+  if (typeof input_data.postalcode_startsWith !== 'undefined') {
     var clientData = {
-      postalcode_startsWith: clientInput.postalcode_startsWith,
+      postalcode_startsWith: input_data.postalcode_startsWith,
       country: "US",
       maxRows: 5,
       username: "chihhuiy"
@@ -279,4 +273,4 @@ serverApp.get("/", function(req, res){
 
 });
 
-serverApp.listen(8081);
+server_app.listen(8081);

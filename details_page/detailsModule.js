@@ -42,37 +42,37 @@
 
       // photo tab
       // google custom search api -----------------------------------
-      var inputData = {
-        keyword_photo: $scope.passedKeyword
-      }
-      console.log(inputData);
-      $http({
-        method: 'GET',
-        // url: "http://localhost:8081/?",
-        url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
-        params: inputData
-      })
-      .then (function (response) {
-        console.log("photo api response");
-        $scope.photo_items = response.data.items;
-        console.log($scope.photo_items);
-        $scope.b_containPhoto = false;
-        if (typeof $scope.photo_items !== 'undefined') {
-          $scope.photo_arr = [];
-          for (var i = 0; i < $scope.photo_items.length; i++) {
-            var photo_url = $scope.photo_items[i].link;
-            $scope.photo_arr[i] = photo_url;
-            $scope.b_containPhoto = true;
-          }
-          console.log($scope.photo_arr);
-        }
-      },
-      function(response)
-      {
-        console.error("Request error!");
-        $rootScope.showProgressBar = false;
-        $scope.b_containPhoto = false;
-      });
+      // var inputData = {
+      //   keyword_photo: $scope.passedKeyword
+      // }
+      // console.log(inputData);
+      // $http({
+      //   method: 'GET',
+      //   url: "http://localhost:8081/?",
+      //   // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+      //   params: inputData
+      // })
+      // .then (function (response) {
+      //   console.log("photo api response");
+      //   $scope.photo_items = response.data.items;
+      //   console.log($scope.photo_items);
+      //   $scope.b_containPhoto = false;
+      //   if (typeof $scope.photo_items !== 'undefined') {
+      //     $scope.photo_arr = [];
+      //     for (var i = 0; i < $scope.photo_items.length; i++) {
+      //       var photo_url = $scope.photo_items[i].link;
+      //       $scope.photo_arr[i] = photo_url;
+      //       $scope.b_containPhoto = true;
+      //     }
+      //     console.log($scope.photo_arr);
+      //   }
+      // },
+      // function(response)
+      // {
+      //   console.error("google photo api request error!!!");
+      //   $rootScope.showProgressBar = false;
+      //   $scope.b_containPhoto = false;
+      // });
 
 
 
@@ -205,9 +205,10 @@
           $scope.showShippingCost = false;
         }
 
-        if (items[i].shippingInfo[0].hasOwnProperty('shippingLocation')) {
+        console.log(items[i].shippingInfo[0]);
+        if (items[i].shippingInfo[0].hasOwnProperty('shipToLocations')) {
           $scope.showShippingLocation = true;
-          $scope.shippingLocation = items[i].shippingInfo[0].shippingLocation[0];
+          $scope.shippingLocation = items[i].shippingInfo[0].shipToLocations[0];
         } else {
           $scope.showShippingLocation = false;
         }
@@ -334,46 +335,6 @@
     }
 
 
-    $scope.requestPhotoApi = function() {
-      // photo tab
-      // google custom search api -----------------------------------
-      // if ($scope.b_containPhoto == false) { // avoid re-call api
-        var inputData = {
-          keyword_photo: $scope.passedKeyword
-        }
-        console.log(inputData);
-        $http({
-          method: 'GET',
-          // url: "http://localhost:8081/?",
-          url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
-          params: inputData
-        })
-        .then (function (response) {
-          console.log("photo api response");
-          $scope.photo_items = response.data.items;
-          console.log($scope.photo_items);
-          $scope.b_containPhoto = false;
-          if (typeof $scope.photo_items !== 'undefined') {
-            $scope.photo_arr = [];
-            for (var i = 0; i < $scope.photo_items.length; i++) {
-              var photo_url = $scope.photo_items[i].link;
-              $scope.photo_arr[i] = photo_url;
-              $scope.b_containPhoto = true;
-            }
-            console.log($scope.photo_arr);
-          }
-        },
-        function(response)
-        {
-          console.error("Request error!");
-          $rootScope.showProgressBar = false;
-          $scope.b_containPhoto = false;
-        });
-      // } else {
-      //   console.log("duplicate requestPhotoApi ");
-      // }
-    };
-
     $scope.requestSimilarApi = function()  
     {
       // similar tab
@@ -385,8 +346,8 @@
       console.log(inputSimilarData);
       $http({
         method: 'GET',
-        // url: "http://localhost:8081/?",
-        url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+        url: "http://localhost:8081/?",
+        // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
         params: inputSimilarData
       })
       .then (function (response) {
@@ -455,7 +416,7 @@
       },
       function(response)
       {
-        console.error("Request error!");
+        console.error("similar api request error!!!");
         $rootScope.showProgressBar = false;
         $scope.b_containSimilar = false;
       });
@@ -606,6 +567,41 @@
       fb_text += " from LINK below.";
       var fb_url = "https://www.facebook.com/dialog/share?app_id=412937185919670&display=popup&href=" + dest_url + "&quote=" + fb_text;
       $scope.facebookWindow = window.open(fb_url, "Share a link on Facebook");
+    };
+
+
+    $scope.requestPhotoApi = function() {
+        var inputData = {
+          keyword_photo: $scope.passedKeyword
+        }
+        console.log(inputData);
+        $http({
+          method: 'GET',
+          url: "http://localhost:8081/?",
+          // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+          params: inputData
+        })
+        .then (function (response) {
+          console.log("photo api response");
+          $scope.photo_items = response.data.items;
+          console.log($scope.photo_items);
+          $scope.b_containPhoto = false;
+          if (typeof $scope.photo_items !== 'undefined') {
+            $scope.photo_arr = [];
+            for (var i = 0; i < $scope.photo_items.length; i++) {
+              var photo_url = $scope.photo_items[i].link;
+              $scope.photo_arr[i] = photo_url;
+              $scope.b_containPhoto = true;
+            }
+            console.log($scope.photo_arr);
+          }
+        },
+        function(response)
+        {
+          console.error("google photo api request error!!!");
+          $rootScope.showProgressBar = false;
+          $scope.b_containPhoto = false;
+        });
     };
 
 

@@ -51,111 +51,115 @@
 
 <body ng-app="productSearchModel" ng-controller="searchController">
 
-  <div class="input_area">
-    <div class="container" id="main_container">
-      <div class="col-md-8 offset-md-2">
-        <h3 class="product_name"><center>Product Search</center></h3>
-        <form class="form-horizontal" id="myForm" name="myForm" method="GET" onsubmit="return false;">
-          <div class="form-group row">
-            <label for="input_keyword" class="col-md-3 col-form-label">Keyword<font color="red">*</font></label>
-            <div class="col-md-9">
-              <input type="text" id="input_keyword" name="keyword" class="form-control" placeholder="Enter Product Name (eg. iPhone 8)" ng-model="myKeyword" ng-style="newKeywordStyle" ng-required="true">
-              <p class="input_error" ng-show="myForm.keyword.$invalid && myForm.keyword.$touched">Please enter a keyword.</p>
-            </div>
+  
+  <div class="container" id="main_container">
+    <div class="col-md-8 offset-md-2" id="search_form">
+      <h3 class="product_name"><center>Product Search</center></h3>
+      <form class="form-horizontal" id="myForm" name="myForm" method="GET" onsubmit="return false;">
+        <div class="form-group row">
+          <label for="input_keyword" class="col-md-3 col-form-label">Keyword<font color="red">*</font></label>
+          <div class="col-md-9">
+            <input type="text" id="input_keyword" name="keyword" class="form-control" placeholder="Enter Product Name (eg. iPhone 8)" ng-model="myKeyword" ng-style="newKeywordStyle" ng-required="true">
+            <p class="input_error" ng-show="myForm.keyword.$invalid && myForm.keyword.$touched">Please enter a keyword.</p>
           </div>
+        </div>
 
-          <div class="form-group row">
-            <label for="input_category" class="col-md-3 col-form-label">Category</label>
-            <div class="col-md-6">
-              <select id="input_category" name="category" class="form-control" ng-model="myCategory" required="required">
-                <option value="default">Default</option>
-                <option value="550">Art</option>
-                <option value="2984">Baby</option>
-                <option value="267">Books</option>
-                <option value="11450">Clothing, Shoes & Accessories</option>
-                <option value="58058">Computers/Tablets & Networking</option>
-                <option value="26395">Health & Beauty</option>
-                <option value="11233">Music</option>
-                <option value="1249">Video Games & Consoles</option>
-              </select>
-            </div>
+        <div class="form-group row">
+          <label for="input_category" class="col-md-3 col-form-label">Category</label>
+          <div class="col-md-6">
+            <select id="input_category" name="category" class="form-control" ng-model="myCategory" required="required">
+              <option value="default">Default</option>
+              <option value="550">Art</option>
+              <option value="2984">Baby</option>
+              <option value="267">Books</option>
+              <option value="11450">Clothing, Shoes & Accessories</option>
+              <option value="58058">Computers/Tablets & Networking</option>
+              <option value="26395">Health & Beauty</option>
+              <option value="11233">Music</option>
+              <option value="1249">Video Games & Consoles</option>
+            </select>
           </div>
+        </div>
 
-          <div class="form-group row">
-            <label for="input_distance" class="col-md-3 col-form-label">Condition</label>
-            <div class="col-md-6">
-              <input type="checkbox" id="input_new" name="input_new"  ng-model="myCondition1">
-              <label>New &nbsp;</label>
-              <input type="checkbox" id="input_used" name="input_used"  ng-model="myCondition2">
-              <label>Used &nbsp;</label> 
-              <input type="checkbox" id="input_unspecified" name="input_unspecified"  ng-model="myCondition3">
-              <label>Unspecified &nbsp;</label>
-            </div>
+        <div class="form-group row">
+          <label for="input_distance" class="col-md-3 col-form-label">Condition</label>
+          <div class="col-md-6">
+            <input type="checkbox" id="input_new" name="input_new"  ng-model="myCondition1">
+            <label>New &nbsp;</label>
+            <input type="checkbox" id="input_used" name="input_used"  ng-model="myCondition2">
+            <label>Used &nbsp;</label> 
+            <input type="checkbox" id="input_unspecified" name="input_unspecified"  ng-model="myCondition3">
+            <label>Unspecified &nbsp;</label>
           </div>
+        </div>
 
-          <div class="form-group row">
-            <label for="input_distance" class="col-md-3 col-form-label">Shipping Options</label>
-            <div class="col-md-6">
-              <input type="checkbox" id="input_pickup" name="input_pickup"  ng-model="myShipping1">
-              <label>Local Pickup &nbsp;</label>
-              <input type="checkbox" id="input_ship" name="input_ship"  ng-model="myShipping2">
-              <label>Free Shipping &nbsp;</label> 
-            </div>
+        <div class="form-group row">
+          <label for="input_distance" class="col-md-3 col-form-label">Shipping Options</label>
+          <div class="col-md-6">
+            <input type="checkbox" id="input_pickup" name="input_pickup"  ng-model="myShipping1">
+            <label>Local Pickup &nbsp;</label>
+            <input type="checkbox" id="input_ship" name="input_ship"  ng-model="myShipping2">
+            <label>Free Shipping &nbsp;</label> 
           </div>
+        </div>
 
-          <div class="form-group row">
-            <label for="input_distance" class="col-md-3 col-form-label">Distance (Miles)</label>
-            <div class="col-md-6">
-              <input type="text" id="input_distance" name="distance"  class="form-control" ng-model="myDistance" placeholder="10" pattern="[0-9]+">
-            </div>
+        <div class="form-group row">
+          <label for="input_distance" class="col-md-3 col-form-label">Distance (Miles)</label>
+          <div class="col-md-6">
+            <input type="text" id="input_distance" name="distance"  class="form-control" ng-model="myDistance" placeholder="10" pattern="[0-9]+">
           </div>
+        </div>
 
-          <div class="form-group row">
-            <label for="input_location" class="col-md-3 col-form-label">From<font color="red">*</font></label>
-            <div class="col-md-9" ng-init="myLocation=1" style="padding-right: 30px;">  
-                <input type="radio" id="location_option1" name="location" ng-model="myLocation" ng-value="1" ng-click="validateLocation()">
-                Current Location<br>
-                <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateLocation()">
-                Other. Please specify zip code:<br>
+        <div class="form-group row">
+          <label for="input_location" class="col-md-3 col-form-label">From<font color="red">*</font></label>
+          <div class="col-md-9" ng-init="myLocation=1">  
+              <input type="radio" id="location_option1" name="location" ng-model="myLocation" ng-value="1" ng-click="validateLocation()">
+              Current Location<br>
+              <input type="radio" id="location_option2" name="location" ng-model="myLocation" ng-value="2" ng-click="validateLocation()">
+              Other. Please specify zip code:<br>
 
-                <!-- autocomplete API -->
-                <md-autocomplete required 
-                  md-input-name="inpute_location_autocomplete"
-                  md-input-id="inpute_location_autocomplete"
+              <!-- autocomplete API -->
+              <md-autocomplete required 
+                md-input-name="inpute_location_autocomplete"
+                md-input-id="inpute_location_autocomplete"
 
-                  md-clear-button="false"
-                  ng-disabled="isAutocompleteDisabled"
-                  md-no-cache="noCache"
-                  md-selected-item="selectedItem"
-                  md-search-text-change="searchTextChange(searchText)"
-                  md-search-text="searchText"
-                  md-selected-item-change="selectedItemChange(item)"
-                  md-items="item in querySearch(searchText)"
-                  md-item-text="item"
-                  md-input-minlength="1"
-                  placeholder="zip code">
-                  <md-item-template>
-                    <span md-highlight-text="searchText">{{item}}</span>
-                  </md-item-template>
-                </md-autocomplete>
-                <p class="input_error" id="locationError" ng-show="myForm.inpute_location_autocomplete.$invalid && myForm.inpute_location_autocomplete.$touched">Please enter a location.</p>             
-        
+                md-clear-button="false"
+                ng-disabled="isAutocompleteDisabled"
+                md-no-cache="noCache"
+                md-selected-item="selectedItem"
+                md-search-text-change="searchTextChange(searchText)"
+                md-search-text="searchText"
+                md-selected-item-change="selectedItemChange(item)"
+                md-items="item in querySearch(searchText)"
+                md-item-text="item"
+                md-input-minlength="1"
+                placeholder="zip code">
+                <md-item-template>
+                  <span md-highlight-text="searchText">{{item}}</span>
+                </md-item-template>
+              </md-autocomplete>
+              <p class="input_error" id="locationError" ng-show="myForm.inpute_location_autocomplete.$invalid && myForm.inpute_location_autocomplete.$touched">Please enter a zip code.</p>             
+      
 
-            </div>           
+          </div>           
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <button type="submit" id="searchButton" class="btn btn-light" name="search" style="margin-left:5px;" ng-disabled="b_disableKeywordLocation()" ng-click="cleanAnimation();getInputs('/product_page')">
+              <i class="material-icons md-18">search</i>Search</button>
+            <button type="button" id="clearButton" class="btn btn-light" name="clear" style="margin-left:20px;" ng-click="cleanAnimation();clearInputs()"> 
+              <i class="material-icons md-18">clear_all</i>Clear</button>
           </div>
-
-          <div class="form-group row">
-            <div class="col-md-12">
-              <button type="submit" id="searchButton" class="btn btn-light" name="search" ng-disabled="b_disableKeywordLocation()" ng-click="cleanAnimation();getInputs('/product_page')">
-                <i class="material-icons md-18">search</i>Search</button>
-              <button type="button" id="clearButton" class="btn btn-light" name="clear" ng-click="cleanAnimation();clearInputs()"> 
-                <i class="material-icons md-18">clear_all</i>Clear</button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
+
+
+
   </div>
+
+  <br>
 
   <div class="container">
     <div class="form-group">
@@ -166,17 +170,16 @@
         </center>
       </div>
     </div>
-    <br><br>
+
     <div class="progress" ng-show="showProgressBar">
-      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style=" height:12px; width:50%; background-color:#176aef">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style=" height:12px; width:50%; background-color:#176aef">
       </div>
     </div>
   </div>
 
   <div ng-if="!b_searchDone" align="center">
-    <br><br>
     <p class="search_fail"> Failed to get search results.</p>
-    <br><br><br>
+    <br>
   </div>
 
   <div ng-view ng-class="{'flip': b_flip, 'rightMotion': b_rightMotion}" ng-if="b_searchDone"></div>

@@ -65,7 +65,7 @@
       },
       function(response)
       {
-        console.error("google photo api request error!!!");
+        console.error("Request error!");
         $rootScope.showProgressBar = false;
         $scope.b_containPhoto = false;
       });
@@ -272,10 +272,9 @@
           $scope.showShippingCost = false;
         }
 
-        console.log(items[i].shippingInfo[0]);
-        if (items[i].shippingInfo[0].hasOwnProperty('shipToLocations')) {
+        if (items[i].shippingInfo[0].hasOwnProperty('shippingLocation')) {
           $scope.showShippingLocation = true;
-          $scope.shippingLocation = items[i].shippingInfo[0].shipToLocations[0];
+          $scope.shippingLocation = items[i].shippingInfo[0].shippingLocation[0];
         } else {
           $scope.showShippingLocation = false;
         }
@@ -330,6 +329,46 @@
       }
     }
 
+
+    $scope.requestPhotoApi = function() {
+      // photo tab
+      // google custom search api -----------------------------------
+      // if ($scope.b_containPhoto == false) { // avoid re-call api
+        var inputData = {
+          keyword_photo: $scope.wishData[4][0]
+        }
+        console.log(inputData);
+        $http({
+          method: 'GET',
+          url: "http://localhost:8081/?",
+          // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+          params: inputData
+        })
+        .then (function (response) {
+          console.log("photo api response");
+          $scope.photo_items = response.data.items;
+          console.log($scope.photo_items);
+          $scope.b_containPhoto = false;
+          if (typeof $scope.photo_items !== 'undefined') {
+            $scope.photo_arr = [];
+            for (var i = 0; i < $scope.photo_items.length; i++) {
+              var photo_url = $scope.photo_items[i].link;
+              $scope.photo_arr[i] = photo_url;
+              $scope.b_containPhoto = true;
+            }
+            console.log($scope.photo_arr);
+          }
+        },
+        function(response)
+        {
+          console.error("Request error!");
+          $rootScope.showProgressBar = false;
+          $scope.b_containPhoto = false;
+        });
+      // } else {
+      //   console.log("duplicate requestPhotoApi ");
+      // }
+    };
 
 
     $scope.requestSimilarApi = function() {
@@ -409,7 +448,7 @@
       },
       function(response)
       {
-        console.error("similar api request error!!!");
+        console.error("Request error!");
         $rootScope.showProgressBar = false;
         $scope.b_containSimilar = false;
       });

@@ -1,45 +1,49 @@
 
 (function(angular) {
-  var wishDetailsModule = angular.module('productSearchModel.wishDetailsModule', ['ngRoute', 'ngAnimate']);
-  wishDetailsModule.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/wishDetails_page', {
+  var detailsModule = angular.module('productSearchModel.detailsModule', ['angular-svg-round-progressbar', 'ngRoute', 'ngAnimate']);
+  detailsModule.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/details_page', {
       templateUrl: 'details_page/detailsPage.html',
-      controller: 'wishDetailsController'
+      controller: 'detailsController'
     });
   }]);
 
-  wishDetailsModule.service('wishDetailDataService', function(wishDataService) {
-    this.setData = function() {
-      wishDataService.setData('newVal');
+  detailsModule.service('detailsDataService', function(resultsDataService) {
+    this.setData = function(newVal) {
+      resultsDataService.setData(newVal);
     };
     this.getData = function() {
-      return wishDataService.getData();
+      return resultsDataService.getData();
     };
   });
 
-  wishDetailsModule.controller('wishDetailsController', ['$scope', '$http', '$rootScope', 'wishDetailDataService', '$location', function($scope, $http, $rootScope, wishDetailDataService, $location) {
-    $rootScope.b_flip = true;
-    $rootScope.b_rightMotion = false;
-    $rootScope.detailWishIconClass = "material-icons md-18";
-    $rootScope.shopping_cart = "add_shopping_cart";
+  detailsModule.controller('detailsController', ['$scope', '$http', '$rootScope', 'detailsDataService', '$location', function($scope, $http, $rootScope, detailsDataService, $location) {
+    
 
-    $scope.wishData = wishDetailDataService.getData();
-    console.log($scope.wishData);
-    // console.log($rootScope);
-    $scope.storageKey = $scope.wishData[0];
-    $scope.myLocationOption = $scope.wishData[1];
-    $scope.singleItemDetail = $scope.wishData[3];
-    $scope.photo_arr = $scope.wishData[4];  // keyword + itemId
-    $scope.name = $scope.singleItemDetail.Title;
-    // console.log(window.localStorage);
+    $rootScope.b_rightMotion = false;
+    $rootScope.detailWishIconClass = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].wishIconClass;
+    $rootScope.shopping_cart = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex].shopping_cart;
+    if (typeof $rootScope.passData === 'undefined' || (detailsDataService.getData().length === 4 && detailsDataService.getData() !== $rootScope.passData))
+    {
+      $rootScope.passData = detailsDataService.getData();
+    }
+    console.log($rootScope.passData);
+    $scope.singleItemDetail = $rootScope.passData[0];
+
+    // keyword + itemId
+    $scope.passedKeyword = $rootScope.passData[1][0];
+    $scope.passedItemId = $rootScope.passData[1][1];
+    console.log($scope.passedKeyword);
+    console.log($scope.passedItemId);
 
     $scope.b_containPhoto = true;  // initail assign
     $scope.b_containSimilar = true;  // initail assign
 
+
       // photo tab
       // google custom search api -----------------------------------
       var inputData = {
-        keyword_photo: $scope.wishData[4][0]
+        keyword_photo: $scope.passedKeyword
       }
       console.log(inputData);
       $http({
@@ -65,127 +69,58 @@
       },
       function(response)
       {
-        console.error("google photo api request error!!!");
+        console.error("Request error!");
         $rootScope.showProgressBar = false;
         $scope.b_containPhoto = false;
       });
 
 
 
-    $scope.currentStorage = window.localStorage;
-    for (var i = 0; i < $scope.currentStorage.length; i++) {
-      var currentKey = $scope.currentStorage.key(i);
-      if (currentKey === $scope.storageKey) {
-        $rootScope.detailWishIconClass = "material-icons md-18 yellow";
-        $rootScope.shopping_cart = "remove_shopping_cart";
-      }
-    }
 
-    for (var i = 0; i < $rootScope.wishItems.length; i++)  {
-      if ($rootScope.wishItems[i]['itemId'][0] === $scope.singleItemDetail.ItemID) {
-        $rootScope.wishListItems = $rootScope.wishItems[i];
-      }
-    }
+    $scope.transferPage = $rootScope.passData[2];
+    $scope.firstApiJson = $rootScope.passData[3];  // ebay search API : [0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item']
+    $scope.name = $scope.singleItemDetail.Title;
 
-
-    if ($scope.myLocationOption === "option1") {  // current location
-      $scope.myInputLocation = "";
-    } else { // zip code location
-      $scope.myInputLocation = $scope.wishData[2];
-    }
-
-
-    // assign Product tab
-    console.log("assign Product tab");
-    if ($scope.singleItemDetail.hasOwnProperty('PictureURL')) {
-      $scope.showProductImg = true;
-      $scope.ProductImg = $scope.singleItemDetail.PictureURL;
-      // console.log($scope.ProductImg);
+    // assign seller tab
+    if ($scope.singleItemDetail.Seller.hasOwnProperty('UserID')) {
+      $scope.showUserId = true;
+      var str = $scope.singleItemDetail.Seller.UserID;
+      $scope.user_id = str.toUpperCase();
     } else {
-      $scope.showProductImg = false;
+      $scope.showUserId = false;
     }
 
-    if ($scope.singleItemDetail.hasOwnProperty('Subtitle')) {
-      $scope.showSubtitle = true;
-      $scope.subtitle = $scope.singleItemDetail.Subtitle;
-    } else {
-      $scope.showSubtitle = false;
-    }
-
-    if ($scope.singleItemDetail.hasOwnProperty('CurrentPrice')) {
-      if ($scope.singleItemDetail.CurrentPrice.hasOwnProperty('Value')) {
-        $scope.showPrice = true;
-        $scope.price = $scope.singleItemDetail.CurrentPrice.Value;
-      } else {
-        $scope.showPrice = false;
-      }
-    } else {
-      $scope.showPrice = false;
-    }
-
-    if ($scope.singleItemDetail.hasOwnProperty('Location')) {
-      $scope.showLocation = true;
-      $scope.productLocation = $scope.singleItemDetail.Location;
-      // $scope.ratingWidth = $scope.rating * 10
-    } else {
-      $scope.showLocation = false;
-    }
-
-    if ($scope.singleItemDetail.hasOwnProperty('ReturnPolicy')) {
-      if ($scope.singleItemDetail.ReturnPolicy.hasOwnProperty('ReturnsAccepted') && $scope.singleItemDetail.ReturnPolicy.hasOwnProperty('ReturnsWithin')) {
-        $scope.showReturnPolicy = true;
-        $scope.returnPolicy = $scope.singleItemDetail.ReturnPolicy.ReturnsAccepted + " Within " + $scope.singleItemDetail.ReturnPolicy.ReturnsWithin;
-      } else {
-        $scope.showReturnPolicy = false;
-      }
-    } else {
-      $scope.showReturnPolicy = false;
-    }
-
-    if ($scope.singleItemDetail.hasOwnProperty('ItemSpecifics')) {
-      if ($scope.singleItemDetail.ItemSpecifics.hasOwnProperty('NameValueList')) {
-        $scope.showItemSpecifics = true;
-        $scope.itemSpecList = $scope.singleItemDetail.ItemSpecifics.NameValueList;
-      } else {
-        $scope.showItemSpecifics = false;
-      }
-    } else {
-      $scope.showItemSpecifics = false;
-    }
-
-     // assign seller tab
-     console.log("assign seller tab");
-     if ($scope.singleItemDetail.Seller.hasOwnProperty('FeedbackScore')) {
+    if ($scope.singleItemDetail.Seller.hasOwnProperty('FeedbackScore')) {
       $scope.showFeedbackScore = true;
       $scope.feedbackScore = $scope.singleItemDetail.Seller.FeedbackScore;
       console.log("show FeedbackScore");
       // star color 
       var scores = $scope.feedbackScore;
       if (scores >= 0 && scores < 10000) {
-        $scope.overTop = false;
-        if (scores >= 0 && scores <= 9) {
-          $scope.showFeedbackRatingStar = false;
-        } else {
-          $scope.showFeedbackRatingStar = true;
-          if (scores >= 10 && scores < 50) {
-            $scope.starColor = "yellow";
-          } else if (scores >= 50 && scores < 100) {
-            $scope.starColor = "blue";
-          } else if (scores >= 100 && scores < 500) {
-            $scope.starColor = "turquoise";
-          } else if (scores >= 500 && scores < 1000) {
-            $scope.starColor = "purple";
-          } else if (scores >= 1000 && scores < 5000) {
-            $scope.starColor = "red";
-          } else if (scores >= 5000 && scores < 10000) {
-            $scope.starColor = "green";
+          $scope.overTop = false;
+          if (scores >= 0 && scores <= 9) {
+            $scope.showFeedbackRatingStar = false;
+          } else {
+            $scope.showFeedbackRatingStar = true;
+            if (scores >= 10 && scores < 50) {
+              $scope.starColor = "yellow";
+            } else if (scores >= 50 && scores < 100) {
+              $scope.starColor = "blue";
+            } else if (scores >= 100 && scores < 500) {
+              $scope.starColor = "turquoise";
+            } else if (scores >= 500 && scores < 1000) {
+              $scope.starColor = "purple";
+            } else if (scores >= 1000 && scores < 5000) {
+              $scope.starColor = "red";
+            } else if (scores >= 5000 && scores < 10000) {
+              $scope.starColor = "green";
+            }
+            console.log($scope.starColor);
           }
-          console.log($scope.starColor);
-        }
-      } else {  // scores >= 10000
-        $scope.overTop = true;
+      } else { // scores >= 10000
+          $scope.overTop = true;
 
-        $scope.showFeedbackRatingStar = true;
+          $scope.showFeedbackRatingStar = true;
           if (scores >= 10000 && scores < 25000) {
             $scope.starColor = "yellow";
           } else if (scores >= 25000 && scores < 50000) {
@@ -246,13 +181,11 @@
       $scope.showBuyProductAt = false;
     }
 
-    // console.log($rootScope);
     // shipping
-    var items = $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
-    // console.log(items);
+    var items = $scope.firstApiJson[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'];
     for (var i = 0; i < items.length; i++) {
       if (items[i].itemId[0] == $scope.singleItemDetail.ItemID) {
-        console.log(items[i].itemId[0]);
+        // console.log(items[i].itemId[0]);
 
         // assign shipping tab
         if (items[i].shippingInfo[0].hasOwnProperty('shippingServiceCost')) {
@@ -272,10 +205,9 @@
           $scope.showShippingCost = false;
         }
 
-        console.log(items[i].shippingInfo[0]);
-        if (items[i].shippingInfo[0].hasOwnProperty('shipToLocations')) {
+        if (items[i].shippingInfo[0].hasOwnProperty('shippingLocation')) {
           $scope.showShippingLocation = true;
-          $scope.shippingLocation = items[i].shippingInfo[0].shipToLocations[0];
+          $scope.shippingLocation = items[i].shippingInfo[0].shippingLocation[0];
         } else {
           $scope.showShippingLocation = false;
         }
@@ -300,7 +232,8 @@
             $scope.expeditedShipping = true;
           } else {
             $scope.expeditedShipping = false;
-          }        } else {
+          }
+        } else {
           $scope.showExpeditedShipping = false;
         }
 
@@ -311,7 +244,8 @@
             $scope.oneDayShipping = true;
           } else {
             $scope.oneDayShipping = false;
-          }        } else {
+          }
+        } else {
           $scope.showOneDayShipping = false;
         }
 
@@ -326,18 +260,127 @@
         } else {
           $scope.showReturnAccepted = false;
         }
-     
+
+        
       }
     }
 
+    // console.log($scope.singleItemDetail);
+
+    $scope.myLocationOption = $scope.$parent.locationOption;
+    if ($scope.myLocationOption === "option1") { // current location
+      $scope.myInputLocation = "";
+    } else { // zip code location
+      $scope.myInputLocation = $scope.$parent.myInputLocation;
+    }
 
 
-    $scope.requestSimilarApi = function() {
+    // assign Product tab
+    console.log("assign Product tab");
+    if ($scope.singleItemDetail.hasOwnProperty('PictureURL')) {
+      $scope.showProductImg = true;
+      $scope.ProductImg = $scope.singleItemDetail.PictureURL;
+      console.log("show PictureURL");
+    } else {
+      $scope.showProductImg = false;
+    }
+
+    if ($scope.singleItemDetail.hasOwnProperty('Subtitle')) {
+      $scope.showSubtitle = true;
+      $scope.subtitle = $scope.singleItemDetail.Subtitle;
+    } else {
+      $scope.showSubtitle = false;
+    }
+
+    if ($scope.singleItemDetail.hasOwnProperty('CurrentPrice')) {
+      if ($scope.singleItemDetail.CurrentPrice.hasOwnProperty('Value')) {
+        $scope.showPrice = true;
+        $scope.price = $scope.singleItemDetail.CurrentPrice.Value;
+      } else {
+        $scope.showPrice = false;
+      }
+    } else {
+      $scope.showPrice = false;
+    }
+
+    if ($scope.singleItemDetail.hasOwnProperty('Location')) {
+      $scope.showLocation = true;
+      $scope.productLocation = $scope.singleItemDetail.Location;
+      // $scope.ratingWidth = $scope.rating * 10
+    } else {
+      $scope.showLocation = false;
+    }
+
+    if ($scope.singleItemDetail.hasOwnProperty('ReturnPolicy')) {
+      if ($scope.singleItemDetail.ReturnPolicy.hasOwnProperty('ReturnsAccepted') && $scope.singleItemDetail.ReturnPolicy.hasOwnProperty('ReturnsWithin')) {
+        $scope.showReturnPolicy = true;
+        $scope.returnPolicy = $scope.singleItemDetail.ReturnPolicy.ReturnsAccepted + " Within " + $scope.singleItemDetail.ReturnPolicy.ReturnsWithin;
+      } else {
+        $scope.showReturnPolicy = false;
+      }
+    } else {
+      $scope.showReturnPolicy = false;
+    }
+
+    if ($scope.singleItemDetail.hasOwnProperty('ItemSpecifics')) {
+      if ($scope.singleItemDetail.ItemSpecifics.hasOwnProperty('NameValueList')) {
+        $scope.showItemSpecifics = true;
+        $scope.itemSpecList = $scope.singleItemDetail.ItemSpecifics.NameValueList;
+      } else {
+        $scope.showItemSpecifics = false;
+      }
+    } else {
+      $scope.showItemSpecifics = false;
+    }
+
+
+    $scope.requestPhotoApi = function() {
+      // photo tab
+      // google custom search api -----------------------------------
+      // if ($scope.b_containPhoto == false) { // avoid re-call api
+        var inputData = {
+          keyword_photo: $scope.passedKeyword
+        }
+        console.log(inputData);
+        $http({
+          method: 'GET',
+          url: "http://localhost:8081/?",
+          // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+          params: inputData
+        })
+        .then (function (response) {
+          console.log("photo api response");
+          $scope.photo_items = response.data.items;
+          console.log($scope.photo_items);
+          $scope.b_containPhoto = false;
+          if (typeof $scope.photo_items !== 'undefined') {
+            $scope.photo_arr = [];
+            for (var i = 0; i < $scope.photo_items.length; i++) {
+              var photo_url = $scope.photo_items[i].link;
+              $scope.photo_arr[i] = photo_url;
+              $scope.b_containPhoto = true;
+            }
+            console.log($scope.photo_arr);
+          }
+        },
+        function(response)
+        {
+          console.error("Request error!");
+          $rootScope.showProgressBar = false;
+          $scope.b_containPhoto = false;
+        });
+      // } else {
+      //   console.log("duplicate requestPhotoApi ");
+      // }
+    };
+
+    $scope.requestSimilarApi = function()  
+    {
       // similar tab
       // ebay similar api ------------------------------
       var inputSimilarData = {
         similar: "true",
-        itemId_similar: $scope.singleItemDetail.ItemID
+        itemId_similar: $scope.passedItemId
       }
       console.log(inputSimilarData);
       $http({
@@ -352,12 +395,14 @@
         $scope.similar_items = response.data.getSimilarItemsResponse.itemRecommendations.item;
         console.log($scope.similar_items);
 
+
         // set initial value
         $scope.mySortMethod_option = "simi_defalt";
         $scope.mySortDirection_option = "simi_ascending";
 
 
         if (typeof $scope.similar_items === 'undefined' || $scope.similar_items.length === 0) {
+          console.log("no similar items");
           $scope.b_containSimilar = false;
         } else {
           $scope.b_containSimilar = true;
@@ -371,24 +416,25 @@
             $scope.similarItemOverFive = false;
           }
 
+
           // update timeLeft value
           for (var i = 0; i < $scope.similar_items.length; i++) {
-            var timeLeft_str = $scope.similar_items[i]['timeLeft'];
-            var a = timeLeft_str.indexOf("P");
-            var b = timeLeft_str.indexOf("D");
-            $scope.similar_items_arr[i]['timeLeft'] = timeLeft_str.substring(a+1, b);
+             var timeLeft_str = $scope.similar_items[i]['timeLeft'];
+             var a = timeLeft_str.indexOf("P");
+             var b = timeLeft_str.indexOf("D");
+             $scope.similar_items_arr[i]['timeLeft'] = timeLeft_str.substring(a+1, b);
           }
+
 
           // show top 5 rows at first
           for (var i = 0; i < $scope.similar_items.length; i++) {
-            if (i < 5) {
-             $scope.similar_items_arr[i]['showRow'] = true;
-            } else {
-             $scope.similar_items_arr[i]['showRow'] = false;
-            }
-          }    
-          
-          
+             if (i < 5) {
+              $scope.similar_items_arr[i]['showRow'] = true;
+             } else {
+              $scope.similar_items_arr[i]['showRow'] = false;
+             }
+          }
+
           // deep copy arr
           $scope.similar_items_arr_default_order = [];
           for (var i = 0; i < $scope.similar_items_arr.length; i++) {
@@ -403,18 +449,19 @@
           }
           $scope.similar_items_arr_default_order_reverse.reverse();
           console.log($scope.similar_items_arr_default_order_reverse);
-       
+
         }
-        
+        // console.log("end");
       },
       function(response)
       {
-        console.error("similar api request error!!!");
+        console.error("Request error!");
         $rootScope.showProgressBar = false;
         $scope.b_containSimilar = false;
       });
 
     };
+
 
 
     $scope.sort = function() {
@@ -530,14 +577,17 @@
       } 
     }
 
-    
+
     $scope.backToList = function() {
       $rootScope.b_flip = true;
       $rootScope.b_rightMotion = false;
-      if ($location.path() == '/details_page') {
-        console.log("To location: " + "/wishproduct_page_page");
-        $location.path('/product_page');
-      } else if ($location.path() == '/wishDetails_page') {
+      if ($location.path() === '/details_page') {
+        $scope.transferDataToProductPage = [];
+        $scope.transferDataToProductPage[0] = $scope.transferPage;
+        $scope.transferDataToProductPage[1] = $scope.firstApiJson;
+        detailsDataService.setData($scope.transferDataToProductPage);
+        window.history.back();
+      } else if ($location.path() === '/wishDetails_page') {
         console.log("To location: " + "/wish_page");
         $location.path('/wish_page');
       }
@@ -559,40 +609,41 @@
     };
 
 
-  
 
     $scope.addToWishList = function() {
-      console.log("add to wish list");
-      console.log($rootScope.detailWishIconClass);
-
+      console.log("details - add to wish list");
       if ($rootScope.detailWishIconClass === "material-icons md-18") {
+        // console.log("update product icon : to yellow");
         $rootScope.detailWishIconClass = "material-icons md-18 yellow";
         $rootScope.shopping_cart = "remove_shopping_cart";
-        $scope.passData = [];
-        $scope.passData[0] = $scope.singleItemDetail;
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
+        var myKey = $scope.passedItemId;
+        $scope.input_search_single_api_time_Data = [];
+        $scope.input_search_single_api_time_Data[0] = $scope.singleItemDetail;  // single api response
         $scope.input_search_single_api_time_Data[1] = [];
         $scope.input_search_single_api_time_Data[1][0] = $scope.passedKeyword;
-        $scope.input_search_single_api_time_Data[1][1] = $scope.singleItemDetail.ItemID;
+        $scope.input_search_single_api_time_Data[1][1] = $scope.passedItemId;
+        $scope.input_search_single_api_time_Data[2] = $rootScope.curRowData;  // ebay search api for this itemId
+        $scope.input_search_single_api_time_Data[3] = $scope.myLocationOption;
 
-        $scope.passData[2] = $rootScope.wishListItems;
-        $scope.passData[3] = $scope.myLocationOption;
-
-        // console.log($scope);
-        // console.log($rootScope);
         if ($scope.myLocationOption === "option1") {
           $scope.input_search_single_api_time_Data[4] = "";
         } else {
-          $scope.passData[4] = $scope.myInputLocation;
+          $scope.input_search_single_api_time_Data[4] = $scope.myInputLocation;
         }
         var timeStamp = Date.now();
-        $scope.passData[5] = timeStamp;
-        // console.log($scope.passData);
-        localStorage.setItem($scope.storageKey, JSON.stringify($scope.passData));
-      } else {  // yellow
+        $scope.input_search_single_api_time_Data[5] = timeStamp;
+        localStorage.setItem(myKey, JSON.stringify($scope.input_search_single_api_time_Data));
+      } else {  // current is yellow
+        // console.log("update product icon : to blank");
         $rootScope.detailWishIconClass = "material-icons md-18";
         $rootScope.shopping_cart = "add_shopping_cart";
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['wishIconClass'] = $rootScope.detailWishIconClass;
+        $rootScope.jsonData[0]['findItemsAdvancedResponse'][0]['searchResult'][0]['item'][$rootScope.currentIndex]['shopping_cart'] = $rootScope.shopping_cart;
         localStorage.removeItem($scope.singleItemDetail.ItemID);
       }
+
     }
   }]);
 })(angular);

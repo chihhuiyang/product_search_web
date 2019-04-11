@@ -9,6 +9,8 @@
         <button type="button" class="btn btn-light btn-sm" style="float:left; margin-left: 3px" ng-click="backToList()">
           <i class="material-icons md-18">chevron_left</i>List
         </button>
+        <br></br>
+
         <div class="fbArea" align="right">
           <span>
             <button class="btn btn-default" id="fbButton" style="padding:0px" ng-click="openFacebookWindow()">
@@ -23,22 +25,22 @@
         <div>
           <ul class="nav nav-tabs justify-content-end">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#infoTab">Product</a></li>
-            <li class="nav-item" ng-click="requestPhotoApi()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
-            <li class="nav-item" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Related</a></li>
+            <li class="nav-item" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Similar Products</a></li>
             
           </ul>
         </div>
 
 
-        <div class="tab-content table-responsive" align="left">
+        <div class="tab-content table-responsive">
           <!-- infos tab -->
           <div id="infoTab" class="tab-pane active">
             <table class="table table-dark table-striped">
               <tr ng-if="showProductImg">
-                <th class="col-xs-6">Product Images</th>
-                <td class="col-xs-6">
+                <th>Product Images</th>
+                <td>
                   <a class="viewProductImg" href="" data-toggle="modal" data-target="#myModal">View Product Images Here</a>
 
                   <!-- The Modal -->
@@ -48,7 +50,7 @@
                       
                         <!-- Header -->
                         <div class="modal-header">
-                          <h4 class="modal-title text-nowrap">Product Images</h4>   
+                          <h4 class="modal-title">Product Images</h4>   
                           <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         
@@ -106,7 +108,7 @@
                 </td>
               </tr>
               <tr ng-if="showReturnPolicy">
-                <th>Return Policy</th>
+                <th>Return Policy (US)</th>
                 <td>{{returnPolicy}}</td>
               </tr>
 
@@ -137,8 +139,9 @@
               </div>
 
             </div>
-            <div ng-if="!b_containPhoto" class="no_record">
-              No records.
+            <div ng-if="!b_containPhoto">
+              <br>
+              <p class="no_record">  No records. </p>
             </div>
           </div>
 
@@ -195,7 +198,7 @@
               </tr>
 
               <tr ng-if="showFeedbackScore">
-                <th >Feedback Score</th>
+                <th>Feedback Score</th>
                 <td>{{feedbackScore}}</td>
               </tr>
               <tr ng-if="showPopularity">
@@ -223,11 +226,11 @@
                 </td>
               </tr>
               <tr ng-if="showFeedbackRatingStar && overTop">
-                <th class="text-nowrap">Feedback Rating Star</th>
+                <th>Feedback Rating Star</th>
                 <td><i class="material-icons md-24 ratingStar" ng-style="{'color': starColor}">stars</i></td>
               </tr>
               <tr ng-if="showFeedbackRatingStar && !overTop">
-                <th class="text-nowrap">Feedback Rating Star</th>
+                <th>Feedback Rating Star</th>
                 <td><i class="material-icons md-24 ratingStar" ng-style="{'color': starColor}">star_border</i></td>
               </tr>
 
@@ -264,7 +267,7 @@
                   <option value="simi_price">Price</option>
                   <option value="simi_cost">Shipping Cost</option>
                 </select>
-                
+
                 <select class="form-control col-md-2" id="simi_sort_direction_option" style="margin-left:20px;" ng-model="mySortDirection_option" ng-change="sort()">
                   <option value="simi_ascending">Ascending</option>
                   <option value="simi_descending">Descending</option>
@@ -275,47 +278,29 @@
             <br>
 
             <!-- similar table -->
-            <div class="similarTable col-md-8 table-responsive">
-              <!-- <table class="table table-dark similarTable"> -->
+            <div class="similarTable table-responsive">
+              <table class="table table-dark similarTable">
 
-                  <!-- <tr class="simiBlock" ng-repeat="x in similar_items_arr track by $index" ng-if="x.showRow">
-                    <td class="similar_img" style="width: 150px;"><img src='{{x.imageURL}}' height='150px' width='150px'/></td>
+                  <tr class="simiBlock" ng-repeat="x in similar_items_arr track by $index" ng-if="x.showRow">
+                    <td style="width: 150px;"><img src='{{x.imageURL}}' height='150px' width='150px'/></td>
                     <td>
 	                    <a class="similar_name" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a>
                     	<p class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</p>
                       <p class="similar_cost">Shipping Cost: ${{x.shippingCost.__value__}}</p>
                       <p class="similar_days">Days Left: {{x.timeLeft}}</p>
                     </td>  
-                  </tr> -->
+                  </tr>
 
-                    <div class="simiBlock row" ng-repeat="x in similar_items_arr track by $index" ng-if="x.showRow">
-                      <div class="similar_img col-md-2 col-xs-12"><img src='{{x.imageURL}}' height='150px' width='150px' align="left"/></div>
-                      <div class="simi_description col-md-9 col-xs-12">
-
-                          <!-- <p class="similar_name"></p><a class="similar_name_a" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a></p><br>
-                          <p class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</p><br>
-                          <p class="similar_cost">Shipping Cost: ${{x.shippingCost.__value__}}</p><br>
-                          <p class="similar_days">Days Left: {{x.timeLeft}}</p><br>                        <p class="similar_name"></p><a class="similar_name_a" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a></p><br> -->
-                        
-                        <ul class="similar_name"></p><a class="similar_name_a" href='{{x.viewItemURL}}' target="_blank">{{x.title}}</a></ul>
-                        <ul class="similar_price">Price: ${{x.buyItNowPrice.__value__}}</ul>
-                        <ul class="similar_cost">Shipping Cost: ${{x.shippingCost.__value__}}</ul>
-                        <ul class="similar_days">Days Left: {{x.timeLeft}}</ul>
-
-                      </div>  
-                    </div>
-
-
-              <!-- </table> -->
+              </table>
             </div>
 
             <!-- show more / show less -->
-            <center>
             <button ng-if="similarItemOverFive" type="button" class="btn btn-dark btn-md" ng-click="showMoreLess()">{{txt_showMoreLess}}</button>
-            </center>
+            
             <!-- no similar -->
-            <div class="no_record" ng-if="!b_containSimilar">
-              No records. 
+            <div ng-if="!b_containSimilar">
+              <br>
+              <p class="no_record">  No records. </p>
             </div>
 
             <br><br><br>
