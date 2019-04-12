@@ -46,8 +46,8 @@
       // console.log(inputData);
       // $http({
       //   method: 'GET',
-      //   url: "http://localhost:8081/?",
-      //   // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+      //   // url: "http://localhost:8081/?",
+      //   url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
       //   params: inputData
       // })
       // .then (function (response) {
@@ -344,8 +344,8 @@
       console.log(inputSimilarData);
       $http({
         method: 'GET',
-        url: "http://localhost:8081/?",
-        // url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
+        // url: "http://localhost:8081/?",
+        url: 'http://chihhuiy-nodejs.us-east-2.elasticbeanstalk.com/?',
         params: inputSimilarData
       })
       .then (function (response) {
