@@ -1,9 +1,70 @@
 <html>
   <head>
+
+      <script>
+
+        window.onclick = function(event) {
+          var modal = document.getElementById('myModal');
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      </script>
+
   </head>
   <body>
 
     <center>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+      
+            <!-- <div class="modal-dialog"> -->
+              <div class="modal-content">
+              
+                <!-- Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title text-nowrap">Product Images</h4>   
+                  <button type="button" class="close" data-dismiss="modal" ng-click="popup();">&times;</button>
+                </div>
+                
+                <!-- body -->
+                <div class="modal-body">
+                      <div id="demo" class="carousel slide" data-ride="carousel" data-interval="false">
+
+                        <!-- The slideshow -->
+                        <div class="carousel_border">
+                          <div class="carousel-inner">
+                                <div class="carousel-item" ng-class="{active:!$index}" ng-repeat="x in ProductImg">
+                                  <a href="{{x}}" target="_blank">
+                                    <img src="{{x}}" alt=" carousel {{$index}}">
+                                  </a>
+                                </div>
+                          </div>
+                        </div>
+
+                        <!-- Left and right img -->
+                        <a class="carousel-control-prev" data-target="#demo" data-slide="prev">
+                          <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" data-target="#demo" data-slide="next">
+                          <span class="carousel-control-next-icon"></span>
+                        </a>
+
+                      </div>
+
+                </div>
+                
+                <!-- footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="popup();">Close</button>
+                </div>
+                
+              </div>
+            <!-- </div> -->
+        </div>  
+
+
       <div class="detailsPage table-responsive">
         <h3 class="product_name">{{name}}</h3>
         <button type="button" class="btn btn-light btn-sm" style="float:left; margin-left: 3px" ng-click="backToList()">
@@ -23,7 +84,7 @@
         <div>
           <ul class="nav nav-tabs justify-content-end">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" data-target="#infoTab">Product</a></li>
-            <li class="nav-item" ng-click="requestPhotoApi()"><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
+            <li class="nav-item" ><a class="nav-link" data-toggle="tab" data-target="#photosTab">Photos</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#shippingTab">Shipping</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-target="#sellerTab">Seller</a></li>
             <li class="nav-item desktop_similar_products" ng-click="requestSimilarApi()"><a class="nav-link" data-toggle="tab" data-target="#simiTab">Similar Products</a></li>
@@ -33,86 +94,43 @@
         </div>
 
 
+          <!-- The Modal -->
+  
+
+
+
         <div class="tab-content table-responsive" align="left">
           <!-- infos tab -->
           <div id="infoTab" class="tab-pane active">
             <table class="table table-dark table-striped">
               <tr ng-if="showProductImg">
-                <th class="col-xs-6">Product Images</th>
+                <td style="font-weight: bold;" class="col-xs-6">Product Images</th>
                 <td class="col-xs-6">
-                  <a class="viewProductImg" href="" data-toggle="modal" data-target="#myModal">View Product Images Here</a>
-
-                  <!-- The Modal -->
-                  <div class="modal" id="myModal">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                      
-                        <!-- Header -->
-                        <div class="modal-header">
-                          <h4 class="modal-title text-nowrap">Product Images</h4>   
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        
-                        <!-- body -->
-                        <div class="modal-body">
-                              <div id="demo" class="carousel slide" data-ride="carousel" data-interval="false">
-
-                                <!-- The slideshow -->
-                                <div class="carousel_border">
-                                  <div class="carousel-inner">
-                                        <div class="carousel-item" ng-class="{active:!$index}" ng-repeat="x in ProductImg">
-                                          <a href="{{x}}" target="_blank">
-                                            <img src="{{x}}" alt=" carousel {{$index}}">
-                                          </a>
-                                        </div>
-                                  </div>
-                                </div>
-
-                                <!-- Left and right img -->
-                                <a class="carousel-control-prev" data-target="#demo" data-slide="prev">
-                                  <span class="carousel-control-prev-icon"></span>
-                                </a>
-                                <a class="carousel-control-next" data-target="#demo" data-slide="next">
-                                  <span class="carousel-control-next-icon"></span>
-                                </a>
-
-                              </div>
-
-                        </div>
-                        
-                        <!-- footer -->
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                        
-                      </div>
-                    </div>
-                  </div>    
-                  
-                  
+                  <!-- <a class="viewProductImg" href="" data-toggle="modal" data-target="#myModal">View Product Images Here</a> -->
+                  <div class="viewProductImg" ng-click="popup();">View Product Images Here</div>      
                 
                 </td>
               </tr>
               <tr ng-if="showSubtitle">
-                <th>Subtitle</th>
+                <td style="font-weight: bold;">Subtitle</th>
                 <td>{{subtitle}}</td>
               </tr>
               <tr ng-if="showPrice">
-                <th>Price</th>
+                <td style="font-weight: bold;">Price</th>
                 <td>${{price}}</td>
               </tr>
               <tr ng-if="showLocation">
-                <th>Location</th>
+                <td style="font-weight: bold;">Location</th>
                 <td>{{productLocation}}
                 </td>
               </tr>
               <tr ng-if="showReturnPolicy">
-                <th>Return Policy</th>
+                <td style="font-weight: bold;">Return Policy</th>
                 <td>{{returnPolicy}}</td>
               </tr>
 
               <tr ng-if="showItemSpecifics" ng-repeat="x in itemSpecList">
-                  <th>{{x.Name}}</th>
+                  <td style="font-weight: bold;">{{x.Name}}</th>
                   <td>{{x.Value[0]}}</td>
               </tr>
             </table>
@@ -147,39 +165,39 @@
           <div id="shippingTab" class="tab-pane fade">
             <table class="table table-dark table-striped">
               <tr ng-if="showShippingCost">
-                <th>Shipping Cost</th>
+                <td style="font-weight: bold;">Shipping Cost</th>
                 <td>{{shippingCost}}</td>
               </tr>
               <tr ng-if="showShippingLocation">
-                <th>Shipping Locations</th>
+                <td style="font-weight: bold;">Shipping Locations</th>
                 <td>{{shippingLocation}}</td>
               </tr>
               <tr ng-if="showHandlingTime">
-                <th>Handling time</th>
+                <td style="font-weight: bold;">Handling time</th>
                 <td>{{handlingTime}}</td>
               </tr>
               <tr ng-if="showExpeditedShipping && expeditedShipping">
-                <th>Expedited Shipping</th>
+                <td style="font-weight: bold;">Expedited Shipping</th>
                 <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
               <tr ng-if="showExpeditedShipping && !expeditedShipping">
-                  <th>Expedited Shipping</th>
+                  <td style="font-weight: bold;">Expedited Shipping</th>
                   <td><i class="material-icons md-18" style="color:red">clear</i></td>
                 </tr>
               <tr ng-if="showOneDayShipping && oneDayShipping">
-                <th>One Day Shipping</th>
+                <td style="font-weight: bold;">One Day Shipping</th>
                 <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
               <tr ng-if="showOneDayShipping && !oneDayShipping">
-                <th>One Day Shipping</th>
+                <td style="font-weight: bold;">One Day Shipping</th>
                 <td><i class="material-icons md-18" style="color:red">clear</i></td>
               </tr>
               <tr ng-if="showReturnAccepted && returnAccepted">
-                <th>Return Accepted</th>
+                <td style="font-weight: bold;">Return Accepted</th>
                 <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
               <tr ng-if="showReturnAccepted && !returnAccepted">
-                <th>Return Accepted</th>
+                <td style="font-weight: bold;">Return Accepted</th>
                 <td><i class="material-icons md-18" style="color:red">clear</i></td>
               </tr>
 
@@ -196,11 +214,11 @@
               </tr>
 
               <tr ng-if="showFeedbackScore">
-                <th >Feedback Score</th>
+                <td style="font-weight: bold;">Feedback Score</th>
                 <td>{{feedbackScore}}</td>
               </tr>
               <tr ng-if="showPopularity">
-                <th>Popularity</th>
+                <td style="font-weight: bold;">Popularity</th>
                 <td>
 
                   <!-- seller popularity -->
@@ -224,28 +242,28 @@
                 </td>
               </tr>
               <tr ng-if="showFeedbackRatingStar && overTop">
-                <th class="text-nowrap">Feedback Rating Star</th>
+                <td style="font-weight: bold;" class="text-nowrap">Feedback Rating Star</th>
                 <td><i class="material-icons md-24 ratingStar" ng-style="{'color': starColor}">stars</i></td>
               </tr>
               <tr ng-if="showFeedbackRatingStar && !overTop">
-                <th class="text-nowrap">Feedback Rating Star</th>
+                <td style="font-weight: bold;" class="text-nowrap">Feedback Rating Star</th>
                 <td><i class="material-icons md-24 ratingStar" ng-style="{'color': starColor}">star_border</i></td>
               </tr>
 
               <tr ng-if="showTopRated && topRated">
-                <th>Top Rated</th>
+                <td style="font-weight: bold;">Top Rated</th>
                 <td><i class="material-icons md-18" style="color:green">done</i></td>
               </tr>
               <tr ng-if="showTopRated && !topRated">
-                <th>Top Rated</th>
+                <td style="font-weight: bold;">Top Rated</th>
                 <td><i class="material-icons md-18" style="color:red">clear</i></td>
               </tr>              
               <tr ng-if="showStoreName">
-                <th>Store Name</th>
+                <td style="font-weight: bold;">Store Name</th>
                 <td>{{storeName}}</td>
               </tr>
               <tr ng-if="showBuyProductAt">
-                <th>Buy Product At</th>
+                <td style="font-weight: bold;">Buy Product At</th>
                 <td><a class="store" href="{{buyProductAt_url}}" target="_blank">Store</a></td>
               </tr>
             </table>
